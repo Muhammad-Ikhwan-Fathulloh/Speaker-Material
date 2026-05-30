@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saka-NLP - Indonesian NLP with Prompting & Agentic AI | Nocturnailed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; overflow: hidden; height: 100vh; }
+
+        .slide {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            justify-content: center;
+            padding: 60px 80px;
+            opacity: 0;
+            transform: translateX(60px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            overflow-y: auto;
+        }
+        .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.prev { opacity: 0; transform: translateX(-60px); }
+
+        .code-block {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.75;
+            overflow-x: auto;
+            position: relative;
+        }
+        .code-block .lang-tag {
+            position: absolute; top: 8px; right: 12px;
+            font-size: 10px; color: rgba(255,255,255,0.25);
+            text-transform: uppercase; letter-spacing: 0.06em;
+            font-family: 'Inter', sans-serif;
+        }
+        .code-keyword { color: #c084fc; }
+        .code-string { color: #34d399; }
+        .code-func { color: #60a5fa; }
+        .code-comment { color: rgba(255,255,255,0.28); font-style: italic; }
+        .code-var { color: #f9a8d4; }
+        .code-num { color: #fbbf24; }
+        .code-op { color: rgba(255,255,255,0.5); }
+        .code-dict-key { color: #22d3ee; }
+        .code-output { color: rgba(52,211,153,0.8); }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, #a3a3a3);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .accent-text {
+            background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .green-text {
+            background: linear-gradient(135deg, #34d399, #60a5fa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .card-glow {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.4s ease;
+        }
+        .card-glow:hover {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.04);
+            box-shadow: 0 0 40px -10px rgba(255,255,255,0.05);
+        }
+
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 12px; border-radius: 999px;
+            font-size: 12px; font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 2px; z-index: 100;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            transition: width 0.4s ease;
+        }
+
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .nav-dot.active {
+            background: #818cf8;
+            box-shadow: 0 0 10px rgba(129,140,248,0.5);
+            width: 24px; border-radius: 4px;
+        }
+
+        .slide.active .fade-up { animation: fadeUp 0.6s ease forwards; }
+        .fade-up { opacity: 0; transform: translateY(20px); }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        .bg-glow {
+            position: fixed; border-radius: 50%; filter: blur(120px);
+            pointer-events: none; z-index: 0;
+            animation: pulse-glow 8s ease-in-out infinite;
+        }
+
+        .icon-box {
+            width: 48px; height: 48px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        .step-line {
+            width: 2px; height: 32px;
+            background: linear-gradient(to bottom, rgba(129,140,248,0.5), transparent);
+            margin-left: 23px;
+        }
+
+        .slide-counter {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px; color: rgba(255,255,255,0.3);
+        }
+
+        .key-cap {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 2px 8px; border-radius: 4px; font-size: 10px;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(30,30,30,0.95); border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px); border-radius: 12px;
+            padding: 12px 20px; font-size: 14px; color: rgba(255,255,255,0.8);
+            z-index: 200; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        .perf-bar {
+            height: 32px; border-radius: 8px; display: flex; align-items: center;
+            padding: 0 14px; font-size: 12px; font-weight: 600; font-family: 'JetBrains Mono', monospace;
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .aksara-demo {
+            font-size: 28px; letter-spacing: 0.15em; line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .slide { padding: 40px 24px; }
+            .grid-2 { grid-template-columns: 1fr !important; }
+            .grid-3 { grid-template-columns: 1fr !important; }
+            .grid-4 { grid-template-columns: 1fr 1fr !important; }
+            .hero-title { font-size: 36px !important; }
+            .section-title { font-size: 30px !important; }
+            .hide-mobile { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Glows -->
+    <div class="bg-glow" style="width:600px;height:600px;background:rgba(99,102,241,0.07);top:-200px;right:-100px;"></div>
+    <div class="bg-glow" style="width:500px;height:500px;background:rgba(168,85,247,0.05);bottom:-150px;left:-100px;animation-delay:3s;"></div>
+    <div class="bg-glow" style="width:300px;height:300px;background:rgba(34,211,238,0.04);top:40%;left:50%;animation-delay:5s;"></div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+
+    <!-- Top Bar -->
+    <div style="position:fixed;top:0;left:0;right:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:50;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#818cf8,#c084fc);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;">S</div>
+            <span style="font-weight:600;font-size:14px;color:rgba(255,255,255,0.9);">Saka-NLP</span>
+            <span style="color:rgba(255,255,255,0.2);font-size:12px;">× Nocturnailed</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;">
+            <div style="display:none;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,0.2);" id="keyHint">
+                <span class="key-cap">←</span><span class="key-cap">→</span> <span style="margin-left:2px;">navigate</span>
+            </div>
+            <div class="slide-counter" id="slideCounter">01 / 15</div>
+        </div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div style="position:fixed;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:50;" id="navDots"></div>
+
+    <!-- ==================== SLIDE 1: Title ==================== -->
+    <div class="slide active" data-slide="0">
+        <div style="max-width:900px;">
+            <div class="fade-up stagger-1" style="margin-bottom:20px;">
+                <div class="badge" style="border-color:rgba(129,140,248,0.3);color:#818cf8;">
+                    <span style="width:6px;height:6px;border-radius:50%;background:#818cf8;animation:pulse-glow 2s infinite;"></span>
+                    Nocturnailed Team - 2026
+                </div>
+            </div>
+            <h1 class="fade-up stagger-2 hero-title" style="font-size:60px;font-weight:600;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px;">
+                <span class="gradient-text">NLP Indonesia</span> dengan<br>
+                Prompting & <span class="accent-text">Agentic AI</span>
+            </h1>
+            <p class="fade-up stagger-3" style="font-size:19px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.6;max-width:620px;margin-bottom:40px;">
+                Mengenal <strong style="color:#fff;font-weight:500;">Saka-NLP</strong> - architectural framework modern untuk pemrosesan teks bahasa Indonesia dan daerah, dari preprocessing hingga multi-agent orchestration.
+            </p>
+            <div class="fade-up stagger-4" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.5);font-size:14px;">
+                    <i data-lucide="user" style="width:16px;height:16px;"></i>
+                    Muhammad Ikhwan Fathulloh
+                </div>
+                <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.5);font-size:14px;">
+                    <i data-lucide="tag" style="width:16px;height:16px;"></i>
+                    v0.2.3
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 2: About Speaker ==================== -->
+    <div class="slide" data-slide="1">
+        <div style="max-width:900px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#818cf8;margin-bottom:16px;">Tentang Pembicara</p>
+            <div style="display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;" class="grid-2">
+                <div class="fade-up stagger-2">
+                    <div style="width:150px;height:150px;border-radius:22px;overflow:hidden;border:2px solid rgba(255,255,255,0.08);">
+                        <img src="https://picsum.photos/seed/ikhwan-nlp-speaker/320/320.jpg" alt="Ikhwan" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <div style="margin-top:14px;display:flex;gap:8px;justify-content:center;">
+                        <a href="https://github.com/Muhammad-Ikhwan-Fathulloh" target="_blank" style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;transition:all 0.3s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+                            <i data-lucide="github" style="width:16px;height:16px;color:rgba(255,255,255,0.6);"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/muhammad-ikhwan-fathulloh/" target="_blank" style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;transition:all 0.3s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+                            <i data-lucide="linkedin" style="width:16px;height:16px;color:rgba(255,255,255,0.6);"></i>
+                        </a>
+                        <a href="https://ikhwanfathulloh.netlify.app/" target="_blank" style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;transition:all 0.3s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+                            <i data-lucide="globe" style="width:16px;height:16px;color:rgba(255,255,255,0.6);"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:8px;">
+                        Muhammad Ikhwan<br><span class="gradient-text">Fathulloh</span>
+                    </h2>
+                    <p class="fade-up stagger-3" style="color:rgba(255,255,255,0.5);font-size:15px;margin-bottom:24px;">
+                        Framework Architect - Saka-NLP
+                    </p>
+                    <div class="fade-up stagger-4" style="display:flex;flex-direction:column;gap:12px;">
+                        <div style="display:flex;align-items:start;gap:10px;">
+                            <i data-lucide="code-2" style="width:16px;height:16px;color:#818cf8;margin-top:3px;flex-shrink:0;"></i>
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.5;">Pengembang <strong style="color:#fff;">Saka-NLP</strong> - architectural framework NLP bahasa Indonesia yang tersedia di <strong style="color:#fff;">PyPI</strong> dan memiliki <strong style="color:#fff;">DOI Zenodo</strong></span>
+                        </div>
+                        <div style="display:flex;align-items:start;gap:10px;">
+                            <i data-lucide="brain" style="width:16px;height:16px;color:#c084fc;margin-top:3px;flex-shrink:0;"></i>
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.5;">Fokus di NLP, Morphological Analysis, Prompting Engineering, dan Agentic AI untuk bahasa Nusantara</span>
+                        </div>
+                        <div style="display:flex;align-items:start;gap:10px;">
+                            <i data-lucide="rocket" style="width:16px;height:16px;color:#34d399;margin-top:3px;flex-shrink:0;"></i>
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.5;">Misi: membangun <strong style="color:#fff;">fondasi modern</strong> yang modular, asynchronous, dan plug-and-play untuk ekosistem NLP Indonesia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 3: The Problem ==================== -->
+    <div class="slide" data-slide="2">
+        <div style="max-width:920px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#f472b6;margin-bottom:16px;">Masalah</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:38px;font-weight:600;letter-spacing:-0.02em;margin-bottom:28px;line-height:1.15;">
+                Ekosistem NLP Indonesia<br><span style="color:rgba(255,255,255,0.35);">masih terfragmentasi</span>
+            </h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="grid-2">
+                <div class="card-glow fade-up stagger-2">
+                    <div style="font-size:26px;margin-bottom:10px;">🐢</div>
+                    <h3 style="font-weight:600;font-size:15px;margin-bottom:6px;">Legacy Codebase</h3>
+                    <p style="color:rgba(255,255,255,0.45);font-size:13px;line-height:1.6;">Library utama (Sastrawi) last commit <strong style="color:rgba(255,255,255,0.7);">2018</strong>. Suffix-stripping saja, tanpa morphological analysis.</p>
+                </div>
+                <div class="card-glow fade-up stagger-3">
+                    <div style="font-size:26px;margin-bottom:10px;">🔨</div>
+                    <h3 style="font-weight:600;font-size:15px;margin-bottom:6px;">Synchronous Only</h3>
+                    <p style="color:rgba(255,255,255,0.45);font-size:13px;line-height:1.6;">Tidak ada dukungan async. Preprocessing 32K teks butuh <strong style="color:rgba(255,255,255,0.7);">~92 menit</strong> dengan pipeline lama.</p>
+                </div>
+                <div class="card-glow fade-up stagger-4">
+                    <div style="font-size:26px;margin-bottom:10px;">🗣️</div>
+                    <h3 style="font-weight:600;font-size:15px;margin-bottom:6px;">Bahasa Daerah Terabaikan</h3>
+                    <p style="color:rgba(255,255,255,0.45);font-size:13px;line-height:1.6;">Sunda, Jawa, Bali - minim tools. Aksara Nusantara hampir tidak ada dukungan di Python ecosystem.</p>
+                </div>
+                <div class="card-glow fade-up stagger-5">
+                    <div style="font-size:26px;margin-bottom:10px;">🧩</div>
+                    <h3 style="font-weight:600;font-size:15px;margin-bottom:6px;">Scattered & Monolithic</h3>
+                    <p style="color:rgba(255,255,255,0.45);font-size:13px;line-height:1.6;">Stemming di satu library, slang di JSON manual, stopword di tempat lain. Tidak ada framework terintegrasi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 4: Enter Saka-NLP ==================== -->
+    <div class="slide" data-slide="3">
+        <div style="max-width:880px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#34d399;margin-bottom:16px;">Solusi</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:42px;font-weight:600;letter-spacing:-0.02em;margin-bottom:12px;line-height:1.1;">
+                Masuk, <span class="green-text">Saka-NLP</span>
+            </h2>
+            <p class="fade-up stagger-3" style="font-size:17px;font-weight:300;color:rgba(255,255,255,0.5);margin-bottom:32px;max-width:640px;line-height:1.6;">
+                Architectural framework modern yang solid untuk pemrosesan teks bahasa Indonesia <strong style="color:#fff;font-weight:500;">dan daerah</strong> - dengan dukungan prompting & agentic AI.
+            </p>
+            <div class="fade-up stagger-4 code-block" style="margin-bottom:28px;">
+                <span class="lang-tag">bash</span>
+                <span class="code-comment"># Install dalam sekejap - Python 3.8+</span><br>
+                <span class="code-func">pip</span> <span class="code-keyword">install</span> <span class="code-string">saka-nlp</span>
+            </div>
+            <div class="fade-up stagger-5" style="display:flex;gap:10px;flex-wrap:wrap;">
+                <div class="badge" style="border-color:rgba(52,211,153,0.3);color:#34d399;">
+                    <i data-lucide="zap" style="width:12px;height:12px;"></i> Async Ready
+                </div>
+                <div class="badge" style="border-color:rgba(129,140,248,0.3);color:#818cf8;">
+                    <i data-lucide="puzzle" style="width:12px;height:12px;"></i> Plug-and-Play
+                </div>
+                <div class="badge" style="border-color:rgba(192,132,252,0.3);color:#c084fc;">
+                    <i data-lucide="bot" style="width:12px;height:12px;"></i> Agentic AI
+                </div>
+                <div class="badge" style="border-color:rgba(244,114,182,0.3);color:#f472b6;">
+                    <i data-lucide="languages" style="width:12px;height:12px;"></i> Nusantara
+                </div>
+                <div class="badge" style="border-color:rgba(251,191,36,0.3);color:#fbbf24;">
+                    <i data-lucide="terminal" style="width:12px;height:12px;"></i> CLI Included
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 5: What is Saka ==================== -->
+    <div class="slide" data-slide="4">
+        <div style="max-width:900px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#818cf8;margin-bottom:16px;">Filosofi</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:8px;">
+                "Saka" - <span class="gradient-text">Tiang Penyangga</span>
+            </h2>
+            <p class="fade-up stagger-2" style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:28px;">Dalam bahasa Jawa/Sunda, Saka berarti tiang penyangga atau pilar.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;" class="grid-2">
+                <div class="fade-up stagger-3">
+                    <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.8;margin-bottom:20px;">
+                        Saka-NLP menjadi <strong style="color:#818cf8;">fondasi</strong> yang kokoh - bukan monolith, tapi <strong style="color:#fff;">architectural framework</strong> dengan komponen modular yang bisa dipilih sesuai kebutuhan.
+                    </p>
+                    <div style="display:flex;flex-direction:column;gap:14px;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(129,140,248,0.1);display:flex;align-items:center;justify-content:center;">
+                                <i data-lucide="package" style="width:18px;height:18px;color:#818cf8;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;">PyPI - DOI Zenodo</div>
+                                <div style="color:rgba(255,255,255,0.35);font-size:11px;">Citable, versioned, tracable</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(52,211,153,0.1);display:flex;align-items:center;justify-content:center;">
+                                <i data-lucide="book-open" style="width:18px;height:18px;color:#34d399;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;">saka-nlp.netlify.app</div>
+                                <div style="color:rgba(255,255,255,0.35);font-size:11px;">Dokumentasi lengkap + Colab playground</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(192,132,252,0.1);display:flex;align-items:center;justify-content:center;">
+                                <i data-lucide="git-branch" style="width:18px;height:18px;color:#c084fc;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;">Open Source - MIT License</div>
+                                <div style="color:rgba(255,255,255,0.35);font-size:11px;">Kontribusi terbuka untuk semua</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fade-up stagger-4 code-block" style="font-size:12.5px;">
+                    <span class="lang-tag">python</span>
+                    <span class="code-comment"># Satu baris import - bersih & langsung pakai</span><br>
+                    <span class="code-keyword">import</span> <span class="code-var">saka</span><br><br>
+                    <span class="code-func">print</span>(<span class="code-var">saka</span>.<span class="code-var">__version__</span>)<br>
+                    <span class="code-comment"># Output: 0.2.3</span><br><br>
+                    <span class="code-comment"># Tokenisasi</span><br>
+                    <span class="code-func">print</span>(<span class="code-var">saka</span>.<span class="code-func">tokenize</span>(<br>
+                    &nbsp;&nbsp;<span class="code-string">"Belajar sambil beramal"</span><br>
+                    ))<br>
+                    <span class="code-comment"># ['Belajar', 'sambil', 'beramal']</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 6: Feature Overview ==================== -->
+    <div class="slide" data-slide="5">
+        <div style="max-width:950px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#818cf8;margin-bottom:16px;">Fitur Unggulan</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:28px;">
+                Bukan sekadar library -<br><span class="gradient-text">sebuah framework</span>
+            </h2>
+            <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;" class="grid-3">
+                <div class="card-glow fade-up stagger-2" style="padding:22px 18px;">
+                    <div class="icon-box" style="background:rgba(129,140,248,0.1);margin-bottom:14px;">
+                        <i data-lucide="layers" style="width:22px;height:22px;color:#818cf8;"></i>
+                    </div>
+                    <h3 style="font-weight:600;font-size:14px;margin-bottom:5px;">Heuristic Morphology</h3>
+                    <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.5;">Bukan sekadar stem. Deteksi prefix, suffix, morphophonemic restructuring, early stopping ke leksikon daerah</p>
+                </div>
+                <div class="card-glow fade-up stagger-3" style="padding:22px 18px;">
+                    <div class="icon-box" style="background:rgba(52,211,153,0.1);margin-bottom:14px;">
+                        <i data-lucide="message-circle" style="width:22px;height:22px;color:#34d399;"></i>
+                    </div>
+                    <h3 style="font-weight:600;font-size:14px;margin-bottom:5px;">Slang Normalization</h3>
+                    <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.5;">1,018 entri dari Twitter COVID-19 Indonesia corpus - data sosial media nyata</p>
+                </div>
+                <div class="card-glow fade-up stagger-4" style="padding:22px 18px;">
+                    <div class="icon-box" style="background:rgba(192,132,252,0.1);margin-bottom:14px;">
+                        <i data-lucide="book-marked" style="width:22px;height:22px;color:#c084fc;"></i>
+                    </div>
+                    <h3 style="font-weight:600;font-size:14px;margin-bottom:5px;">Live KBBI Scraper</h3>
+                    <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.5;">Ekstraksi arti kata langsung dari KBBI Daring Kemendikbudristekdikti</p>
+                </div>
+                <div class="card-glow fade-up stagger-3" style="padding:22px 18px;">
+                    <div class="icon-box" style="background:rgba(244,114,182,0.1);margin-bottom:14px;">
+                        <i data-lucide="bot" style="width:22px;height:22px;color:#f472b6;"></i>
+                    </div>
+                    <h3 style="font-weight:600;font-size:14px;margin-bottom:5px;">Agentic AI & Prompting</h3>
+                    <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.5;">Multi-Agent Orchestration, Dynamic Tool Calling, Structured Prompting, Token Evaluation</p>
+                </div>
+                <div class="card-glow fade-up stagger-4" style="padding:22px 18px;">
+                    <div class="icon-box" style="background:rgba(251,191,36,0.1);margin-bottom:14px;">
+                        <i data-lucide="languages" style="width:22px;height:22px;color:#fbbf24;"></i>
+                    </div>
+                    <h3 style="font-weight:600;font-size:14px;margin-bottom:5px;">Aksara Nusantara</h3>
+                    <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.5;">Transliterasi Aksara Sunda (Ngalagena), Jawa (Nglegena), Bali (Wreastra)</p>
+                </div>
+                <div class="card-glow fade-up stagger-5" style="padding:22px 18px;">
+                    <div class="icon-box" style="background:rgba(34,211,238,0.1);margin-bottom:14px;">
+                        <i data-lucide="activity" style="width:22px;height:22px;color:#22d3ee;"></i>
+                    </div>
+                    <h3 style="font-weight:600;font-size:14px;margin-bottom:5px;">Async + Plug-and-Play</h3>
+                    <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.5;">Method async_* dengan asyncio. Komponen modular - pilih mesin stemming, tokenizer, dll</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 7: Case Study - Social Media ==================== -->
+    <div class="slide" data-slide="6">
+        <div style="max-width:900px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#f472b6;margin-bottom:16px;">Studi Kasus #1</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:6px;">
+                Preprocessing Pipeline <span class="accent-text">Media Sosial</span>
+            </h2>
+            <p class="fade-up stagger-2" style="color:rgba(255,255,255,0.45);font-size:14px;margin-bottom:24px;">Slang normalization + emoji handling + stopword removal - satu import, semua tercover</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="grid-2">
+                <div class="fade-up stagger-3 code-block" style="font-size:12px;line-height:1.85;">
+                    <span class="lang-tag">python</span>
+                    <span class="code-keyword">import</span> <span class="code-var">saka</span><br>
+                    <span class="code-keyword">import</span> <span class="code-var">emoji</span><br><br>
+                    <span class="code-var">text</span> <span class="code-op">=</span> <span class="code-string">"klo gw udh cba bgt 😭🤬"</span><br><br>
+                    <span class="code-comment"># 1. Normalisasi slang</span><br>
+                    <span class="code-var">norm</span> <span class="code-op">=</span> <span class="code-var">saka</span>.<span class="code-func">normalize</span>(<span class="code-var">text</span>)<br>
+                    <span class="code-func">print</span>(<span class="code-var">norm</span>)<br>
+                    <span class="code-comment"># "kalau saya sudah coba banget 😭🤬"</span><br><br>
+                    <span class="code-comment"># 2. Emoji → teks Indo (3,800+ emoji)</span><br>
+                    <span class="code-var">emo</span> <span class="code-op">=</span> <span class="code-var">emoji</span>.<span class="code-func">demojize</span>(<br>
+                    &nbsp;&nbsp;<span class="code-var">norm</span>, <span class="code-var">language</span><span class="code-op">=</span><span class="code-string">'id'</span><br>
+                    )<br><br>
+                    <span class="code-comment"># 3. Stopword O(1) lookup</span><br>
+                    <span class="code-var">stops</span> <span class="code-op">=</span> <span class="code-var">saka</span>.<span class="code-func">get_stopwords</span>(<span class="code-string">'jaksel'</span>)<br>
+                    <span class="code-func">print</span>(<span class="code-func">len</span>(<span class="code-var">saka</span>.<span class="code-func">get_stopwords</span>(<span class="code-string">'all'</span>)))<br>
+                    <span class="code-comment"># 900+</span>
+                </div>
+                <div class="fade-up stagger-4">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Transformasi</div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div style="background:rgba(244,114,182,0.06);border:1px solid rgba(244,114,182,0.15);border-radius:10px;padding:12px 16px;">
+                            <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:4px;">INPUT (RAW)</div>
+                            <p style="font-size:14px;color:rgba(255,255,255,0.7);">"klo gw udh cba bgt 😭🤬"</p>
+                        </div>
+                        <div style="text-align:center;"><i data-lucide="arrow-down" style="width:16px;height:16px;color:rgba(255,255,255,0.15);margin:auto;"></i></div>
+                        <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);border-radius:10px;padding:12px 16px;">
+                            <div style="font-size:11px;color:#34d399;margin-bottom:4px;">saka.normalize()</div>
+                            <p style="font-size:14px;color:rgba(255,255,255,0.8);">"kalau saya sudah coba banget 😭🤬"</p>
+                        </div>
+                        <div style="text-align:center;"><i data-lucide="arrow-down" style="width:16px;height:16px;color:rgba(255,255,255,0.15);margin:auto;"></i></div>
+                        <div style="background:rgba(129,140,248,0.06);border:1px solid rgba(129,140,248,0.15);border-radius:10px;padding:12px 16px;">
+                            <div style="font-size:11px;color:#818cf8;margin-bottom:4px;">emoji.demojize(lang='id')</div>
+                            <p style="font-size:14px;color:rgba(255,255,255,0.8);">"kalau saya sudah coba banget :menangis: :marah:"</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:14px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+                        <p style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">
+                            <i data-lucide="lightbulb" style="width:11px;height:11px;display:inline;vertical-align:-1px;margin-right:4px;color:#fbbf24;"></i>
+                            <strong style="color:rgba(255,255,255,0.5);">Stopwords Nusantara:</strong> Tala (ID), Sunda, Jawa, Bali, English, Jaksel slang - semua dalam Set Python, O(1) lookup
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 8: Case Study - Morphology ==================== -->
+    <div class="slide" data-slide="7">
+        <div style="max-width:900px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#34d399;margin-bottom:16px;">Studi Kasus #2</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:6px;">
+                Heuristic <span class="green-text">Morphology Analyzer</span>
+            </h2>
+            <p class="fade-up stagger-2" style="color:rgba(255,255,255,0.45);font-size:14px;margin-bottom:24px;">Bukan sekadar stem - analisis morfologi lengkap dengan morphophonemic & validasi daerah</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="grid-2">
+                <div class="fade-up stagger-3 code-block" style="font-size:12px;line-height:1.85;">
+                    <span class="lang-tag">python</span>
+                    <span class="code-keyword">import</span> <span class="code-var">saka</span><br><br>
+                    <span class="code-comment"># Kata majemuk + afiks luluh</span><br>
+                    <span class="code-func">print</span>(<span class="code-var">saka</span>.<span class="code-func">analyze</span>(<span class="code-string">"menyebarluaskan"</span>))<br><br>
+                    <span class="code-comment"># {'root': 'sebar luas',</span><br>
+                    <span class="code-comment">#  'prefixes': ['meny'],</span><br>
+                    <span class="code-comment">#  'suffixes': ['kan'],</span><br>
+                    <span class="code-comment">#  'type': 'unknown',</span><br>
+                    <span class="code-comment">#  'regional_matches': []}</span><br><br>
+                    <span class="code-comment"># Early Stopping → bahasa daerah!</span><br>
+                    <span class="code-func">print</span>(<span class="code-var">saka</span>.<span class="code-func">analyze</span>(<span class="code-string">"dipikanyaah"</span>))<br><br>
+                    <span class="code-comment"># {'root': 'nyaah',</span><br>
+                    <span class="code-comment">#  'prefixes': ['dipika'],</span><br>
+                    <span class="code-comment">#  'suffixes': [],</span><br>
+                    <span class="code-comment">#  'type': 'regional',</span><br>
+                    <span class="code-comment">#  'regional_matches': ['sunda']}
+                </div>
+                <div class="fade-up stagger-4">
+                    <div style="display:flex;flex-direction:column;gap:16px;">
+                        <div class="card-glow" style="padding:18px 20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <div style="width:28px;height:28px;border-radius:8px;background:rgba(129,140,248,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#818cf8;">1</div>
+                                <h3 style="font-weight:600;font-size:14px;">Prefix + Suffix Detection</h3>
+                            </div>
+                            <p style="color:rgba(255,255,255,0.4);font-size:12px;line-height:1.6;">meny- + -kan → mendeteksi peleburan "s" ke "y" (morphophonemic)</p>
+                        </div>
+                        <div class="card-glow" style="padding:18px 20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <div style="width:28px;height:28px;border-radius:8px;background:rgba(52,211,153,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#34d399;">2</div>
+                                <h3 style="font-weight:600;font-size:14px;">Compound Word Recovery</h3>
+                            </div>
+                            <p style="color:rgba(255,255,255,0.4);font-size:12px;line-height:1.6;">"sebarluaskan" → root "sebar luas" - mempertahankan semantik kata majemuk serangkai</p>
+                        </div>
+                        <div class="card-glow" style="padding:18px 20px;">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                                <div style="width:28px;height:28px;border-radius:8px;background:rgba(192,132,252,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#c084fc;">3</div>
+                                <h3 style="font-weight:600;font-size:14px;">Early Stopping → Regional</h3>
+                            </div>
+                            <p style="color:rgba(255,255,255,0.4);font-size:12px;line-height:1.6;">"dipikanyaah" → berhenti di "nyaah" (Sunda), bukan terus memotong sampai kosong</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:14px;padding:10px 14px;background:rgba(192,132,252,0.04);border-radius:8px;border:1px solid rgba(192,132,252,0.12);">
+                        <p style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">
+                            <i data-lucide="sparkles" style="width:11px;height:11px;display:inline;vertical-align:-1px;margin-right:4px;color:#c084fc;"></i>
+                            <strong style="color:rgba(255,255,255,0.5);">vs Sastrawi:</strong> Sastrawi hanya suffix-stripping. Tidak ada morphophonemic, tidak ada compound word, tidak ada validasi daerah.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 9: Case Study - KBBI + Aksara ==================== -->
+    <div class="slide" data-slide="8">
+        <div style="max-width:920px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#fbbf24;margin-bottom:16px;">Studi Kasus #3</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:24px;">
+                KBBI Live & <span style="color:#fbbf24;">Aksara Nusantara</span>
+            </h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="grid-2">
+                <div class="fade-up stagger-3">
+                    <div class="code-block" style="font-size:12px;line-height:1.85;margin-bottom:16px;">
+                        <span class="lang-tag">python</span>
+                        <span class="code-keyword">import</span> <span class="code-var">saka</span><br><br>
+                        <span class="code-comment"># Live KBBI Scraper</span><br>
+                        <span class="code-var">res</span> <span class="code-op">=</span> <span class="code-var">saka</span>.<span class="code-func">query_kbbi</span>(<span class="code-string">"belajar"</span>)<br><br>
+                        <span class="code-keyword">if</span> <span class="code-var">res</span>[<span class="code-string">"status"</span>] <span class="code-op">==</span> <span class="code-string">"found"</span>:<br>
+                        &nbsp;&nbsp;<span class="code-keyword">for</span> <span class="code-var">a</span> <span class="code-keyword">in</span> <span class="code-var">res</span>[<span class="code-string">"definitions"</span>]:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-func">print</span>(<span class="code-var">a</span>)<br>
+                        <span class="code-comment"># petunjuk yang diberikan...</span><br>
+                        <span class="code-comment"># berusaha memperoleh kepandaian...</span>
+                    </div>
+                    <div class="code-block" style="font-size:12px;line-height:1.85;">
+                        <span class="lang-tag">python</span>
+                        <span class="code-comment"># Ekosistem Sunda</span><br>
+                        <span class="code-var">sunda</span> <span class="code-op">=</span> <span class="code-var">saka</span>.<span class="code-func">query_sundadigi</span>(<span class="code-string">"wilujeng"</span>)<br>
+                        <span class="code-func">print</span>(<span class="code-var">sunda</span>[<span class="code-string">"definitions"</span>][<span class="code-string">"arti"</span>])<br>
+                        <span class="code-comment"># "selamat"</span><br><br>
+                        <span class="code-comment"># Ekosistem Jawa</span><br>
+                        <span class="code-var">jawa</span> <span class="code-op">=</span> <span class="code-var">saka</span>.<span class="code-func">query_sastra</span>(<span class="code-string">"sugeng"</span>)<br>
+                        <span class="code-comment"># "selamat"</span><br><br>
+                        <span class="code-comment"># Ekosistem Bali</span><br>
+                        <span class="code-var">bali</span> <span class="code-op">=</span> <span class="code-var">saka</span>.<span class="code-func">query_basabali</span>(<span class="code-string">"rahajeng"</span>)<br>
+                        <span class="code-comment"># "selamat"</span>
+                    </div>
+                </div>
+                <div class="fade-up stagger-4">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Transliterasi Aksara</div>
+                    <div style="display:flex;flex-direction:column;gap:12px;">
+                        <div style="background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.12);border-radius:14px;padding:18px 20px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                                <span style="font-size:12px;color:#fbbf24;font-weight:500;">Aksara Sunda (Ngalagena)</span>
+                                <span style="font-size:11px;color:rgba(255,255,255,0.25);">saka.latin_to_aksara_sunda()</span>
+                            </div>
+                            <div style="display:flex;align-items:baseline;gap:12px;">
+                                <span style="font-size:15px;color:rgba(255,255,255,0.5);">"saka"</span>
+                                <span style="color:rgba(255,255,255,0.2);">→</span>
+                                <span class="aksara-demo" style="color:#fbbf24;">ᮞᮊ</span>
+                            </div>
+                        </div>
+                        <div style="background:rgba(129,140,248,0.04);border:1px solid rgba(129,140,248,0.12);border-radius:14px;padding:18px 20px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                                <span style="font-size:12px;color:#818cf8;font-weight:500;">Aksara Jawa (Nglegena)</span>
+                                <span style="font-size:11px;color:rgba(255,255,255,0.25);">saka.latin_to_aksara_jawa()</span>
+                            </div>
+                            <div style="display:flex;align-items:baseline;gap:12px;">
+                                <span style="font-size:15px;color:rgba(255,255,255,0.5);">"hanacaraka"</span>
+                                <span style="color:rgba(255,255,255,0.2);">→</span>
+                                <span class="aksara-demo" style="color:#818cf8;">ꦲꦤꦕꦫꦏ</span>
+                            </div>
+                        </div>
+                        <div style="background:rgba(52,211,153,0.04);border:1px solid rgba(52,211,153,0.12);border-radius:14px;padding:18px 20px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                                <span style="font-size:12px;color:#34d399;font-weight:500;">Aksara Bali (Wreastra)</span>
+                                <span style="font-size:11px;color:rgba(255,255,255,0.25);">saka.latin_to_aksara_bali()</span>
+                            </div>
+                            <div style="display:flex;align-items:baseline;gap:12px;">
+                                <span style="font-size:15px;color:rgba(255,255,255,0.5);">"bali 2026."</span>
+                                <span style="color:rgba(255,255,255,0.2);">→</span>
+                                <span class="aksara-demo" style="color:#34d399;">ᬩᬮᬶ ᭒᭐᭒᭖᭟</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+                        <p style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">
+                            <i data-lucide="database" style="width:11px;height:11px;display:inline;vertical-align:-1px;margin-right:4px;color:#fbbf24;"></i>
+                            <strong style="color:rgba(255,255,255,0.5);">Sumber data:</strong> KBBI Daring, SundaDigi, Sastra.org, BASAbali Wiki, Tala Stopwords
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 10: Case Study - Agentic AI ==================== -->
+    <div class="slide" data-slide="9">
+        <div style="max-width:900px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#c084fc;margin-bottom:16px;">Studi Kasus #4</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:6px;">
+                <span class="accent-text">Agentic AI</span> & Structured Prompting
+            </h2>
+            <p class="fade-up stagger-2" style="color:rgba(255,255,255,0.45);font-size:14px;margin-bottom:24px;">Multi-Agent Orchestration + Dynamic Tool Calling - langsung dari saka</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="grid-2">
+                <div class="fade-up stagger-3 code-block" style="font-size:11.5px;line-height:1.85;">
+                    <span class="lang-tag">python</span>
+                    <span class="code-keyword">from</span> <span class="code-var">saka</span> <span class="code-keyword">import</span> <span class="code-func">MultiAgentManager</span>, <span class="code-func">Agent</span><br><br>
+                    <span class="code-comment"># --- Multi-Agent Orchestration ---</span><br>
+                    <span class="code-var">mgr</span> <span class="code-op">=</span> <span class="code-func">MultiAgentManager</span>()<br>
+                    <span class="code-var">mgr</span>.<span class="code-func">add_agent</span>(<span class="code-string">"math"</span>, <span class="code-string">"Alih Matematika"</span>,<br>
+                    &nbsp;&nbsp;<span class="code-string">"Selesaikan soal kalkulus."</span>)<br>
+                    <span class="code-var">mgr</span>.<span class="code-func">add_agent</span>(<span class="code-string">"science"</span>, <span class="code-string">"Ahli Sains"</span>,<br>
+                    &nbsp;&nbsp;<span class="code-string">"Selesaikan soal fisika."</span>)<br><br>
+                    <span class="code-var">prompt</span> <span class="code-op">=</span> <span class="code-var">mgr</span>.<span class="code-func">route_prompt</span>(<br>
+                    &nbsp;&nbsp;<span class="code-string">"Soal tentang gravitasi"</span><br>
+                    )<br><br>
+                    <span class="code-comment"># --- Dynamic Tool Calling ---</span><br>
+                    <span class="code-var">bot</span> <span class="code-op">=</span> <span class="code-func">Agent</span>(<span class="code-string">"Asisten Nilai"</span>,<br>
+                    &nbsp;&nbsp;<span class="code-string">"Cek nilai siswa."</span>)<br>
+                    <span class="code-var">bot</span>.<span class="code-func">add_tool</span>(<br>
+                    &nbsp;&nbsp;<span class="code-var">name</span><span class="code-op">=</span><span class="code-string">"get_grade"</span>,<br>
+                    &nbsp;&nbsp;<span class="code-var">desc</span><span class="code-op">=</span><span class="code-string">"Ambil nilai"</span>,<br>
+                    &nbsp;&nbsp;<span class="code-var">params</span><span class="code-op">=</span>{<span class="code-string">"name"</span>: <span class="code-string">"string"</span>},<br>
+                    &nbsp;&nbsp;<span class="code-var">func</span><span class="code-op">=</span><span class="code-keyword">lambda</span> <span class="code-var">n</span>: <span class="code-string">f"Nilai </span><span class="code-op">{</span><span class="code-var">n</span><span class="code-op">}</span><span class="code-string">: 90"</span><br>
+                    )<br>
+                    <span class="code-var">res</span> <span class="code-op">=</span> <span class="code-var">bot</span>.<span class="code-func">call_tool</span>(<span class="code-string">"get_grade"</span>,<br>
+                    &nbsp;&nbsp;{<span class="code-string">"name"</span>: <span class="code-string">"Budi"</span>})<br>
+                    <span class="code-comment"># "Nilai Budi: 90"
+                </div>
+                <div class="fade-up stagger-4">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Arsitektur Prompt</div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div style="display:flex;gap:12px;align-items:center;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(192,132,252,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="user-circle" style="width:18px;height:18px;color:#c084fc;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;color:#c084fc;">Role</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;">Definisi peran agen</p>
+                            </div>
+                        </div>
+                        <div style="width:2px;height:8px;background:rgba(255,255,255,0.06);margin-left:17px;"></div>
+                        <div style="display:flex;gap:12px;align-items:center;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(129,140,248,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="target" style="width:18px;height:18px;color:#818cf8;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;color:#818cf8;">Task</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;">Apa yang harus dilakukan</p>
+                            </div>
+                        </div>
+                        <div style="width:2px;height:8px;background:rgba(255,255,255,0.06);margin-left:17px;"></div>
+                        <div style="display:flex;gap:12px;align-items:center;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(52,211,153,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="file-text" style="width:18px;height:18px;color:#34d399;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;color:#34d399;">Context + Constraint</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;">Konteks & batasan output</p>
+                            </div>
+                        </div>
+                        <div style="width:2px;height:8px;background:rgba(255,255,255,0.06);margin-left:17px;"></div>
+                        <div style="display:flex;gap:12px;align-items:center;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="wrench" style="width:18px;height:18px;color:#fbbf24;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;color:#fbbf24;">Tool Calling</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;">Fungsi Python langsung dipanggil agent</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:16px;padding:10px 14px;background:rgba(192,132,252,0.04);border-radius:8px;border:1px solid rgba(192,132,252,0.12);">
+                        <p style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5;">
+                            <i data-lucide="sparkles" style="width:11px;height:11px;display:inline;vertical-align:-1px;margin-right:4px;color:#c084fc;"></i>
+                            <strong style="color:rgba(255,255,255,0.5);">Token Optimization:</strong> OutputFormatter mendukung format Markdown, HTML, Table, CSV, JSON - secara lokal tanpa keluar token ke LLM.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 11: Performance - Thesis Migration ==================== -->
+    <div class="slide" data-slide="10">
+        <div style="max-width:920px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#f472b6;margin-bottom:16px;">🔍 Validasi Riset</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:32px;font-weight:600;letter-spacing:-0.02em;margin-bottom:6px;line-height:1.15;">
+                Thesis Fasilkom UI -<br><span class="accent-text">56× Lebih Cepat</span>
+            </h2>
+            <p class="fade-up stagger-2" style="color:rgba(255,255,255,0.45);font-size:13px;margin-bottom:20px;">
+                <em>Text-based Emotion Detection using NLP</em> - Nabila Dita Putri, 2023 | Fakultas Ilmu Komputer, Universitas Indonesia
+                <br><a href="https://github.com/shirinzarqaa/csui-emotion-detection" target="_blank" style="color:#818cf8;font-size:12px;text-decoration:none;">github.com/shirinzarqaa/csui-emotion-detection ↗</a>
+            </p>
+
+            <!-- Migration Table -->
+            <div class="fade-up stagger-3" style="overflow-x:auto;margin-bottom:24px;">
+                <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                    <thead>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                            <th style="text-align:left;padding:10px 14px;color:rgba(255,255,255,0.4);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;">Komponen</th>
+                            <th style="text-align:left;padding:10px 14px;color:rgba(255,255,255,0.3);font-weight:500;font-size:11px;">Thesis 2023</th>
+                            <th style="text-align:left;padding:10px 14px;color:#34d399;font-weight:600;font-size:11px;">Pipeline 2026 (saka-nlp)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);">Slang</td>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.35);">Manual JSON (~1,500, static)</td>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);"><code style="background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;font-size:11px;">saka.normalize()</code> - 1,018 entri Twitter corpus</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);">Stemming</td>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.35);">Sastrawi StemmerFactory (suffix only)</td>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);"><code style="background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;font-size:11px;">saka.analyze()</code> - full morphology</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);">Stopword</td>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.35);">Sastrawi - O(n) lookup</td>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);"><code style="background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;font-size:11px;">saka.get_stopwords()</code> - Set, O(1)</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);">Emoji</td>
+                            <td style="padding:10px 14px;color:#f472b6;">❌ Not handled</td>
+                            <td style="padding:10px 14px;color:#34d399;">✓ 3,800+ emoji → Indonesian text</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);">Tokenization</td>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.35);">str.split()</td>
+                            <td style="padding:10px 14px;color:rgba(255,255,255,0.7);"><code style="background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;font-size:11px;">saka.tokenize()</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Performance Bars -->
+            <div class="fade-up stagger-4">
+                <div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Dampak Performa</div>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
+                            <span style="color:rgba(255,255,255,0.6);">Per teks (avg)</span>
+                            <span style="color:rgba(255,255,255,0.3);">Sastrawi: 181ms → Saka: 3.2ms</span>
+                        </div>
+                        <div style="display:flex;gap:6px;align-items:center;">
+                            <div class="perf-bar" style="width:92%;background:rgba(244,114,182,0.15);color:#f472b6;justify-content:flex-start;">~181 ms</div>
+                            <div class="perf-bar" style="width:4%;background:rgba(52,211,153,0.2);color:#34d399;justify-content:center;min-width:70px;">3.2 ms</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
+                            <span style="color:rgba(255,255,255,0.6);">32K dataset (full)</span>
+                            <span style="color:rgba(255,255,255,0.3);">Sastrawi: ~92 min → Saka: ~2 min</span>
+                        </div>
+                        <div style="display:flex;gap:6px;align-items:center;">
+                            <div class="perf-bar" style="width:92%;background:rgba(244,114,182,0.15);color:#f472b6;justify-content:flex-start;">~92 min</div>
+                            <div class="perf-bar" style="width:4%;background:rgba(52,211,153,0.2);color:#34d399;justify-content:center;min-width:70px;">~2 min</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:16px;display:flex;gap:16px;justify-content:center;" class="grid-4">
+                    <div style="text-align:center;">
+                        <div style="font-size:32px;font-weight:700;color:#34d399;">56×</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;">Speedup per teks</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:32px;font-weight:700;color:#34d399;">46×</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;">Speedup full dataset</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:32px;font-weight:700;color:#818cf8;">33K+</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;">Teks diproses</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:32px;font-weight:700;color:#c084fc;">0</div>
+                        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;">Breaking changes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 12: Comparison ==================== -->
+    <div class="slide" data-slide="11">
+        <div style="max-width:880px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#818cf8;margin-bottom:16px;">Perbandingan</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:28px;">
+                Saka-NLP <span class="gradient-text">vs Sastrawi</span>
+            </h2>
+            <div class="fade-up stagger-3" style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                    <thead>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                            <th style="text-align:left;padding:12px 16px;color:rgba(255,255,255,0.4);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;">Aspek</th>
+                            <th style="text-align:center;padding:12px 16px;color:#818cf8;font-weight:600;font-size:12px;">
+                                <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+                                    <div style="width:16px;height:16px;border-radius:4px;background:linear-gradient(135deg,#818cf8,#c084fc);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:9px;">S</div>
+                                    Saka-NLP
+                                </div>
+                            </th>
+                            <th style="text-align:center;padding:12px 16px;color:rgba(255,255,255,0.35);font-weight:500;font-size:12px;">Sastrawi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:11px 16px;color:rgba(255,255,255,0.7);">Last Update</td>
+                            <td style="padding:11px 16px;text-align:center;color:#34d399;font-weight:600;">2026 (v0.2.3)</td>
+                            <td style="padding:11px 16px;text-align:center;color:rgba(255,255,255,0.3);">2018</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:11px 16px;color:rgba(255,255,255,0.7);">Morphology</td>
+                            <td style="padding:11px 16px;text-align:center;color:#34d399;">Full: prefix + suffix + morphophonemic + compound</td>
+                            <td style="padding:11px 16px;text-align:center;color:rgba(255,255,255,0.3);">Suffix-stripping only</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:11px 16px;color:rgba(255,255,255,0.7);">Slang Normalization</td>
+                            <td style="padding:11px 16px;text-align:center;color:#34d399;">✓ Built-in (1,018 entri)</td>
+                            <td style="padding:11px 16px;text-align:center;color:rgba(255,255,255,0.25);">✗</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:11px 16px;color:rgba(255,255,255,0.7);">Async Support</td>
+                            <td style="padding:11px 16px;text-align:center;color:#34d399;">✓ async_* methods</td>
+                            <td style="padding:11px 16px;text-align:center;color:rgba(255,255,255,0.25);">✗</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:11px 16px;color:rgba(255,255,255,0.7);">Bahasa Daerah</td>
+                            <td style="padding:11px 16px;text-align:center;color:#34d399;">Sunda, Jawa, Bali + Aksara</td>
+                            <td style="padding:11px 16px;text-align:center;color:rgba(255,255,255,0.25);">✗</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:11px 16px;color:rgba(255,255,255,0.7);">KBBI Integration</td>
+                            <td style="padding:11px 16px;text-align:center;color:#34d399;">✓ Live scraper</td>
+                            <td style="padding:11px 16px;text-align:center;color:rgba(255,255,255,0.25);">✗</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:11px 16px;color:rgba(255,255,255,0.7);">Agentic AI</td>
+                            <td style="padding:11px 16px;text-align:center;color:#34d399;">✓ Multi-Agent + Tool Calling</td>
+                            <td style="padding:11px 16px;text-align:center;color:rgba(255,255,255,0.25);">✗</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:11px 16px;color:rgba(255,255,255,0.7);">Stopword Lookup</td>
+                            <td style="padding:11px 16px;text-align:center;color:#34d399;font-weight:600;">O(1) - Set</td>
+                            <td style="padding:11px 16px;text-align:center;color:rgba(255,255,255,0.35);">O(n) - list</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="fade-up stagger-4" style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.2);text-align:right;">Sastrawi tetap menjadi pioneer. Saka-NLP membangun di atas pundaknya.</p>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 13: Quick Start + CLI ==================== -->
+    <div class="slide" data-slide="12">
+        <div style="max-width:900px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#34d399;margin-bottom:16px;">Getting Started</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:28px;">
+                Mulai dalam <span class="green-text">30 detik</span>
+            </h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="grid-2">
+                <div class="fade-up stagger-3">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Python API</div>
+                    <div class="code-block" style="font-size:12px;line-height:1.85;margin-bottom:14px;">
+                        <span class="lang-tag">bash</span>
+                        <span class="code-func">pip</span> <span class="code-keyword">install</span> <span class="code-string">saka-nlp</span>
+                    </div>
+                    <div class="code-block" style="font-size:12px;line-height:1.85;">
+                        <span class="lang-tag">python</span>
+                        <span class="code-keyword">import</span> <span class="code-var">saka</span><br><br>
+                        <span class="code-comment"># Tokenisasi</span><br>
+                        <span class="code-func">print</span>(<span class="code-var">saka</span>.<span class="code-func">tokenize</span>(<span class="code-string">"Halo dunia"</span>))<br><br>
+                        <span class="code-comment"># Normalisasi slang</span><br>
+                        <span class="code-func">print</span>(<span class="code-var">saka</span>.<span class="code-func">normalize</span>(<span class="code-string">"gak bisa"</span>))<br><br>
+                        <span class="code-comment"># Morfologi</span><br>
+                        <span class="code-func">print</span>(<span class="code-var">saka</span>.<span class="code-func">analyze</span>(<span class="code-string">"menulisakan"</span>))<br><br>
+                        <span class="code-comment"># KBBI</span><br>
+                        <span class="code-var">saka</span>.<span class="code-func">query_kbbi</span>(<span class="code-string">"algoritma"</span>)
+                    </div>
+                </div>
+                <div class="fade-up stagger-4">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Command Line Interface</div>
+                    <div class="code-block" style="font-size:12px;line-height:1.85;margin-bottom:14px;">
+                        <span class="lang-tag">bash</span>
+                        <span class="code-comment"># Lihat semua command</span><br>
+                        <span class="code-func">saka</span> <span class="code-op">--</span>help<br><br>
+                        <span class="code-comment"># Stem / analyze dari terminal</span><br>
+                        <span class="code-func">saka</span> <span class="code-op">--</span>stem <span class="code-string">"dimakan"</span><br><br>
+                        <span class="code-comment"># Normalisasi dari terminal</span><br>
+                        <span class="code-func">saka</span> <span class="code-op">--</span>normalize <span class="code-string">"ngapain ke kampus klo libur"</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+                        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+                            <i data-lucide="check-circle" style="width:16px;height:16px;color:#34d399;flex-shrink:0;"></i>
+                            <span style="font-size:12px;color:rgba(255,255,255,0.55);">Satu baris import - <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-size:11px;">import saka</code></span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+                            <i data-lucide="check-circle" style="width:16px;height:16px;color:#34d399;flex-shrink:0;"></i>
+                            <span style="font-size:12px;color:rgba(255,255,255,0.55);">Python 3.8+ - pyproject.toml + setuptools</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+                            <i data-lucide="check-circle" style="width:16px;height:16px;color:#34d399;flex-shrink:0;"></i>
+                            <span style="font-size:12px;color:rgba(255,255,255,0.55);">CLI langsung jadi setelah install</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+                            <i data-lucide="check-circle" style="width:16px;height:16px;color:#34d399;flex-shrink:0;"></i>
+                            <span style="font-size:12px;color:rgba(255,255,255,0.55);">Google Colab playground tersedia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 14: Roadmap & Contribute ==================== -->
+    <div class="slide" data-slide="13">
+        <div style="max-width:900px;">
+            <p class="fade-up stagger-1" style="font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:#c084fc;margin-bottom:16px;">Roadmap & Kontribusi</p>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:34px;font-weight:600;letter-spacing:-0.02em;margin-bottom:28px;">
+                Bersama membangun <span class="accent-text">pilar NLP</span> Nusantara
+            </h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" class="grid-2">
+                <div class="fade-up stagger-3">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Roadmap</div>
+                    <div style="display:flex;flex-direction:column;gap:0;">
+                        <div style="display:flex;gap:12px;align-items:start;padding-bottom:14px;border-left:2px solid rgba(52,211,153,0.4);padding-left:16px;margin-left:6px;">
+                            <div>
+                                <div class="badge" style="font-size:10px;margin-bottom:4px;border-color:rgba(52,211,153,0.3);color:#34d399;padding:2px 8px;">✓ v0.2.x - Current</div>
+                                <div style="font-weight:600;font-size:13px;">Core + Agentic AI</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-top:2px;">Morphology, slang, KBBI, aksara, multi-agent, tool calling</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:12px;align-items:start;padding-bottom:14px;border-left:2px solid rgba(251,191,36,0.3);padding-left:16px;margin-left:6px;">
+                            <div>
+                                <div class="badge" style="font-size:10px;margin-bottom:4px;border-color:rgba(251,191,36,0.3);color:#fbbf24;padding:2px 8px;">◎ Planned</div>
+                                <div style="font-weight:600;font-size:13px;">More Regional Languages</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-top:2px;">Minang, Batak, Makassar, dll - aksara + leksikon</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:12px;align-items:start;padding-bottom:14px;border-left:2px solid rgba(129,140,248,0.2);padding-left:16px;margin-left:6px;">
+                            <div>
+                                <div class="badge" style="font-size:10px;margin-bottom:4px;border-color:rgba(129,140,248,0.2);color:rgba(129,140,248,0.5);padding:2px 8px;">◈ Future</div>
+                                <div style="font-weight:600;font-size:13px;">Native ML Models</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-top:2px;">Sentiment, NER, summarization - opsional, tetap ringan</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:12px;align-items:start;padding-left:16px;margin-left:6px;">
+                            <div>
+                                <div class="badge" style="font-size:10px;margin-bottom:4px;border-color:rgba(192,132,252,0.2);color:rgba(192,132,252,0.5);padding:2px 8px;">◈ Vision</div>
+                                <div style="font-weight:600;font-size:13px;">Full Nusantara NLP Suite</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-top:2px;">Standar de facto untuk NLP bahasa Indonesia & daerah</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fade-up stagger-4">
+                    <div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Cara Kontribusi</div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div class="card-glow" style="padding:14px 18px;display:flex;gap:12px;align-items:center;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(129,140,248,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="git-pull-request" style="width:18px;height:18px;color:#818cf8;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;">Pull Request</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;">Bug fix, fitur baru, improvement - <code style="background:rgba(255,255,255,0.05);padding:1px 4px;border-radius:3px;font-size:10px;">pip install -e .</code></p>
+                            </div>
+                        </div>
+                        <div class="card-glow" style="padding:14px 18px;display:flex;gap:12px;align-items:center;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(244,114,182,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="message-square" style="width:18px;height:18px;color:#f472b6;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;">Tambah Leksikon Daerah</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;">Bantu lengkapi slang, aksara, atau bahasa daerah baru</p>
+                            </div>
+                        </div>
+                        <div class="card-glow" style="padding:14px 18px;display:flex;gap:12px;align-items:center;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(52,211,153,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="star" style="width:18px;height:18px;color:#34d399;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;">Star, Sitasi & Sebar</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;">DOI: <code style="background:rgba(255,255,255,0.05);padding:1px 4px;border-radius:3px;font-size:10px;">10.5281/zenodo.20092640</code></p>
+                            </div>
+                        </div>
+                        <div class="card-glow" style="padding:14px 18px;display:flex;gap:12px;align-items:center;">
+                            <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="heart" style="width:18px;height:18px;color:#fbbf24;"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight:600;font-size:13px;">Dukung Finansial</div>
+                                <p style="color:rgba(255,255,255,0.35);font-size:11px;">Saweria / Trakteer - link di repository</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SLIDE 15: CTA / Closing ==================== -->
+    <div class="slide" data-slide="14">
+        <div style="max-width:780px;text-align:center;">
+            <div class="fade-up stagger-1" style="margin-bottom:24px;">
+                <div style="width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,#818cf8,#c084fc);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;margin:0 auto;box-shadow:0 0 60px -10px rgba(129,140,248,0.4);">S</div>
+            </div>
+            <h2 class="fade-up stagger-2 section-title" style="font-size:42px;font-weight:600;letter-spacing:-0.02em;margin-bottom:14px;line-height:1.1;">
+                Mari Jadi <span class="accent-text">Pilar</span> Bersama
+            </h2>
+            <p class="fade-up stagger-3" style="font-size:17px;font-weight:300;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;">
+                Saka-NLP lahir dari kebutuhan nyata. Dari preprocessing 56× lebih cepat hingga multi-agent orchestration - semuanya dimulai dari satu baris.
+            </p>
+            <div class="fade-up stagger-4" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;">
+                <a href="https://pypi.org/project/saka-nlp/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:12px;background:#fff;color:#000;font-weight:600;font-size:14px;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 30px -5px rgba(255,255,255,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                    <i data-lucide="package" style="width:16px;height:16px;"></i>
+                    pip install saka-nlp
+                </a>
+                <a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Saka-NLP" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-weight:500;font-size:14px;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.transform=''">
+                    <i data-lucide="github" style="width:16px;height:16px;"></i>
+                    Star on GitHub
+                </a>
+                <a href="https://saka-nlp.netlify.app/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-weight:500;font-size:14px;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.transform=''">
+                    <i data-lucide="book-open" style="width:16px;height:16px;"></i>
+                    Docs
+                </a>
+            </div>
+            <div class="fade-up stagger-4" style="display:flex;gap:24px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:32px;">
+                <a href="https://github.com/Muhammad-Ikhwan-Fathulloh" target="_blank" style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.35);font-size:13px;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">
+                    <i data-lucide="github" style="width:14px;height:14px;"></i> @Muhammad-Ikhwan-Fathulloh
+                </a>
+                <a href="https://www.linkedin.com/in/muhammad-ikhwan-fathulloh/" target="_blank" style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.35);font-size:13px;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">
+                    <i data-lucide="linkedin" style="width:14px;height:14px;"></i> Muhammad Ikhwan Fathulloh
+                </a>
+                <a href="https://ikhwanfathulloh.netlify.app/" target="_blank" style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.35);font-size:13px;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">
+                    <i data-lucide="globe" style="width:14px;height:14px;"></i> ikhwanfathulloh.netlify.app
+                </a>
+            </div>
+            <!-- Citation -->
+            <div class="fade-up stagger-5" style="text-align:left;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px 20px;margin:0 auto;max-width:560px;">
+                <div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Sitasi (APA)</div>
+                <p style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.7;font-family:'JetBrains Mono',monospace;">
+                    Fathulloh, M. I. (2026). <span style="color:rgba(255,255,255,0.6);">Saka-NLP: Indonesian Language Processing with Prompting and Agentic AI Support</span> (Version 0.2.3) [Computer software]. Zenodo. <span style="color:#818cf8;">https://doi.org/10.5281/zenodo.20092640</span>
+                </p>
+            </div>
+            <div class="fade-up stagger-5" style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.05);">
+                <p style="font-size:20px;font-weight:300;color:rgba(255,255,255,0.25);">Terima kasih, <span style="color:rgba(255,255,255,0.5);">Nocturnailed</span>! 🙌</p>
+                <p style="font-size:13px;color:rgba(255,255,255,0.18);margin-top:8px;">Sesi Tanya Jawab</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i data-lucide="info" style="width:16px;height:16px;color:#818cf8;flex-shrink:0;"></i>
+        <span id="toastMsg"></span>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        lucide.createIcons();
+
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+        let isAnimating = false;
+
+        const navDotsContainer = document.getElementById('navDots');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToSlide(i));
+            dot.title = `Slide ${i + 1}`;
+            navDotsContainer.appendChild(dot);
+        }
+
+        function updateUI() {
+            document.getElementById('progressBar').style.width = ((currentSlide + 1) / totalSlides * 100) + '%';
+            const num = String(currentSlide + 1).padStart(2, '0');
+            document.getElementById('slideCounter').textContent = `${num} / ${String(totalSlides).padStart(2, '0')}`;
+            const dots = navDotsContainer.querySelectorAll('.nav-dot');
+            dots.forEach((d, i) => d.className = 'nav-dot' + (i === currentSlide ? ' active' : ''));
+            if (currentSlide >= 2) document.getElementById('keyHint').style.display = 'flex';
+        }
+
+        function goToSlide(index) {
+            if (isAnimating || index === currentSlide || index < 0 || index >= totalSlides) return;
+            isAnimating = true;
+            const prev = slides[currentSlide], next = slides[index];
+            next.querySelectorAll('.fade-up').forEach(el => { el.style.animation = 'none'; el.offsetHeight; el.style.animation = ''; });
+            if (index > currentSlide) {
+                prev.classList.remove('active'); prev.classList.add('prev');
+                next.classList.remove('prev'); next.classList.add('active');
+            } else {
+                prev.classList.remove('active'); prev.style.transform = 'translateX(60px)'; prev.style.opacity = '0';
+                next.classList.remove('prev'); next.classList.add('active');
+                setTimeout(() => { prev.classList.remove('prev'); prev.style.transform = ''; prev.style.opacity = ''; }, 600);
+            }
+            currentSlide = index; updateUI();
+            setTimeout(() => { isAnimating = false; }, 650);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goToSlide(currentSlide + 1); }
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goToSlide(currentSlide - 1); }
+            else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+            else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+        });
+
+        let touchStartX = 0;
+        document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            if (Math.abs(dx) > 50) { dx < 0 ? goToSlide(currentSlide + 1) : goToSlide(currentSlide - 1); }
+        }, { passive: true });
+
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => { e.deltaY > 0 ? goToSlide(currentSlide + 1) : goToSlide(currentSlide - 1); }, 50);
+        }, { passive: false });
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        setTimeout(() => showToast('Gunakan arrow keys, scroll, atau swipe untuk navigasi'), 1500);
+        updateUI();
+    </script>
+</body>
+</html>
