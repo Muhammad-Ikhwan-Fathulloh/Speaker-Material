@@ -1,0 +1,10 @@
+file_path = r'd:\Speaker-Material\pycon-id-2026.html'
+with open(file_path, 'r', encoding='utf-8') as f:
+    content = f.read()
+
+content = content.replace(' style="display:none;"', '')
+
+with open(file_path, 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("Fixed! Removed all style=display:none from section tags.")
