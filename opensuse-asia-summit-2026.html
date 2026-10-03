@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Raksa Agentic AI — openSUSE Asia Summit 2026</title>
+<title>Architecting Agentic AI Workflows — openSUSE Asia Summit 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -70,12 +70,12 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 @media (prefers-reduced-motion:reduce){.slide,.slide *{transition:none!important;animation:none!important}.slide .stagger,.slide .pop,.draw-line{opacity:1;stroke-dashoffset:0}}
 
 .s1-network{position:absolute;inset:0;opacity:.45;pointer-events:none}
-.s1-title{position:absolute;top:30%;left:7%;right:7%}
+.s1-title{position:absolute;top:28%;left:7%;right:7%}
 .s1-title .word{display:inline-block;opacity:0;transform:translateY(20px) rotateX(-30deg);margin-right:.18em}
 .slide.active .s1-title .word{animation:fadeInUp .6s cubic-bezier(.4,0,.2,1) forwards;animation-delay:calc(var(--i,0) * .1s + .2s)}
-.s1-title h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,3.8vw,58px);line-height:1.05;letter-spacing:-.025em;color:var(--txt);text-shadow:0 4px 30px rgba(0,0,0,.6)}
+.s1-title h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.5vw,54px);line-height:1.05;letter-spacing:-.025em;color:var(--txt);text-shadow:0 4px 30px rgba(0,0,0,.6)}
 .s1-title .accent{color:var(--green)}
-.s1-sub{position:absolute;top:58%;left:7%;right:30%;opacity:0}
+.s1-sub{position:absolute;top:60%;left:7%;right:30%;opacity:0}
 .slide.active .s1-sub{animation:fadeInUp .7s ease forwards 1.2s}
 .s1-sub p{font-size:clamp(14px,1.2vw,18px);color:var(--txt-d);line-height:1.5;font-weight:400;max-width:880px}
 .s1-speaker{position:absolute;bottom:14%;left:7%;opacity:0;transform:translateY(40px)}
@@ -263,7 +263,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 .s13-sim{display:flex;flex-direction:column;gap:8px}
 .s13-slider{display:flex;align-items:center;gap:10px;font-size:10px;font-family:var(--mono)}
 .s13-slider .lbl{width:80px;color:var(--txt-d)}.s13-slider .bar{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:3px;position:relative}
-.s13-slider .fill{height:100%;background:var(--green);border-radius:3px}.s13-slider .v{width:40px;color:var(--green);text-align:right}
+.s13-slider .fill{height:100%;background:var(--green);border-radius:3px}.s13-slider .v{width:50px;color:var(--green);text-align:right}
 
 .s14-wrap{flex:1;display:flex;gap:24px;align-items:center;min-height:0}
 .s14-board{flex:1.1;padding:18px;display:flex;align-items:center;justify-content:center}
@@ -350,7 +350,6 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 .s19-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;background:rgba(115,186,37,.12);border:1px solid var(--bdr2);border-radius:999px;font-family:var(--mono);font-size:11px;color:var(--green);align-self:flex-start}
 .s19-chip .dt{color:var(--txt-d)}
 
-/* Slide 20: Links & Eksplorasi */
 .s20-wrap{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:14px;min-height:0;grid-template-rows:1fr 1fr auto}
 .s20-card{padding:16px 20px;background:var(--glass);border:1px solid var(--bdr);border-radius:14px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .3s}
 .s20-card:hover{transform:translateY(-4px);border-color:var(--bdr2);box-shadow:0 16px 36px rgba(0,0,0,.5)}
@@ -366,7 +365,6 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 .s20-qr .lbl{font-family:var(--display);font-weight:600;font-size:14px;color:var(--txt)}
 .s20-qr .sub{font-size:11px;color:var(--txt-d);margin-top:3px;font-family:var(--mono)}
 
-/* Slide 21: Eksplorasi Lanjutan */
 .s21-wrap{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:20px;min-height:0}
 .s21-explore{padding:24px;background:var(--glass);border:1px solid var(--bdr);border-radius:16px;display:flex;flex-direction:column;gap:14px}
 .s21-explore .hdr{display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--bdr)}
@@ -380,7 +378,6 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 .s21-explore .feat strong{color:var(--green);font-weight:600}
 .s21-explore .footer-lnk{padding-top:10px;border-top:1px solid var(--bdr);font-family:var(--mono);font-size:10px;color:var(--blue)}
 
-/* Slide 22: Thanks */
 .s22-content{position:absolute;top:50%;left:7%;right:auto;transform:translateY(-50%);text-align:left;z-index:3}
 .s22-content .qa{font-family:var(--display);font-weight:700;font-size:clamp(26px,2.6vw,38px);color:#ffffff;text-shadow:0 4px 20px rgba(0,0,0,.7);opacity:0}
 .slide.active .s22-content .qa{animation:fadeInUp .8s ease forwards .4s}
@@ -402,17 +399,21 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   </svg>
   <div class="s1-title">
     <h1>
-      <span class="word" style="--i:0">Raksa</span>
+      <span class="word" style="--i:0">Architecting</span>
       <span class="word" style="--i:1">Agentic</span>
-      <span class="word" style="--i:2">AI</span><br>
-      <span class="word" style="--i:3">End-to-End</span>
-      <span class="word" style="--i:4">LLM</span>
-      <span class="word" style="--i:5">Serving</span>
-      <span class="word" style="--i:6">on</span>
-      <span class="word accent" style="--i:7">openSUSE</span>
+      <span class="word" style="--i:2">AI</span>
+      <span class="word" style="--i:3">Workflows</span><br>
+      <span class="word" style="--i:4">Bridging</span>
+      <span class="word" style="--i:5">Language</span>
+      <span class="word" style="--i:6">Processing</span>
+      <span class="word" style="--i:7">&</span>
+      <span class="word" style="--i:8">LLM</span>
+      <span class="word" style="--i:9">Serving</span>
+      <span class="word" style="--i:10">on</span>
+      <span class="word accent" style="--i:11">openSUSE</span>
     </h1>
   </div>
-  <div class="s1-sub"><p data-i18n="opening.subtitle">Pipeline Agentic AI Otonom dengan Dashboard IoT, Konfirmasi Telegram, dan Integrasi Raksa-Cloud</p></div>
+  <div class="s1-sub"><p data-i18n="opening.subtitle">Studi Kasus Institusi: Automasi Pemantauan Akademik & ERP menggunakan LLM Lokal</p></div>
   <div class="s1-speaker">
     <div class="lbl" data-i18n="opening.speaker_label">Pembicara</div>
     <div class="nm">Muhammad Ikhwan Fathulloh</div>
@@ -424,7 +425,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 <section class="slide bg-material" data-slide="2">
   <div class="safe">
     <div class="slide-head">
-      <div><div class="eyebrow" data-i18n="overview.eyebrow">Ikhtisar Sistem</div><h2 data-i18n="overview.title">Enam Komponen Penyusun Raksa</h2><div class="sub" data-i18n="overview.subtitle">Arsitektur modular: LLM, NLP, RAG, IoT, Bot, dan Dashboard real-time</div></div>
+      <div><div class="eyebrow" data-i18n="overview.eyebrow">Ikhtisar Sistem</div><h2 data-i18n="overview.title">Enam Komponen Utama</h2><div class="sub" data-i18n="overview.subtitle">Arsitektur modular untuk mendukung Agen AI Otonom di lingkungan institusi</div></div>
     </div>
     <div class="s2-grid">
       <svg class="s2-lines" viewBox="0 0 1000 580" preserveAspectRatio="none">
@@ -436,11 +437,11 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
       </svg>
       <div class="s2-center"><div class="ring"></div><div class="ring r2"></div><div class="core" data-i18n="overview.center">Agentic AI</div></div>
       <div class="glass s2-card c1 pop floaty" style="--i:0"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div><div class="nm">Qwen LLM</div><div class="ds" data-i18n="overview.qwen_desc">Penalaran & tool-calling</div></div>
-      <div class="glass s2-card c2 pop floaty" style="--i:1"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="nm">Saka-NLP</div><div class="ds" data-i18n="overview.saka_desc">Bahasa Indonesia</div></div>
-      <div class="glass s2-card c3 pop floaty" style="--i:2"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><div class="nm">pgvector RAG</div><div class="ds" data-i18n="overview.pgvector_desc">Pengetahuan vektor</div></div>
-      <div class="glass s2-card c4 pop floaty" style="--i:3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div><div class="nm">Raksa-Cloud IoT</div><div class="ds" data-i18n="overview.raksa_desc">Sensor & aktuator</div></div>
-      <div class="glass s2-card c5 pop floaty" style="--i:4"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></div><div class="nm">Telegram Bot</div><div class="ds" data-i18n="overview.telegram_desc">Konfirmasi operator</div></div>
-      <div class="glass s2-card c6 pop floaty" style="--i:5"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg></div><div class="nm">WebSocket Dashboard</div><div class="ds" data-i18n="overview.ws_desc">Pantauan real-time</div></div>
+      <div class="glass s2-card c2 pop floaty" style="--i:1"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="nm">Saka-NLP</div><div class="ds" data-i18n="overview.saka_desc">Normalisasi bahasa</div></div>
+      <div class="glass s2-card c3 pop floaty" style="--i:2"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><div class="nm">pgvector RAG</div><div class="ds" data-i18n="overview.pgvector_desc">Basis pengetahuan institusi</div></div>
+      <div class="glass s2-card c4 pop floaty" style="--i:3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div><div class="nm">Database ERP/SIA</div><div class="ds" data-i18n="overview.raksa_desc">Integrasi data akademik</div></div>
+      <div class="glass s2-card c5 pop floaty" style="--i:4"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></div><div class="nm">Telegram Bot</div><div class="ds" data-i18n="overview.telegram_desc">Notifikasi & persetujuan</div></div>
+      <div class="glass s2-card c6 pop floaty" style="--i:5"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 4 4 5-5"/></svg></div><div class="nm">Dashboard Admin</div><div class="ds" data-i18n="overview.ws_desc">Pantauan real-time</div></div>
     </div>
   </div>
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
@@ -465,11 +466,11 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
         </g>
       </svg>
       <div class="single-container"><span class="lbl" data-i18n="arch.single_container_lbl">BACKEND CONTAINER (openSUSE Tumbleweed)</span></div>
-      <div class="node browser stagger" style="--i:0"><div class="lbl">Browser / Dokploy</div><div class="ds" data-i18n="arch.browser_desc">UI & admin panel</div></div>
+      <div class="node browser stagger" style="--i:0"><div class="lbl">Admin / Browser</div><div class="ds" data-i18n="arch.browser_desc">UI web institusi</div></div>
       <div class="node frontend stagger" style="--i:1"><div class="lbl">frontend :3005</div><div class="ds" data-i18n="arch.frontend_desc">Vue + Nginx Proxy /api</div></div>
       <div class="node backend stagger" style="--i:2"><div class="lbl">backend :8000</div><div class="ds" data-i18n="arch.backend_desc">FastAPI + Saka-NLP + RAG</div></div>
       <div class="node llama stagger" style="--i:3"><div class="lbl">llama-server :8080</div><div class="ds" data-i18n="arch.llama_desc">Internal 127.0.0.1</div></div>
-      <div class="node db stagger" style="--i:4"><div class="lbl">PostgreSQL :5432</div><div class="ds" data-i18n="arch.db_desc">pgvector extension</div></div>
+      <div class="node db stagger" style="--i:4"><div class="lbl">PostgreSQL :5432</div><div class="ds" data-i18n="arch.db_desc">pgvector & Data SIA</div></div>
       <div class="node pgweb stagger" style="--i:5"><div class="lbl">pgweb :8081</div><div class="ds" data-i18n="arch.pgweb_desc">DB Web UI</div></div>
       <div class="node mdl stagger" style="--i:6"><div class="lbl">model-downloader</div><div class="ds" data-i18n="arch.mdl_desc">Unduh GGUF (profile: llm)</div></div>
     </div>
@@ -481,21 +482,21 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 <section class="slide bg-material" data-slide="4">
   <div class="safe">
     <div class="slide-head">
-      <div><div class="eyebrow" data-i18n="llm_flow.eyebrow">Runtime</div><h2 data-i18n="llm_flow.title">Alur Kerja LLM Serving</h2><div class="sub" data-i18n="llm_flow.subtitle">Lifecycle request dari browser hingga respons agentic dihasilkan</div></div>
+      <div><div class="eyebrow" data-i18n="llm_flow.eyebrow">Runtime</div><h2 data-i18n="llm_flow.title">Alur Kerja LLM Serving</h2><div class="sub" data-i18n="llm_flow.subtitle">Lifecycle request dari admin hingga respons agentic dihasilkan</div></div>
     </div>
     <div class="s4-wrap">
       <div class="s4-flow">
         <div class="s4-line"></div>
         <div class="s4-packet"></div>
         <div class="s4-steps">
-          <div class="s4-step stagger" style="--i:0"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div class="nm" data-i18n="llm_flow.s1_t">1. Browser</div><div class="ds" data-i18n="llm_flow.s1_d">frontend :3005</div></div>
+          <div class="s4-step stagger" style="--i:0"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div class="nm" data-i18n="llm_flow.s1_t">1. Admin</div><div class="ds" data-i18n="llm_flow.s1_d">Dashboard :3005</div></div>
           <div class="s4-step stagger" style="--i:1"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div class="nm" data-i18n="llm_flow.s2_t">2. FastAPI</div><div class="ds" data-i18n="llm_flow.s2_d">:8000 menerima request</div></div>
           <div class="s4-step stagger" style="--i:2"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="nm" data-i18n="llm_flow.s3_t">3. Saka-NLP</div><div class="ds" data-i18n="llm_flow.s3_d">Normalisasi slang</div></div>
           <div class="s4-step stagger" style="--i:3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div><div class="nm" data-i18n="llm_flow.s4_t">4. Cache</div><div class="ds" data-i18n="llm_flow.s4_d">Cek semantic cache</div></div>
-          <div class="s4-step stagger" style="--i:4"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><div class="nm" data-i18n="llm_flow.s5_t">5. RAG</div><div class="ds" data-i18n="llm_flow.s5_d">Ambil 3 dokumen</div></div>
+          <div class="s4-step stagger" style="--i:4"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><div class="nm" data-i18n="llm_flow.s5_t">5. RAG</div><div class="ds" data-i18n="llm_flow.s5_d">Ambil SOP/Aturan</div></div>
           <div class="s4-step stagger" style="--i:5"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="nm" data-i18n="llm_flow.s6_t">6. Prefill</div><div class="ds" data-i18n="llm_flow.s6_d">Rakit system prompt</div></div>
           <div class="s4-step stagger" style="--i:6"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/></svg></div><div class="nm" data-i18n="llm_flow.s7_t">7. Decode</div><div class="ds" data-i18n="llm_flow.s7_d">llama.cpp tool loop</div></div>
-          <div class="s4-step stagger" style="--i:7"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="nm" data-i18n="llm_flow.s8_t">8. Respons</div><div class="ds" data-i18n="llm_flow.s8_d">agent_steps ke UI</div></div>
+          <div class="s4-step stagger" style="--i:7"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="nm" data-i18n="llm_flow.s8_t">8. Respons</div><div class="ds" data-i18n="llm_flow.s8_d">Hasil ke UI</div></div>
         </div>
       </div>
       <div class="s4-cards">
@@ -508,25 +509,25 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 5. Agentic IoT Flow -->
+<!-- 5. Agentic Flow -->
 <section class="slide bg-material" data-slide="5">
   <div class="safe">
     <div class="slide-head">
-      <div><div class="eyebrow" data-i18n="flow.eyebrow">Pipeline</div><h2 data-i18n="flow.title">Agentic IoT Auto-Control Flow</h2><div class="sub" data-i18n="flow.subtitle">Dari telemetry sensor hingga eksekusi aktuator dengan konfirmasi operator</div></div>
+      <div><div class="eyebrow" data-i18n="flow.eyebrow">Pipeline</div><h2 data-i18n="flow.title">Agentic Academic Control Flow</h2><div class="sub" data-i18n="flow.subtitle">Dari trigger Sistem Informasi hingga eksekusi surat peringatan dengan persetujuan admin</div></div>
       <span class="tag tag-orange" data-i18n="flow.nonblock">non-blocking</span>
     </div>
     <div class="s5-flow">
-      <div class="s5-step stagger" style="--i:0"><div class="num">1</div><div class="txt"><code>ESP32 POST /api/telemetry</code> — <span data-i18n="flow.s1">Sensor mengirim suhu, kelembapan, gas</span></div><span class="tag tag-red">ESP32</span></div>
+      <div class="s5-step stagger" style="--i:0"><div class="num">1</div><div class="txt"><code>WEBHOOK SIA (Trigger)</code> — <span data-i18n="flow.s1">Sistem deteksi IPK mahasiswa < 2.0</span></div><span class="tag tag-red">SIA</span></div>
       <div class="s5-arrow stagger" style="--i:1">↓</div>
       <div class="s5-step ok stagger" style="--i:2"><div class="num">✓</div><div class="txt" data-i18n="flow.s2">Langsung membalas 200 OK (non-blocking)</div><span class="tag tag-green">200 OK</span></div>
       <div class="s5-arrow stagger" style="--i:3">↓</div>
-      <div class="s5-step stagger" style="--i:4"><div class="num">3</div><div class="txt"><code>asyncio.create_task()</code> — <span data-i18n="flow.s3">analisis berjalan di background</span></div></div>
+      <div class="s5-step stagger" style="--i:4"><div class="num">3</div><div class="txt"><code>asyncio.create_task()</code> — <span data-i18n="flow.s3">analisis riwayat akademik di background</span></div></div>
       <div class="s5-arrow stagger" style="--i:5">↓</div>
-      <div class="s5-step stagger" style="--i:6"><div class="num">4</div><div class="txt" data-i18n="flow.s4">LLM menganalisis telemetry & menyusun rencana aksi</div></div>
+      <div class="s5-step stagger" style="--i:6"><div class="num">4</div><div class="txt" data-i18n="flow.s4">LLM menganalisis data & menyusun draf surat peringatan</div></div>
       <div class="s5-arrow stagger" style="--i:7">↓</div>
-      <div class="s5-step stagger" style="--i:8"><div class="num">5</div><div class="txt"><span data-i18n="flow.s5">Notifikasi Telegram ke operator</span> → <span data-i18n="flow.s6">✅/❌ (timer 120 detik)</span></div><span class="tag tag-blue">Telegram</span></div>
+      <div class="s5-step stagger" style="--i:8"><div class="num">5</div><div class="txt"><span data-i18n="flow.s5">Notifikasi Telegram ke Admin</span> → <span data-i18n="flow.s6">✅/❌ (timer 120 detik)</span></div><span class="tag tag-blue">Telegram</span></div>
       <div class="s5-arrow stagger" style="--i:9">↓</div>
-      <div class="s5-step ok stagger" style="--i:10"><div class="num">✓</div><div class="txt" data-i18n="flow.s7">Eksekusi aktuator + laporan hasil</div><span class="tag tag-green">AC ON</span></div>
+      <div class="s5-step ok stagger" style="--i:10"><div class="num">✓</div><div class="txt" data-i18n="flow.s7">Generate PDF Surat & Kirim Email ke Mahasiswa</div><span class="tag tag-green">PDF + Email</span></div>
     </div>
   </div>
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
@@ -536,7 +537,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 <section class="slide bg-material" data-slide="6">
   <div class="safe">
     <div class="slide-head">
-      <div><div class="eyebrow" data-i18n="tg.eyebrow">Mockup UI</div><h2 data-i18n="tg.title">Bot Telegram Konfirmasi</h2><div class="sub" data-i18n="tg.subtitle">Operator menyetujui eksekusi dari ponsel — di mana pun, kapan pun</div></div>
+      <div><div class="eyebrow" data-i18n="tg.eyebrow">Mockup UI</div><h2 data-i18n="tg.title">Bot Telegram Konfirmasi Admin</h2><div class="sub" data-i18n="tg.subtitle">Admin menyetujui eksekusi tugas akademik dari ponsel</div></div>
     </div>
     <div class="s6-wrap">
       <div class="phone stagger" style="--i:0">
@@ -544,20 +545,20 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
         <div class="scr">
           <div class="hdr">
             <div class="av">✈</div>
-            <div><div class="nm" data-i18n="tg.bot_name">Raksa Agentic Bot</div><div class="st" data-i18n="tg.bot_status">online</div></div>
+            <div><div class="nm" data-i18n="tg.bot_name">Campus Admin Bot</div><div class="st" data-i18n="tg.bot_status">online</div></div>
           </div>
           <div class="body">
             <div class="bubble bot" id="tgAlert">
-              <div class="lbl" data-i18n="tg.alert_label">⚠ PERINGATAN KRITIS</div>
-              <div class="ln"><span class="k" data-i18n="tg.device">Perangkat</span><span class="v">esp32-dht22-01</span></div>
-              <div class="ln"><span class="k" data-i18n="tg.temp">Suhu kritis</span><span class="v">42°C</span></div>
-              <div class="plan" data-i18n="tg.plan">Rencana: AC ON (22°C)</div>
+              <div class="lbl" data-i18n="tg.alert_label">⚠ PERINGATAN AKADEMIK</div>
+              <div class="ln"><span class="k" data-i18n="tg.device">Mahasiswa</span><span class="v">202311001 - John</span></div>
+              <div class="ln"><span class="k" data-i18n="tg.temp">IPK Terkini</span><span class="v">1.85</span></div>
+              <div class="plan" data-i18n="tg.plan">Rencana: Buat Surat Peringatan (SP)</div>
               <div class="inline-btns">
-                <div class="inline-btn exec" id="btnExec" data-i18n="tg.execute">✅ Eksekusi</div>
+                <div class="inline-btn exec" id="btnExec" data-i18n="tg.execute">✅ Generate</div>
                 <div class="inline-btn rej" data-i18n="tg.reject">❌ Tolak</div>
               </div>
             </div>
-            <div class="bubble user" id="tgResult" style="display:none" data-i18n="tg.result_ok">✅ AC dinyalakan, target 22°C</div>
+            <div class="bubble user" id="tgResult" style="display:none" data-i18n="tg.result_ok">✅ Surat Peringatan dibuat & dikirim via Email.</div>
           </div>
         </div>
       </div>
@@ -567,9 +568,9 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
           <div class="num"><span class="v" id="cdVal">120</span><span class="u" data-i18n="tg.seconds">detik</span></div>
         </div>
         <div class="s6-info">
-          <div class="row"><span class="k" data-i18n="tg.device_lbl">Perangkat</span><span class="v">esp32-dht22-01</span></div>
-          <div class="row"><span class="k" data-i18n="tg.temp_lbl">Suhu</span><span class="v" style="color:var(--red)">42°C 🔥</span></div>
-          <div class="row"><span class="k" data-i18n="tg.action_lbl">Aksi</span><span class="v">AC ON 22°C</span></div>
+          <div class="row"><span class="k" data-i18n="tg.device_lbl">NIM</span><span class="v">202311001</span></div>
+          <div class="row"><span class="k" data-i18n="tg.temp_lbl">IPK</span><span class="v" style="color:var(--red)">1.85 ⚠</span></div>
+          <div class="row"><span class="k" data-i18n="tg.action_lbl">Aksi</span><span class="v">Surat Peringatan</span></div>
           <div class="row"><span class="k" data-i18n="tg.status_lbl">Status</span><span class="v" style="color:var(--green)" data-i18n="tg.status_confirmed">Dikonfirmasi</span></div>
         </div>
       </div>
@@ -598,8 +599,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
         <div class="hdr"><span class="dot" style="background:var(--red)"></span><span class="dot" style="background:var(--orange)"></span><span class="dot" style="background:var(--green)"></span><span data-i18n="sm.trace">trace.json</span></div>
         <pre>{
   <span class="k">"step"</span>: <span class="n">2</span>,
-  <span class="k">"tool"</span>: <span class="s">"get_iot_sensor"</span>,
-  <span class="k">"input"</span>: <span class="s">"esp32-dht22-01"</span>,
+  <span class="k">"tool"</span>: <span class="s">"get_student_gpa"</span>,
+  <span class="k">"input"</span>: <span class="s">"202311001"</span>,
   <span class="k">"status"</span>: <span class="s">"running"</span>
 }<span class="cur"></span></pre>
       </div>
@@ -616,7 +617,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
     </div>
     <div class="s8-wrap">
       <div class="s8-main">
-        <div class="s8-q" data-i18n="chat.question">Berapa suhu ruang server sekarang dan apakah aman?</div>
+        <div class="s8-q" data-i18n="chat.question">Siapa mahasiswa dengan IPK di bawah 2.0 dan apa prosedur SP-nya?</div>
         <div class="s8-trace">
           <div class="s8-step stagger" style="--i:0">
             <div class="hd">Planning <span class="ms">120ms</span><span class="ck">✓</span></div>
@@ -624,19 +625,19 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
           </div>
           <div class="s8-step stagger" style="--i:1">
             <div class="hd">Tool Call <span class="ms">340ms</span><span class="ck">✓</span></div>
-            <div class="bd">get_iot_sensor("esp32-dht22-01")<span class="code">{<br>  "device": "esp32-dht22-01",<br>  "metric": "temperature"<br>}</span></div>
+            <div class="bd">query_academic_db("gpa < 2.0")<span class="code">{<br>  "table": "students",<br>  "filter": "gpa < 2.0"<br>}</span></div>
           </div>
           <div class="s8-step stagger" style="--i:2">
             <div class="hd">Execution <span class="ms">850ms</span><span class="ck">✓</span></div>
-            <div class="bd" data-i18n="chat.step3_d">Hasil sensor: 42°C</div>
+            <div class="bd" data-i18n="chat.step3_d">Ditemukan: John Doe (1.85), Jane Smith (1.75)</div>
           </div>
           <div class="s8-step stagger" style="--i:3">
             <div class="hd">Reflection <span class="ms">250ms</span><span class="ck">✓</span></div>
-            <div class="bd" data-i18n="chat.step4_d">42°C > ambang batas → perlu eksekusi aktuator</div>
+            <div class="bd" data-i18n="chat.step4_d">Menyimpan riwayat pencarian, menyusun ringkasan aturan SP</div>
           </div>
         </div>
         <div class="s8-ans stagger" style="--i:4">
-          <span data-i18n="chat.answer">Suhu 42°C — kritis. Saya sudah mengaktifkan AC via Telegram.</span>
+          <span data-i18n="chat.answer">John Doe dan Jane Smith. Prosedur SP: Membuat surat dari dekan, mengirim email ke mhs.</span>
           <div class="ft">
             <span class="tag tag-orange" data-i18n="chat.cache">⚡ semantic cache</span>
             <span class="tag tag-blue" data-i18n="chat.force_regen">Force Regenerate</span>
@@ -648,8 +649,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
         <div class="desc" data-i18n="chat.side_desc">Array agent_steps merekam setiap fase dari Planning hingga Reflection. Berguna untuk debugging dan transparansi keputusan AI.</div>
         <div class="json-view">"agent_steps": [
   {"step": 1, "phase": "planning"},
-  {"step": 2, "phase": "tool_call", "tool": "get_iot_sensor"},
-  {"step": 3, "phase": "execution", "result": "42C"},
+  {"step": 2, "phase": "tool_call", "tool": "query_db"},
+  {"step": 3, "phase": "execution", "result": "2 rows"},
   {"step": 4, "phase": "reflection"}
 ]</div>
       </div>
@@ -662,7 +663,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 <section class="slide bg-material" data-slide="9">
   <div class="safe">
     <div class="slide-head">
-      <div><div class="eyebrow" data-i18n="tools.eyebrow">Kemampuan Agen</div><h2 data-i18n="tools.title">11 Agent Tools</h2><div class="sub" data-i18n="tools.subtitle">Tiga kelompok: NLP, Knowledge, dan IoT — siap dirantai oleh LLM</div></div>
+      <div><div class="eyebrow" data-i18n="tools.eyebrow">Kemampuan Agen</div><h2 data-i18n="tools.title">11 Agent Tools</h2><div class="sub" data-i18n="tools.subtitle">Tiga kelompok: NLP, Knowledge, dan Institusi — siap dirantai oleh LLM</div></div>
     </div>
     <div class="s9-wrap">
       <div class="glass s9-group">
@@ -682,13 +683,13 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
         </div>
       </div>
       <div class="glass s9-group">
-        <div class="gh"><span class="gn" data-i18n="tools.group_iot">IoT</span><span class="gc">5 tools</span></div>
+        <div class="gh"><span class="gn" data-i18n="tools.group_iot">Institution</span><span class="gc">5 tools</span></div>
         <div class="s9-chips">
-          <div class="s9-chip stagger" style="--i:6"><span class="ic">●</span> get_iot_sensor</div>
-          <div class="s9-chip stagger" style="--i:7"><span class="ic">●</span> list_iot_devices</div>
-          <div class="s9-chip stagger" style="--i:8"><span class="ic">●</span> detect_anomaly</div>
-          <div class="s9-chip stagger" style="--i:9"><span class="ic">●</span> control_actuator</div>
-          <div class="s9-chip stagger" style="--i:10"><span class="ic">●</span> get_active_alerts</div>
+          <div class="s9-chip stagger" style="--i:6"><span class="ic">●</span> get_student_gpa</div>
+          <div class="s9-chip stagger" style="--i:7"><span class="ic">●</span> list_debtors</div>
+          <div class="s9-chip stagger" style="--i:8"><span class="ic">●</span> generate_pdf_letter</div>
+          <div class="s9-chip stagger" style="--i:9"><span class="ic">●</span> send_email_notification</div>
+          <div class="s9-chip stagger" style="--i:10"><span class="ic">●</span> get_active_warnings</div>
         </div>
       </div>
     </div>
@@ -802,68 +803,68 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 13. Dashboard IoT -->
+<!-- 13. Dashboard -->
 <section class="slide bg-material" data-slide="13">
   <div class="safe">
     <div class="slide-head">
-      <div><div class="eyebrow" data-i18n="dash.eyebrow">Mockup UI</div><h2 data-i18n="dash.title">Dashboard IoT Raksa</h2><div class="sub" data-i18n="dash.subtitle">Enam tab pantauan: devices, telemetry, simulator, alerts, history, AI control</div></div>
+      <div><div class="eyebrow" data-i18n="dash.eyebrow">Mockup UI</div><h2 data-i18n="dash.title">Dashboard Admin Institusi</h2><div class="sub" data-i18n="dash.subtitle">Enam tab pantauan: students, reports, simulator, alerts, history, AI control</div></div>
     </div>
     <div class="s13-dash">
       <div class="s13-tabs" id="dashTabs">
-        <div class="s13-tab active" data-tab="devices" data-i18n="dash.tab_devices">Devices</div>
-        <div class="s13-tab" data-tab="telemetry" data-i18n="dash.tab_telemetry">Telemetry</div>
+        <div class="s13-tab active" data-tab="devices" data-i18n="dash.tab_devices">Students</div>
+        <div class="s13-tab" data-tab="telemetry" data-i18n="dash.tab_telemetry">Reports</div>
         <div class="s13-tab" data-tab="simulator" data-i18n="dash.tab_simulator">Simulator</div>
         <div class="s13-tab" data-tab="alerts" data-i18n="dash.tab_alerts">Alerts</div>
         <div class="s13-tab" data-tab="history" data-i18n="dash.tab_history">History</div>
         <div class="s13-tab" data-tab="aic" data-i18n="dash.tab_aicontrol">AI Control</div>
       </div>
       <div class="s13-banner" id="dashBanner">
-        <span class="txt" data-i18n="dash.banner_text">Aksi otomatis menunggu konfirmasi operator</span>
-        <div class="btns"><span class="b ok" data-i18n="dash.banner_yes">✅ Eksekusi</span><span class="b no" data-i18n="dash.banner_no">❌ Tolak</span></div>
+        <span class="txt" data-i18n="dash.banner_text">AI menyarankan pembuatan Surat Peringatan. Setujui?</span>
+        <div class="btns"><span class="b ok" data-i18n="dash.banner_yes">✅ Setujui</span><span class="b no" data-i18n="dash.banner_no">❌ Tolak</span></div>
       </div>
       <div class="s13-body">
         <div class="s13-panel active" data-panel="devices">
           <div class="s13-devs">
-            <div class="s13-dev"><div class="nm">esp32-dht22-01</div><div class="st" data-i18n="dash.dev1_st">Online · suhu 42°C</div><div class="act"><span data-i18n="dash.ac">AC</span><div class="s13-toggle on"></div></div></div>
-            <div class="s13-dev"><div class="nm">esp32-mq2-02</div><div class="st" data-i18n="dash.dev2_st">Online · gas normal</div><div class="act"><span data-i18n="dash.fan">Fan</span><div class="s13-toggle"></div></div></div>
-            <div class="s13-dev"><div class="nm">esp32-hcsr-03</div><div class="st" data-i18n="dash.dev3_st">Online · jarak 2.4m</div><div class="act"><span data-i18n="dash.pump">Pump</span><div class="s13-toggle"></div></div></div>
+            <div class="s13-dev"><div class="nm">202311001 - John</div><div class="st" data-i18n="dash.dev1_st">IPK 1.85 (Bermasalah)</div><div class="act"><span data-i18n="dash.ac">SP 1</span><div class="s13-toggle on"></div></div></div>
+            <div class="s13-dev"><div class="nm">202311002 - Jane</div><div class="st" data-i18n="dash.dev2_st">IPK 3.8 (Baik)</div><div class="act"><span data-i18n="dash.fan">-</span><div class="s13-toggle"></div></div></div>
+            <div class="s13-dev"><div class="nm">202311003 - Bob</div><div class="st" data-i18n="dash.dev3_st">Hutang SPP</div><div class="act"><span data-i18n="dash.pump">Tagih</span><div class="s13-toggle"></div></div></div>
           </div>
         </div>
         <div class="s13-panel" data-panel="telemetry">
           <div class="s13-tel">
-            <span class="s13-live"><span class="dt"></span><span data-i18n="dash.live">LIVE</span> · esp32-dht22-01</span>
+            <span class="s13-live"><span class="dt"></span><span data-i18n="dash.live">LIVE</span> · Grafik IPK Mahasiswa</span>
             <div class="s13-chart"><svg id="liveChart" viewBox="0 0 400 200" preserveAspectRatio="none"><polyline id="chartLine" fill="none" stroke="var(--green)" stroke-width="2"/></svg></div>
           </div>
         </div>
         <div class="s13-panel" data-panel="simulator">
           <div class="s13-sim">
-            <div class="s13-slider"><span class="lbl" data-i18n="dash.sim_temp">Suhu</span><div class="bar"><div class="fill" style="width:75%"></div></div><span class="v">42°C</span></div>
-            <div class="s13-slider"><span class="lbl" data-i18n="dash.sim_hum">Kelembapan</span><div class="bar"><div class="fill" style="width:55%"></div></div><span class="v">55%</span></div>
-            <div class="s13-slider"><span class="lbl" data-i18n="dash.sim_gas">Gas</span><div class="bar"><div class="fill" style="width:30%"></div></div><span class="v">320ppm</span></div>
-            <div class="s13-slider"><span class="lbl" data-i18n="dash.sim_dist">Jarak</span><div class="bar"><div class="fill" style="width:48%"></div></div><span class="v">2.4m</span></div>
+            <div class="s13-slider"><span class="lbl" data-i18n="dash.sim_temp">Nilai A</span><div class="bar"><div class="fill" style="width:75%"></div></div><span class="v">85</span></div>
+            <div class="s13-slider"><span class="lbl" data-i18n="dash.sim_hum">Nilai B</span><div class="bar"><div class="fill" style="width:55%"></div></div><span class="v">75</span></div>
+            <div class="s13-slider"><span class="lbl" data-i18n="dash.sim_gas">Nilai C</span><div class="bar"><div class="fill" style="width:30%"></div></div><span class="v">65</span></div>
+            <div class="s13-slider"><span class="lbl" data-i18n="dash.sim_dist">Nilai D</span><div class="bar"><div class="fill" style="width:48%"></div></div><span class="v">60</span></div>
           </div>
         </div>
         <div class="s13-panel" data-panel="alerts">
           <div class="s13-alerts">
-            <div class="s13-alert"><span class="ic">🔥</span><span class="nm" data-i18n="dash.alert_critical">Suhu kritis: 42°C</span><span class="tm">2m</span><span class="rs" data-i18n="dash.resolve">Resolve</span></div>
-            <div class="s13-alert"><span class="ic">⚠</span><span class="nm" data-i18n="dash.alert_high">Suhu tinggi: 38°C</span><span class="tm">8m</span><span class="rs" data-i18n="dash.resolve">Resolve</span></div>
-            <div class="s13-alert"><span class="ic">📡</span><span class="nm" data-i18n="dash.alert_offline">Perangkat offline</span><span class="tm">15m</span><span class="rs" data-i18n="dash.resolve">Resolve</span></div>
+            <div class="s13-alert"><span class="ic">🔥</span><span class="nm" data-i18n="dash.alert_critical">IPK Kritis: 1.85 (John)</span><span class="tm">2h</span><span class="rs" data-i18n="dash.resolve">Resolve</span></div>
+            <div class="s13-alert"><span class="ic">⚠</span><span class="nm" data-i18n="dash.alert_high">Hutang SPP: Bob</span><span class="tm">8h</span><span class="rs" data-i18n="dash.resolve">Resolve</span></div>
+            <div class="s13-alert"><span class="ic">📡</span><span class="nm" data-i18n="dash.alert_offline">Belum input KRS</span><span class="tm">15h</span><span class="rs" data-i18n="dash.resolve">Resolve</span></div>
           </div>
         </div>
         <div class="s13-panel" data-panel="history">
           <div class="s13-hist">
-            <div class="row"><span class="tm">12:04</span><span class="ev" data-i18n="dash.hist1">AC dinyalakan (auto)</span></div>
-            <div class="row"><span class="tm">11:58</span><span class="ev" data-i18n="dash.hist2">Alert suhu kritis</span></div>
-            <div class="row"><span class="tm">11:50</span><span class="ev" data-i18n="dash.hist3">Telemetry normal</span></div>
-            <div class="row"><span class="tm">11:42</span><span class="ev" data-i18n="dash.hist4">ESP32 reboot</span></div>
-            <div class="row"><span class="tm">11:30</span><span class="ev" data-i18n="dash.hist5">Simulasi dimulai</span></div>
+            <div class="row"><span class="tm">12:04</span><span class="ev" data-i18n="dash.hist1">Surat SP dibuat (auto)</span></div>
+            <div class="row"><span class="tm">11:58</span><span class="ev" data-i18n="dash.hist2">Alert IPK kritis</span></div>
+            <div class="row"><span class="tm">11:50</span><span class="ev" data-i18n="dash.hist3">Sinkron SIA berhasil</span></div>
+            <div class="row"><span class="tm">11:42</span><span class="ev" data-i18n="dash.hist4">Laporan UTS di-generate</span></div>
+            <div class="row"><span class="tm">11:30</span><span class="ev" data-i18n="dash.hist5">Sistem mulai</span></div>
           </div>
         </div>
         <div class="s13-panel" data-panel="aic">
           <div class="s13-aic">
-            <div class="s13-log"><span class="tg-ic">✈</span><span data-i18n="dash.log1">Kirim konfirmasi Telegram</span><span class="badge pend" data-i18n="dash.status_pending">menunggu</span></div>
-            <div class="s13-log"><span class="tg-ic">🤖</span><span data-i18n="dash.log2">LLM menyusun rencana: AC ON 22°C</span><span class="badge ok">✓</span></div>
-            <div class="s13-log"><span class="tg-ic">✅</span><span data-i18n="dash.log3">Operator menyetujui</span><span class="badge ok" data-i18n="dash.status_executed">dieksekusi</span></div>
+            <div class="s13-log"><span class="tg-ic">✈</span><span data-i18n="dash.log1">Kirim usulan SP ke Admin</span><span class="badge pend" data-i18n="dash.status_pending">menunggu</span></div>
+            <div class="s13-log"><span class="tg-ic">🤖</span><span data-i18n="dash.log2">LLM menyusun draf surat</span><span class="badge ok">✓</span></div>
+            <div class="s13-log"><span class="tg-ic">✅</span><span data-i18n="dash.log3">Admin menyetujui</span><span class="badge ok" data-i18n="dash.status_executed">dieksekusi</span></div>
           </div>
         </div>
       </div>
@@ -872,30 +873,30 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 14. ESP32 -->
+<!-- 14. Integrasi SIA -->
 <section class="slide bg-material" data-slide="14">
   <div class="safe">
     <div class="slide-head">
-      <div><div class="eyebrow" data-i18n="esp.eyebrow">Edge Device</div><h2 data-i18n="esp.title">ESP32 / Wokwi Simulator</h2><div class="sub" data-i18n="esp.subtitle">Tiga sensor, tiga studi kasus deteksi anomali real-time</div></div>
+      <div><div class="eyebrow" data-i18n="esp.eyebrow">External Integration</div><h2 data-i18n="esp.title">Integrasi Sistem Informasi Institusi</h2><div class="sub" data-i18n="esp.subtitle">Tiga metode koneksi data, sinkronisasi, dan trigger otomatis</div></div>
     </div>
     <div class="s14-wrap">
       <div class="glass s14-board stagger" style="--i:0">
         <svg viewBox="0 0 400 320">
           <rect x="60" y="80" width="280" height="160" rx="8" fill="#1a3a1a" stroke="var(--green)" stroke-width="2"/>
-          <text x="200" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="var(--green)">ESP32 DEVKIT</text>
+          <text x="200" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="var(--green)">RAKSA BACKEND</text>
           <circle cx="100" cy="200" r="6" fill="var(--green)"><animate attributeName="opacity" values="1;.2;1" dur="1s" repeatCount="indefinite"/></circle>
-          <rect x="20" y="20" width="60" height="50" rx="5" fill="#0d1410" stroke="var(--blue)" stroke-width="1.5"/><text x="50" y="42" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="var(--blue)">DHT22</text>
+          <rect x="20" y="20" width="60" height="50" rx="5" fill="#0d1410" stroke="var(--blue)" stroke-width="1.5"/><text x="50" y="42" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="var(--blue)">REST</text>
           <path d="M80,55 Q100,55 100,100 L100,125" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="3 2"><animate attributeName="stroke-dashoffset" from="0" to="-10" dur="0.6s" repeatCount="indefinite"/></path>
-          <rect x="170" y="20" width="60" height="50" rx="5" fill="#0d1410" stroke="var(--orange)" stroke-width="1.5"/><text x="200" y="42" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="var(--orange)">MQ-2</text>
+          <rect x="170" y="20" width="60" height="50" rx="5" fill="#0d1410" stroke="var(--orange)" stroke-width="1.5"/><text x="200" y="42" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="var(--orange)">CSV</text>
           <path d="M200,70 L200,125" fill="none" stroke="var(--orange)" stroke-width="1.5" stroke-dasharray="3 2"><animate attributeName="stroke-dashoffset" from="0" to="-10" dur="0.6s" repeatCount="indefinite"/></path>
-          <rect x="320" y="20" width="60" height="50" rx="5" fill="#0d1410" stroke="var(--red)" stroke-width="1.5"/><circle cx="335" cy="45" r="8" fill="none" stroke="var(--red)"/><circle cx="365" cy="45" r="8" fill="none" stroke="var(--red)"/><text x="350" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="var(--red)">HC-SR04</text>
+          <rect x="320" y="20" width="60" height="50" rx="5" fill="#0d1410" stroke="var(--red)" stroke-width="1.5"/><circle cx="335" cy="45" r="8" fill="none" stroke="var(--red)"/><circle cx="365" cy="45" r="8" fill="none" stroke="var(--red)"/><text x="350" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="var(--red)">WEBHOOK</text>
           <path d="M320,55 Q300,55 300,100 L300,125" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="3 2"><animate attributeName="stroke-dashoffset" from="0" to="-10" dur="0.6s" repeatCount="indefinite"/></path>
         </svg>
       </div>
       <div class="s14-cases">
-        <div class="s14-case stagger" style="--i:1"><div class="nh"><span class="nm">demo1_dht22.py</span><span class="gpio">GPIO 15</span></div><div class="gr"><svg viewBox="0 0 200 42" preserveAspectRatio="none"><polyline points="0,30 20,28 40,32 60,29 80,31 100,8 120,30 140,29 160,31 180,30 200,29" fill="none" stroke="var(--green)" stroke-width="1.5"/></svg><div class="ano" style="left:90px"></div></div><div class="sub">Z-Score Anomaly (DHT22)</div></div>
-        <div class="s14-case stagger" style="--i:2"><div class="nh"><span class="nm">demo2_airquality.py</span><span class="gpio">GPIO 34</span></div><div class="gr"><svg viewBox="0 0 200 42" preserveAspectRatio="none"><polyline points="0,32 20,30 40,28 60,25 80,18 100,10 120,6 140,4 160,3 180,3 200,3" fill="none" stroke="var(--orange)" stroke-width="1.5"/></svg><div class="ano" style="left:60px"></div></div><div class="sub">Logistic Regression (MQ2)</div></div>
-        <div class="s14-case stagger" style="--i:3"><div class="nh"><span class="nm">demo3_ultrasonic.py</span><span class="gpio">GPIO 5 & 18</span></div><div class="gr"><svg viewBox="0 0 200 42" preserveAspectRatio="none"><polyline points="0,30 20,29 40,31 60,30 80,5 100,35 120,29 140,31 160,30 180,29 200,30" fill="none" stroke="var(--red)" stroke-width="1.5"/></svg><div class="ano" style="left:70px"></div></div><div class="sub">Delta Detection (HC-SR04)</div></div>
+        <div class="s14-case stagger" style="--i:1"><div class="nh"><span class="nm">REST API Sync</span><span class="gpio">GET /api</span></div><div class="gr"><svg viewBox="0 0 200 42" preserveAspectRatio="none"><polyline points="0,30 20,28 40,32 60,29 80,31 100,8 120,30 140,29 160,31 180,30 200,29" fill="none" stroke="var(--green)" stroke-width="1.5"/></svg><div class="ano" style="left:90px"></div></div><div class="sub" data-i18n="esp.c1">Tarik data IPK dari SIA secara terjadwal</div></div>
+        <div class="s14-case stagger" style="--i:2"><div class="nh"><span class="nm">CSV Ingestion</span><span class="gpio">POST /add-text</span></div><div class="gr"><svg viewBox="0 0 200 42" preserveAspectRatio="none"><polyline points="0,32 20,30 40,28 60,25 80,18 100,10 120,6 140,4 160,3 180,3 200,3" fill="none" stroke="var(--orange)" stroke-width="1.5"/></svg><div class="ano" style="left:60px"></div></div><div class="sub" data-i18n="esp.c2">Upload dokumen aturan akademik (PDF)</div></div>
+        <div class="s14-case stagger" style="--i:3"><div class="nh"><span class="nm">Webhook Trigger</span><span class="gpio">POST /webhook</span></div><div class="gr"><svg viewBox="0 0 200 42" preserveAspectRatio="none"><polyline points="0,30 20,29 40,31 60,30 80,5 100,35 120,29 140,31 160,30 180,29 200,30" fill="none" stroke="var(--red)" stroke-width="1.5"/></svg><div class="ano" style="left:70px"></div></div><div class="sub" data-i18n="esp.c3">Trigger agen saat nilai KHS di-input</div></div>
       </div>
     </div>
   </div>
@@ -906,7 +907,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 <section class="slide bg-material" data-slide="15">
   <div class="safe">
     <div class="slide-head">
-      <div><div class="eyebrow" data-i18n="views.eyebrow">Frontend</div><h2 data-i18n="views.title">Dashboard Frontend — 5 View</h2><div class="sub" data-i18n="views.subtitle">Chat, Tutor, IoT, RAG, dan Feedback dalam satu sidebar</div></div>
+      <div><div class="eyebrow" data-i18n="views.eyebrow">Frontend</div><h2 data-i18n="views.title">Dashboard Frontend — 5 View</h2><div class="sub" data-i18n="views.subtitle">Chat, Tutor, Campus, RAG, dan Feedback dalam satu sidebar</div></div>
     </div>
     <div class="s15-browser">
       <div class="s15-bar"><div class="dts"><span style="background:#ff5f56"></span><span style="background:#ffbd2e"></span><span style="background:#27c93f"></span></div><div class="url">http://localhost:3005</div></div>
@@ -914,15 +915,15 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
         <div class="s15-side" id="viewSide">
           <div class="s15-item active" data-view="chat"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-i18n="views.chat">Chat</span></div>
           <div class="s15-item" data-view="tutor"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span data-i18n="views.tutor">Tutor</span></div>
-          <div class="s15-item" data-view="iot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg><span data-i18n="views.iot">IoT</span></div>
+          <div class="s15-item" data-view="iot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg><span data-i18n="views.iot">Campus</span></div>
           <div class="s15-item" data-view="rag"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><span data-i18n="views.rag">RAG</span></div>
           <div class="s15-item" data-view="feedback"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><span data-i18n="views.feedback">Feedback</span></div>
         </div>
         <div class="s15-view">
-          <div class="s15-panel active" data-vp="chat"><div class="s15-tutor"><div class="q" data-i18n="views.chat_q1">Bagaimana cara kerja RAG?</div><div class="a" data-i18n="views.chat_a1">RAG menggabungkan retrieval vektor dengan generasi LLM...</div></div></div>
-          <div class="s15-panel" data-vp="tutor"><div class="s15-tutor"><div class="q" data-i18n="views.tutor_q">Apa yang kamu pahami dari topik ini?</div><div class="a" data-i18n="views.tutor_a">Aku pikir vektor itu seperti arah...</div><div class="q" data-i18n="views.tutor_q2">Mengapa seperti arah? Jelaskan lebih lanjut.</div><span class="tag tag-green" data-i18n="views.socratic">Mode Sokratik</span></div></div>
-          <div class="s15-panel" data-vp="iot"><div class="s13-devs" style="grid-template-columns:repeat(2,1fr)"><div class="s13-dev"><div class="nm">esp32-dht22-01</div><div class="st" data-i18n="views.iot_dev1">42°C · 55%</div></div><div class="s13-dev"><div class="nm">esp32-mq2-02</div><div class="st" data-i18n="views.iot_dev2">320ppm</div></div></div></div>
-          <div class="s15-panel" data-vp="rag"><div class="s15-rag"><div class="upl"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><span data-i18n="views.rag_upload">Upload dokumen PDF/DOCX/TXT</span></div><div class="doc"><span class="nm">manual_openSUSE.pdf</span><span class="sim"><span class="bar"><span class="fl" style="width:92%"></span></span><span class="v">0.92</span></span></div><div class="doc"><span class="nm">qwen_paper.md</span><span class="sim"><span class="bar"><span class="fl" style="width:87%"></span></span><span class="v">0.87</span></span></div><span class="tag tag-green" data-i18n="views.similarity">Similarity</span></div></div>
+          <div class="s15-panel active" data-vp="chat"><div class="s15-tutor"><div class="q" data-i18n="views.chat_q1">Bagaimana prosedur pendaftaran UTB?</div><div class="a" data-i18n="views.chat_a1">Bisa diakses di portal akademik...</div></div></div>
+          <div class="s15-panel" data-vp="tutor"><div class="s15-tutor"><div class="q" data-i18n="views.tutor_q">Jelaskan konp machine learning</div><div class="a" data-i18n="views.tutor_a">ML adalah cabang AI...</div><div class="q" data-i18n="views.tutor_q2">Apa contohnya?</div><span class="tag tag-green" data-i18n="views.socratic">Mode Sokratik</span></div></div>
+          <div class="s15-panel" data-vp="iot"><div class="s13-devs" style="grid-template-columns:repeat(2,1fr)"><div class="s13-dev"><div class="nm">Total Mahasiswa</div><div class="st" data-i18n="views.iot_dev1">1,245</div></div><div class="s13-dev"><div class="nm">Total SP Dibuat</div><div class="st" data-i18n="views.iot_dev2">32</div></div></div></div>
+          <div class="s15-panel" data-vp="rag"><div class="s15-rag"><div class="upl"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><span data-i18n="views.rag_upload">Upload dokumen PDF/DOCX/TXT</span></div><div class="doc"><span class="nm">manual_UTB.pdf</span><span class="sim"><span class="bar"><span class="fl" style="width:92%"></span></span><span class="v">0.92</span></span></div><div class="doc"><span class="nm">aturan_akademik.md</span><span class="sim"><span class="bar"><span class="fl" style="width:87%"></span></span><span class="v">0.87</span></span></div><span class="tag tag-green" data-i18n="views.similarity">Similarity</span></div></div>
           <div class="s15-panel" data-vp="feedback"><div class="s15-fb"><div class="q" data-i18n="views.feedback_q">Bagaimana sesinya?</div><div class="s15-stars"><svg class="s15-star fill" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg class="s15-star fill" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg class="s15-star fill" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg class="s15-star fill" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg class="s15-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div><div class="q" style="color:var(--green)" data-i18n="views.thanks_fb">Terima kasih atas masukan Anda!</div></div></div>
         </div>
       </div>
@@ -944,7 +945,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
           <div class="s16-ep"><span class="s16-method get">GET</span><span class="s16-path">/health</span></div>
           <div class="s16-ep"><span class="s16-method post">POST</span><span class="s16-path">/chat</span></div>
           <div class="s16-ep"><span class="s16-method post">POST</span><span class="s16-path">/agent/tutor</span></div>
-          <div class="s16-ep"><span class="s16-method post">POST</span><span class="s16-path">/agent/iot</span></div>
+          <div class="s16-ep"><span class="s16-method post">POST</span><span class="s16-path">/agent/campus</span></div>
         </div>
         <div class="s16-card stagger" style="--i:1">
           <div class="ttl" data-i18n="api.rag_t">RAG</div>
@@ -954,8 +955,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
           <div class="s16-ep"><span class="s16-method del">DEL</span><span class="s16-path">/documents/{id}</span></div>
         </div>
         <div class="s16-card stagger" style="--i:2">
-          <div class="ttl" data-i18n="api.tg_t">Telemetry & Telegram</div>
-          <div class="s16-ep"><span class="s16-method post">POST</span><span class="s16-path">/api/telemetry</span></div>
+          <div class="ttl" data-i18n="api.tg_t">SIA & Telegram</div>
+          <div class="s16-ep"><span class="s16-method post">POST</span><span class="s16-path">/api/sia-webhook</span></div>
           <div class="s16-ep"><span class="s16-method get">GET</span><span class="s16-path">/api/alerts</span></div>
           <div class="s16-ep"><span class="s16-method ws">WS</span><span class="s16-path">/ws</span></div>
           <div class="s16-ep"><span class="s16-method post">POST</span><span class="s16-path">/telegram/webhook</span></div>
@@ -1046,8 +1047,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
     <div class="s20-wrap">
       <div class="s20-card" style="--i:0"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg></div><div class="info"><div class="nm" data-i18n="links.docker">Docker Hub</div><div class="ds">ikhwan17/agentic-ai-backend</div></div></div>
       <div class="s20-card" style="--i:1"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.1-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg></div><div class="info"><div class="nm" data-i18n="links.github">GitHub</div><div class="ds">Raksa-Agentic-AI-OpenSUSE</div></div></div>
-      <div class="s20-card" style="--i:2"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></div><div class="info"><div class="nm" data-i18n="links.telegram">Telegram Bot</div><div class="ds">@opensuse_agentic_bot</div></div></div>
-      <div class="s20-card" style="--i:3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div><div class="info"><div class="nm" data-i18n="links.raksa">Raksa-Cloud</div><div class="ds">Muhammad-Ikhwan-Fathulloh/Raksa-Cloud</div></div></div>
+      <div class="s20-card" style="--i:2"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></div><div class="info"><div class="nm" data-i18n="links.telegram">Telegram Bot</div><div class="ds">@campus_admin_bot</div></div></div>
+      <div class="s20-card" style="--i:3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div><div class="info"><div class="nm" data-i18n="links.raksa">Institusi Case</div><div class="ds">integral.utb-univ.ac.id</div></div></div>
       <div class="s20-qr">
         <div class="qr-box"><div class="qr-grid"></div><div class="qr-corner qc1"></div><div class="qr-corner qc2"></div><div class="qr-corner qc3"></div><div class="scan"></div></div>
         <div><div class="lbl" data-i18n="links.scan">Pindai QR</div><div class="sub">muhammad-ikhwan-fathulloh.github.io/Speaker-Material</div></div>
@@ -1120,39 +1121,39 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 <script>
 const I18N = {
   id:{
-    "opening.subtitle":"Pipeline Agentic AI Otonom dengan Dashboard IoT, Konfirmasi Telegram, dan Integrasi Raksa-Cloud",
+    "opening.subtitle":"Studi Kasus Institusi: Automasi Pemantauan Akademik & ERP menggunakan LLM Lokal",
     "opening.speaker_label":"Pembicara",
-    "overview.eyebrow":"Ikhtisar Sistem","overview.title":"Enam Komponen Penyusun Raksa","overview.subtitle":"Arsitektur modular: LLM, NLP, RAG, IoT, Bot, dan Dashboard real-time","overview.center":"Agentic AI",
-    "overview.qwen_desc":"Penalaran & tool-calling","overview.saka_desc":"Bahasa Indonesia","overview.pgvector_desc":"Pengetahuan vektor","overview.raksa_desc":"Sensor & aktuator","overview.telegram_desc":"Konfirmasi operator","overview.ws_desc":"Pantauan real-time",
+    "overview.eyebrow":"Ikhtisar Sistem","overview.title":"Enam Komponen Utama","overview.subtitle":"Arsitektur modular untuk mendukung Agen AI Otonom di lingkungan institusi","overview.center":"Agentic AI",
+    "overview.qwen_desc":"Penalaran & tool-calling","overview.saka_desc":"Normalisasi bahasa","overview.pgvector_desc":"Basis pengetahuan institusi","overview.raksa_desc":"Integrasi data akademik","overview.telegram_desc":"Notifikasi & persetujuan","overview.ws_desc":"Pantauan real-time",
     "arch.eyebrow":"Arsitektur & Server","arch.title":"Architecting on openSUSE","arch.subtitle":"Satu kontainer backend openSUSE berisi FastAPI, Saka-NLP, RAG, dan llama.cpp internal","arch.single_container_lbl":"BACKEND CONTAINER (openSUSE Tumbleweed)",
-    "arch.browser_desc":"UI & admin panel","arch.frontend_desc":"Vue + Nginx Proxy /api","arch.backend_desc":"FastAPI + Saka-NLP + RAG","arch.llama_desc":"Internal 127.0.0.1","arch.db_desc":"pgvector extension","arch.pgweb_desc":"DB Web UI","arch.mdl_desc":"Unduh GGUF (profile: llm)",
-    "llm_flow.eyebrow":"Runtime","llm_flow.title":"Alur Kerja LLM Serving","llm_flow.subtitle":"Lifecycle request dari browser hingga respons agentic dihasilkan",
-    "llm_flow.s1_t":"1. Browser","llm_flow.s1_d":"frontend :3005","llm_flow.s2_t":"2. FastAPI","llm_flow.s2_d":":8000 menerima request","llm_flow.s3_t":"3. Saka-NLP","llm_flow.s3_d":"Normalisasi slang","llm_flow.s4_t":"4. Cache","llm_flow.s4_d":"Cek semantic cache","llm_flow.s5_t":"5. RAG","llm_flow.s5_d":"Ambil 3 dokumen","llm_flow.s6_t":"6. Prefill","llm_flow.s6_d":"Rakit system prompt","llm_flow.s7_t":"7. Decode","llm_flow.s7_d":"llama.cpp tool loop","llm_flow.s8_t":"8. Respons","llm_flow.s8_d":"agent_steps ke UI",
+    "arch.browser_desc":"UI web institusi","arch.frontend_desc":"Vue + Nginx Proxy /api","arch.backend_desc":"FastAPI + Saka-NLP + RAG","arch.llama_desc":"Internal 127.0.0.1","arch.db_desc":"pgvector & Data SIA","arch.pgweb_desc":"DB Web UI","arch.mdl_desc":"Unduh GGUF (profile: llm)",
+    "llm_flow.eyebrow":"Runtime","llm_flow.title":"Alur Kerja LLM Serving","llm_flow.subtitle":"Lifecycle request dari admin hingga respons agentic dihasilkan",
+    "llm_flow.s1_t":"1. Admin","llm_flow.s1_d":"Dashboard :3005","llm_flow.s2_t":"2. FastAPI","llm_flow.s2_d":":8000 menerima request","llm_flow.s3_t":"3. Saka-NLP","llm_flow.s3_d":"Normalisasi slang","llm_flow.s4_t":"4. Cache","llm_flow.s4_d":"Cek semantic cache","llm_flow.s5_t":"5. RAG","llm_flow.s5_d":"Ambil SOP/Aturan","llm_flow.s6_t":"6. Prefill","llm_flow.s6_d":"Rakit system prompt","llm_flow.s7_t":"7. Decode","llm_flow.s7_d":"llama.cpp tool loop","llm_flow.s8_t":"8. Respons","llm_flow.s8_d":"Hasil ke UI",
     "llm_flow.card1_t":"Prefill vs Decode","llm_flow.card1_d":"System prompt dirakit sekali (prefill paralel), generasi token berjalan autoregresif untuk efisiensi latensi.","llm_flow.card2_t":"Semantic Cache","llm_flow.card2_d":"Jarak cosine < 0.1 ( >90% mirip) langsung balas instan tanpa panggil LLM.","llm_flow.card3_t":"Memori Percakapan","llm_flow.card3_d":"Simpan 10 pesan terakhir per conversation_id untuk dialog multi-turn yang koheren.",
-    "flow.eyebrow":"Pipeline","flow.title":"Agentic IoT Auto-Control Flow","flow.subtitle":"Dari telemetry sensor hingga eksekusi aktuator dengan konfirmasi operator","flow.nonblock":"non-blocking",
-    "flow.s1":"Sensor mengirim suhu, kelembapan, gas","flow.s2":"Langsung membalas 200 OK (non-blocking)","flow.s3":"analisis berjalan di background","flow.s4":"LLM menganalisis telemetry & menyusun rencana aksi","flow.s5":"Notifikasi Telegram ke operator","flow.s6":"✅/❌ (timer 120 detik)","flow.s7":"Eksekusi aktuator + laporan hasil",
-    "tg.eyebrow":"Mockup UI","tg.title":"Bot Telegram Konfirmasi","tg.subtitle":"Operator menyetujui eksekusi dari ponsel — di mana pun, kapan pun",
-    "tg.bot_name":"Raksa Agentic Bot","tg.bot_status":"online","tg.alert_label":"⚠ PERINGATAN KRITIS","tg.device":"Perangkat","tg.temp":"Suhu kritis","tg.plan":"Rencana: AC ON (22°C)","tg.execute":"✅ Eksekusi","tg.reject":"❌ Tolak","tg.result_ok":"✅ AC dinyalakan, target 22°C","tg.seconds":"detik",
-    "tg.device_lbl":"Perangkat","tg.temp_lbl":"Suhu","tg.action_lbl":"Aksi","tg.status_lbl":"Status","tg.status_confirmed":"Dikonfirmasi",
+    "flow.eyebrow":"Pipeline","flow.title":"Agentic Academic Control Flow","flow.subtitle":"Dari trigger Sistem Informasi hingga eksekusi surat peringatan dengan persetujuan admin","flow.nonblock":"non-blocking",
+    "flow.s1":"Sistem deteksi IPK mahasiswa < 2.0","flow.s2":"Langsung membalas 200 OK (non-blocking)","flow.s3":"analisis riwayat akademik di background","flow.s4":"LLM menganalisis data & menyusun draf surat peringatan","flow.s5":"Notifikasi Telegram ke Admin","flow.s6":"✅/❌ (timer 120 detik)","flow.s7":"Generate PDF Surat & Kirim Email ke Mahasiswa",
+    "tg.eyebrow":"Mockup UI","tg.title":"Bot Telegram Konfirmasi Admin","tg.subtitle":"Admin menyetujui eksekusi tugas akademik dari ponsel",
+    "tg.bot_name":"Campus Admin Bot","tg.bot_status":"online","tg.alert_label":"⚠ PERINGATAN AKADEMIK","tg.device":"Mahasiswa","tg.temp":"IPK Terkini","tg.plan":"Rencana: Buat Surat Peringatan (SP)","tg.execute":"✅ Generate","tg.reject":"❌ Tolak","tg.result_ok":"✅ Surat Peringatan dibuat & dikirim via Email.","tg.seconds":"detik",
+    "tg.device_lbl":"NIM","tg.temp_lbl":"IPK","tg.action_lbl":"Aksi","tg.status_lbl":"Status","tg.status_confirmed":"Dikonfirmasi",
     "sm.eyebrow":"Runtime","sm.title":"Mesin Status Agentic","sm.subtitle":"Siklus Plan → Select → Execute → Reflect → Complete","sm.max_steps":"maks 5 langkah","sm.trace":"trace.json",
     "chat.eyebrow":"Mockup UI","chat.title":"Chat Agentic dengan Step Trace","chat.subtitle":"Setiap jawaban menampilkan jejak langkah agen yang transparan",
-    "chat.question":"Berapa suhu ruang server sekarang dan apakah aman?","chat.step1_d":"Saka-NLP normalisasi teks + konteks RAG diambil","chat.step3_d":"Hasil sensor: 42°C","chat.step4_d":"42°C > ambang batas → perlu eksekusi aktuator","chat.answer":"Suhu 42°C — kritis. Saya sudah mengaktifkan AC via Telegram.","chat.cache":"⚡ semantic cache","chat.force_regen":"Force Regenerate","chat.side_title":"Jejak Langkah Agen","chat.side_desc":"Array agent_steps merekam setiap fase dari Planning hingga Reflection. Berguna untuk debugging dan transparansi keputusan AI.",
-    "tools.eyebrow":"Kemampuan Agen","tools.title":"11 Agent Tools","tools.subtitle":"Tiga kelompok: NLP, Knowledge, dan IoT — siap dirantai oleh LLM","tools.group_nlp":"NLP","tools.group_knowledge":"Knowledge","tools.group_iot":"IoT",
+    "chat.question":"Siapa mahasiswa dengan IPK di bawah 2.0 dan apa prosedur SP-nya?","chat.step1_d":"Saka-NLP normalisasi teks + konteks RAG diambil","chat.step3_d":"Ditemukan: John Doe (1.85), Jane Smith (1.75)","chat.step4_d":"Menyimpan riwayat pencarian, menyusun ringkasan aturan SP","chat.answer":"John Doe dan Jane Smith. Prosedur SP: Membuat surat dari dekan, mengirim email ke mhs.","chat.cache":"⚡ semantic cache","chat.force_regen":"Force Regenerate","chat.side_title":"Jejak Langkah Agen","chat.side_desc":"Array agent_steps merekam setiap fase dari Planning hingga Reflection. Berguna untuk debugging dan transparansi keputusan AI.",
+    "tools.eyebrow":"Kemampuan Agen","tools.title":"11 Agent Tools","tools.subtitle":"Tiga kelompok: NLP, Knowledge, dan Institusi — siap dirantai oleh LLM","tools.group_nlp":"NLP","tools.group_knowledge":"Knowledge","tools.group_iot":"Institution",
     "setup1.eyebrow":"Deployment","setup1.title":"Langkah 1-3: Siapkan Server openSUSE","setup1.subtitle":"Instalasi Docker dan persiapan sumber daya pada openSUSE Tumbleweed/Leap","setup1.s1_t":"Langkah 1 — Perbarui sistem","setup1.s2_t":"Langkah 2 — Pasang Docker + Compose","setup1.s2_cm":"# login ulang agar grup berlaku","setup1.s3_t":"Langkah 3 — Cek sumber daya","setup1.s3_ok":"✔ Docker siap digunakan","setup1.prereq_t":"Prasyarat","setup1.prereq_1":"openSUSE Tumbleweed/Leap","setup1.prereq_2":"RAM ≥ 2 GB free","setup1.prereq_3":"Disk ≥ 4 GB kosong","setup1.prereq_4":"Akses internet (HuggingFace)","setup1.note_t":"Catatan","setup1.note_d":"Pastikan user berada di grup docker agar tidak perlu sudo saat menjalankan docker compose.",
     "setup2.eyebrow":"Deployment","setup2.title":"Langkah 4-6: Deploy & Aktifkan LLM","setup2.subtitle":"Eksekusi docker compose dengan profile llm untuk inferensi lokal","setup2.s4_t":"Langkah 4 — Ambil konfigurasi","setup2.s5_t":"Langkah 5 — Atur environment (.env)","setup2.s5_cm":"# Set password DB, LLAMA_CTX, LLAMA_THREADS, TELEGRAM_* (opsional)","setup2.s6_t":"Langkah 6 — Jalankan stack","setup2.s6_cm1":"# Tanpa --profile llm backend tetap jalan, tetapi llama_ready=false","setup2.s6_cm2":"# dan fitur AI nonaktif.","setup2.s6_ok":"✔ Container mulai dibuat","setup2.fw_t":"Firewall (opsional)","setup2.fw_d":"Buka port jika firewall aktif:","setup2.mdl_t":"Unduh Model","setup2.mdl_d":"Container model-downloader akan mengunduh GGUF qwen2.5-0.5b ke volume models_data.",
     "setup3.eyebrow":"Deployment","setup3.title":"Langkah 7-9: Verifikasi & Uji Coba","setup3.subtitle":"Cek kesehatan layanan dan uji endpoint AI agentic","setup3.s7_t":"Langkah 7 — Cek kesehatan","setup3.s8_t":"Langkah 8 — Isi KB & tanya agen","setup3.s9_t":"Langkah 9 — Buka titik akses","setup3.s9_cm":"# Dashboard :3005 | API :8000/docs | pgweb :8081","setup3.trouble_t":"Troubleshooting","setup3.trouble_1":"llama_ready=false → cek RAM & log","setup3.trouble_2":"Model belum terunduh → logs model-downloader","setup3.trouble_3":"Port bentrok → ubah FRONTEND_PORT/API_PORT","setup3.webhook_t":"Webhook Telegram (Opsional)","setup3.webhook_d":"Setelah domain aktif, arahkan webhook bot ke endpoint /api/telegram/webhook.",
-    "dash.eyebrow":"Mockup UI","dash.title":"Dashboard IoT Raksa","dash.subtitle":"Enam tab pantauan: devices, telemetry, simulator, alerts, history, AI control","dash.tab_devices":"Devices","dash.tab_telemetry":"Telemetry","dash.tab_simulator":"Simulator","dash.tab_alerts":"Alerts","dash.tab_history":"History","dash.tab_aicontrol":"AI Control",
-    "dash.live":"LIVE","dash.dev1_st":"Online · suhu 42°C","dash.dev2_st":"Online · gas normal","dash.dev3_st":"Online · jarak 2.4m","dash.ac":"AC","dash.fan":"Fan","dash.pump":"Pump",
-    "dash.alert_critical":"Suhu kritis: 42°C","dash.alert_high":"Suhu tinggi: 38°C","dash.alert_offline":"Perangkat offline","dash.resolve":"Resolve","dash.banner_text":"Aksi otomatis menunggu konfirmasi operator","dash.banner_yes":"✅ Eksekusi","dash.banner_no":"❌ Tolak",
-    "dash.log1":"Kirim konfirmasi Telegram","dash.log2":"LLM menyusun rencana: AC ON 22°C","dash.log3":"Operator menyetujui","dash.status_pending":"menunggu","dash.status_executed":"dieksekusi",
-    "esp.eyebrow":"Edge Device","esp.title":"ESP32 / Wokwi Simulator","esp.subtitle":"Tiga sensor, tiga studi kasus deteksi anomali real-time",
-    "views.eyebrow":"Frontend","views.title":"Dashboard Frontend — 5 View","views.subtitle":"Chat, Tutor, IoT, RAG, dan Feedback dalam satu sidebar","views.chat":"Chat","views.tutor":"Tutor","views.iot":"IoT","views.rag":"RAG","views.feedback":"Feedback",
-    "views.chat_q1":"Bagaimana cara kerja RAG?","views.chat_a1":"RAG menggabungkan retrieval vektor dengan generasi LLM...","views.tutor_q":"Apa yang kamu pahami dari topik ini?","views.tutor_a":"Aku pikir vektor itu seperti arah...","views.tutor_q2":"Mengapa seperti arah? Jelaskan lebih lanjut.","views.socratic":"Mode Sokratik","views.rag_upload":"Upload dokumen PDF/DOCX/TXT","views.similarity":"Similarity","views.iot_dev1":"42°C · 55%","views.iot_dev2":"320ppm","views.feedback_q":"Bagaimana sesinya?","views.thanks_fb":"Terima kasih atas masukan Anda!",
-    "api.eyebrow":"Backend","api.title":"API Reference","api.subtitle":"Endpoint REST untuk integrasi cepat","api.core_t":"Core","api.rag_t":"RAG","api.tg_t":"Telemetry & Telegram","api.misc_t":"Lainnya","api.cmd_cm":"# Tanya lewat Agen Otonom","api.resp_ok":"Respons: 200 OK",
+    "dash.eyebrow":"Mockup UI","dash.title":"Dashboard Admin Institusi","dash.subtitle":"Enam tab pantauan: students, reports, simulator, alerts, history, AI control","dash.tab_devices":"Students","dash.tab_telemetry":"Reports","dash.tab_simulator":"Simulator","dash.tab_alerts":"Alerts","dash.tab_history":"History","dash.tab_aicontrol":"AI Control",
+    "dash.live":"LIVE","dash.dev1_st":"IPK 1.85 (Bermasalah)","dash.dev2_st":"IPK 3.8 (Baik)","dash.dev3_st":"Hutang SPP","dash.ac":"SP 1","dash.fan":"-","dash.pump":"Tagih",
+    "dash.alert_critical":"IPK Kritis: 1.85 (John)","dash.alert_high":"Hutang SPP: Bob","dash.alert_offline":"Belum input KRS","dash.resolve":"Resolve","dash.banner_text":"AI menyarankan pembuatan Surat Peringatan. Setujui?","dash.banner_yes":"✅ Setujui","dash.banner_no":"❌ Tolak",
+    "dash.log1":"Kirim usulan SP ke Admin","dash.log2":"LLM menyusun draf surat","dash.log3":"Admin menyetujui","dash.status_pending":"menunggu","dash.status_executed":"dieksekusi",
+    "esp.eyebrow":"External Integration","esp.title":"Integrasi Sistem Informasi Institusi","esp.subtitle":"Tiga metode koneksi data, sinkronisasi, dan trigger otomatis","esp.c1":"Tarik data IPK dari SIA secara terjadwal","esp.c2":"Upload dokumen aturan akademik (PDF)","esp.c3":"Trigger agen saat nilai KHS di-input",
+    "views.eyebrow":"Frontend","views.title":"Dashboard Frontend — 5 View","views.subtitle":"Chat, Tutor, Campus, RAG, dan Feedback dalam satu sidebar","views.chat":"Chat","views.tutor":"Tutor","views.iot":"Campus","views.rag":"RAG","views.feedback":"Feedback",
+    "views.chat_q1":"Bagaimana prosedur pendaftaran UTB?","views.chat_a1":"Bisa diakses di portal akademik...","views.tutor_q":"Jelaskan konp machine learning","views.tutor_a":"ML adalah cabang AI...","views.tutor_q2":"Apa contohnya?","views.socratic":"Mode Sokratik","views.rag_upload":"Upload dokumen PDF/DOCX/TXT","views.similarity":"Similarity","views.iot_dev1":"1,245","views.iot_dev2":"32","views.feedback_q":"Bagaimana sesinya?","views.thanks_fb":"Terima kasih atas masukan Anda!",
+    "api.eyebrow":"Backend","api.title":"API Reference","api.subtitle":"Endpoint REST untuk integrasi cepat","api.core_t":"Core","api.rag_t":"RAG","api.tg_t":"SIA & Telegram","api.misc_t":"Lainnya","api.cmd_cm":"# Tanya lewat Agen Otonom","api.resp_ok":"Respons: 200 OK",
     "svc.eyebrow":"Deployment","svc.title":"Services (Docker Compose)","svc.subtitle":"5 container produksi dari docker-compose.hub.yml","svc.cmd_cm":"# Jalankan dari Docker Hub image","svc.creating":"Membuat...","svc.started":"Started",
     "env.eyebrow":"Konfigurasi","env.title":"Variabel Environment","env.subtitle":"Nilai default dari docker-compose.hub.yml","env.ctx_cm":"# Dapat dinaikkan ke 2048 jika RAM cukup","env.threads_cm":"# Dinaikkan ke 4 untuk CPU lebih cepat","env.optional":"opsional",
     "ci.eyebrow":"Automation","ci.title":"CI/CD GitHub Actions","ci.subtitle":"Tiga job berurutan: build, push, update deskripsi","ci.job1_dur":"~2 menit (Bun + Vite)","ci.job2_dur":"~15-20 menit (cached ~5m)","ci.job3_dur":"~30 detik","ci.chip_latest":"latest",
-    "links.eyebrow":"Resource","links.title":"Tautan & QR","links.subtitle":"Coba langsung — bot Telegram, source, dan image Docker","links.docker":"Docker Hub","links.github":"GitHub","links.telegram":"Telegram Bot","links.raksa":"Raksa-Cloud","links.scan":"Pindai QR",
+    "links.eyebrow":"Resource","links.title":"Tautan & QR","links.subtitle":"Coba langsung — bot Telegram, source, dan image Docker","links.docker":"Docker Hub","links.github":"GitHub","links.telegram":"Telegram Bot","links.raksa":"Institusi Case","links.scan":"Pindai QR",
     "explore.eyebrow":"Eksplorasi Lanjutan","explore.title":"Integrasi Enterprise & Cloud","explore.subtitle":"Penerapan arsitektur Agentic AI pada domain bisnis dan infrastruktur cloud",
     "explore.erp_t":"Agentic-AI-Knowledge-ERP","explore.erp_d":"Ekspansi pipeline agentic untuk Enterprise Resource Planning. LLM berinteraksi dengan knowledge base internal perusahaan, menjawab query kompleks, dan mengotomatisasi task administratif berbasis data ERP.",
     "explore.erp_f1_t":"Knowledge Base ERP:","explore.erp_f1_d":"Ingest manual SOP, data transaksi, dan dokumen kebijakan ke pgvector.","explore.erp_f2_t":"Agent Task Automation:","explore.erp_f2_d":"Agen merancang rencana penyelesaian untuk proses seperti pembuatan laporan atau validasi data.","explore.erp_f3_t":"Natural Language Query:","explore.erp_f3_d":"Eksplorasi database ERP menggunakan bahasa manusia yang aman dan terstruktur.",
@@ -1163,39 +1164,39 @@ const I18N = {
     "thanks.qa":"Terima kasih — Q&A"
   },
   en:{
-    "opening.subtitle":"Autonomous Agentic AI Pipeline with IoT Dashboard, Telegram Confirmation, and Raksa-Cloud Integration",
+    "opening.subtitle":"Institutional Case Study: Academic Monitoring & ERP Automation using Local LLM",
     "opening.speaker_label":"Speaker",
-    "overview.eyebrow":"System Overview","overview.title":"Six Components of Raksa","overview.subtitle":"Modular architecture: LLM, NLP, RAG, IoT, Bot, and real-time Dashboard","overview.center":"Agentic AI",
-    "overview.qwen_desc":"Reasoning & tool-calling","overview.saka_desc":"Indonesian language","overview.pgvector_desc":"Vector knowledge","overview.raksa_desc":"Sensors & actuators","overview.telegram_desc":"Operator confirmation","overview.ws_desc":"Real-time monitoring",
+    "overview.eyebrow":"System Overview","overview.title":"Six Core Components","overview.subtitle":"Modular architecture to support Autonomous AI Agents in institutional environments","overview.center":"Agentic AI",
+    "overview.qwen_desc":"Reasoning & tool-calling","overview.saka_desc":"Language normalization","overview.pgvector_desc":"Institutional knowledge base","overview.raksa_desc":"Academic data integration","overview.telegram_desc":"Notification & approval","overview.ws_desc":"Real-time monitoring",
     "arch.eyebrow":"Architecture & Server","arch.title":"Architecting on openSUSE","arch.subtitle":"Single backend container on openSUSE containing FastAPI, Saka-NLP, RAG, and internal llama.cpp","arch.single_container_lbl":"BACKEND CONTAINER (openSUSE Tumbleweed)",
-    "arch.browser_desc":"UI & admin panel","arch.frontend_desc":"Vue + Nginx Proxy /api","arch.backend_desc":"FastAPI + Saka-NLP + RAG","arch.llama_desc":"Internal 127.0.0.1","arch.db_desc":"pgvector extension","arch.pgweb_desc":"DB Web UI","arch.mdl_desc":"Download GGUF (profile: llm)",
-    "llm_flow.eyebrow":"Runtime","llm_flow.title":"LLM Serving Workflow","llm_flow.subtitle":"Request lifecycle from browser to agentic response generation",
-    "llm_flow.s1_t":"1. Browser","llm_flow.s1_d":"frontend :3005","llm_flow.s2_t":"2. FastAPI","llm_flow.s2_d":":8000 receives request","llm_flow.s3_t":"3. Saka-NLP","llm_flow.s3_d":"Slang normalization","llm_flow.s4_t":"4. Cache","llm_flow.s4_d":"Check semantic cache","llm_flow.s5_t":"5. RAG","llm_flow.s5_d":"Fetch 3 documents","llm_flow.s6_t":"6. Prefill","llm_flow.s6_d":"Assemble system prompt","llm_flow.s7_t":"7. Decode","llm_flow.s7_d":"llama.cpp tool loop","llm_flow.s8_t":"8. Response","llm_flow.s8_d":"agent_steps to UI",
+    "arch.browser_desc":"Institutional web UI","arch.frontend_desc":"Vue + Nginx Proxy /api","arch.backend_desc":"FastAPI + Saka-NLP + RAG","arch.llama_desc":"Internal 127.0.0.1","arch.db_desc":"pgvector & SIS Data","arch.pgweb_desc":"DB Web UI","arch.mdl_desc":"Download GGUF (profile: llm)",
+    "llm_flow.eyebrow":"Runtime","llm_flow.title":"LLM Serving Workflow","llm_flow.subtitle":"Request lifecycle from admin to agentic response generation",
+    "llm_flow.s1_t":"1. Admin","llm_flow.s1_d":"Dashboard :3005","llm_flow.s2_t":"2. FastAPI","llm_flow.s2_d":":8000 receives request","llm_flow.s3_t":"3. Saka-NLP","llm_flow.s3_d":"Slang normalization","llm_flow.s4_t":"4. Cache","llm_flow.s4_d":"Check semantic cache","llm_flow.s5_t":"5. RAG","llm_flow.s5_d":"Fetch SOP/Rules","llm_flow.s6_t":"6. Prefill","llm_flow.s6_d":"Assemble system prompt","llm_flow.s7_t":"7. Decode","llm_flow.s7_d":"llama.cpp tool loop","llm_flow.s8_t":"8. Response","llm_flow.s8_d":"Result to UI",
     "llm_flow.card1_t":"Prefill vs Decode","llm_flow.card1_d":"System prompt assembled once (parallel prefill), token generation runs autoregressively for latency efficiency.","llm_flow.card2_t":"Semantic Cache","llm_flow.card2_d":"Cosine distance < 0.1 (>90% similar) replies instantly without calling LLM.","llm_flow.card3_t":"Conversation Memory","llm_flow.card3_d":"Stores last 10 messages per conversation_id for coherent multi-turn dialogue.",
-    "flow.eyebrow":"Pipeline","flow.title":"Agentic IoT Auto-Control Flow","flow.subtitle":"From sensor telemetry to actuator execution with operator confirmation","flow.nonblock":"non-blocking",
-    "flow.s1":"Sensor sends temperature, humidity, gas","flow.s2":"Replies 200 OK immediately (non-blocking)","flow.s3":"analysis runs in background","flow.s4":"LLM analyzes telemetry & forms an action plan","flow.s5":"Telegram notification to operator","flow.s6":"✅/❌ (120 seconds timer)","flow.s7":"Actuator execution + result report",
-    "tg.eyebrow":"UI Mockup","tg.title":"Telegram Confirmation Bot","tg.subtitle":"Operator approves execution from phone — anywhere, anytime",
-    "tg.bot_name":"Raksa Agentic Bot","tg.bot_status":"online","tg.alert_label":"⚠ CRITICAL ALERT","tg.device":"Device","tg.temp":"Critical temp","tg.plan":"Plan: AC ON (22°C)","tg.execute":"✅ Execute","tg.reject":"❌ Reject","tg.result_ok":"✅ AC turned on, target 22°C","tg.seconds":"seconds",
-    "tg.device_lbl":"Device","tg.temp_lbl":"Temp","tg.action_lbl":"Action","tg.status_lbl":"Status","tg.status_confirmed":"Confirmed",
+    "flow.eyebrow":"Pipeline","flow.title":"Agentic Academic Control Flow","flow.subtitle":"From Information System trigger to warning letter execution with admin approval","flow.nonblock":"non-blocking",
+    "flow.s1":"System detects student GPA < 2.0","flow.s2":"Replies 200 OK immediately (non-blocking)","flow.s3":"academic history analysis runs in background","flow.s4":"LLM analyzes data & drafts warning letter","flow.s5":"Telegram notification to Admin","flow.s6":"✅/❌ (120 seconds timer)","flow.s7":"Generate PDF Letter & Send Email to Student",
+    "tg.eyebrow":"UI Mockup","tg.title":"Admin Telegram Confirmation Bot","tg.subtitle":"Admin approves academic task execution from phone",
+    "tg.bot_name":"Campus Admin Bot","tg.bot_status":"online","tg.alert_label":"⚠ ACADEMIC WARNING","tg.device":"Student","tg.temp":"Current GPA","tg.plan":"Plan: Generate Warning Letter (SP)","tg.execute":"✅ Generate","tg.reject":"❌ Reject","tg.result_ok":"✅ Warning letter generated & sent via Email.","tg.seconds":"seconds",
+    "tg.device_lbl":"ID","tg.temp_lbl":"GPA","tg.action_lbl":"Action","tg.status_lbl":"Status","tg.status_confirmed":"Confirmed",
     "sm.eyebrow":"Runtime","sm.title":"Agentic State Machine","sm.subtitle":"Cycle: Plan → Select → Execute → Reflect → Complete","sm.max_steps":"max 5 steps","sm.trace":"trace.json",
     "chat.eyebrow":"UI Mockup","chat.title":"Agentic Chat with Step Trace","chat.subtitle":"Every answer shows a transparent trace of agent steps",
-    "chat.question":"What's the server room temperature right now and is it safe?","chat.step1_d":"Saka-NLP text normalization + RAG context fetched","chat.step3_d":"Sensor result: 42°C","chat.step4_d":"42°C > threshold → actuator execution required","chat.answer":"Temperature is 42°C — critical. I've turned on the AC via Telegram.","chat.cache":"⚡ semantic cache","chat.force_regen":"Force Regenerate","chat.side_title":"Agent Step Trace","chat.side_desc":"The agent_steps array records each phase from Planning to Reflection. Useful for debugging and AI decision transparency.",
-    "tools.eyebrow":"Agent Capabilities","tools.title":"11 Agent Tools","tools.subtitle":"Three groups: NLP, Knowledge, and IoT — ready to be chained by LLM","tools.group_nlp":"NLP","tools.group_knowledge":"Knowledge","tools.group_iot":"IoT",
+    "chat.question":"Who are the students with GPA below 2.0 and what is the SP procedure?","chat.step1_d":"Saka-NLP text normalization + RAG context fetched","chat.step3_d":"Found: John Doe (1.85), Jane Smith (1.75)","chat.step4_d":"Saving search history, summarizing SP rules","chat.answer":"John Doe and Jane Smith. SP Procedure: Draft letter from dean, email student.","chat.cache":"⚡ semantic cache","chat.force_regen":"Force Regenerate","chat.side_title":"Agent Step Trace","chat.side_desc":"The agent_steps array records each phase from Planning to Reflection. Useful for debugging and AI decision transparency.",
+    "tools.eyebrow":"Agent Capabilities","tools.title":"11 Agent Tools","tools.subtitle":"Three groups: NLP, Knowledge, and Institution — ready to be chained by LLM","tools.group_nlp":"NLP","tools.group_knowledge":"Knowledge","tools.group_iot":"Institution",
     "setup1.eyebrow":"Deployment","setup1.title":"Steps 1-3: Prepare openSUSE Server","setup1.subtitle":"Docker installation and resource preparation on openSUSE Tumbleweed/Leap","setup1.s1_t":"Step 1 — Update system","setup1.s2_t":"Step 2 — Install Docker + Compose","setup1.s2_cm":"# log out and back in for group to take effect","setup1.s3_t":"Step 3 — Check resources","setup1.s3_ok":"✔ Docker is ready","setup1.prereq_t":"Prerequisites","setup1.prereq_1":"openSUSE Tumbleweed/Leap","setup1.prereq_2":"RAM ≥ 2 GB free","setup1.prereq_3":"Disk ≥ 4 GB empty","setup1.prereq_4":"Internet access (HuggingFace)","setup1.note_t":"Note","setup1.note_d":"Ensure the user is in the docker group to avoid using sudo for docker compose.",
     "setup2.eyebrow":"Deployment","setup2.title":"Steps 4-6: Deploy & Enable LLM","setup2.subtitle":"Run docker compose with llm profile for local inference","setup2.s4_t":"Step 4 — Fetch configuration","setup2.s5_t":"Step 5 — Configure environment (.env)","setup2.s5_cm":"# Set DB password, LLAMA_CTX, LLAMA_THREADS, TELEGRAM_* (optional)","setup2.s6_t":"Step 6 — Run stack","setup2.s6_cm1":"# Without --profile llm backend still runs, but llama_ready=false","setup2.s6_cm2":"# and AI features are disabled.","setup2.s6_ok":"✔ Containers started","setup2.fw_t":"Firewall (optional)","setup2.fw_d":"Open ports if firewall is active:","setup2.mdl_t":"Download Model","setup2.mdl_d":"The model-downloader container will download GGUF qwen2.5-0.5b to models_data volume.",
     "setup3.eyebrow":"Deployment","setup3.title":"Steps 7-9: Verify & Test","setup3.subtitle":"Check service health and test agentic AI endpoints","setup3.s7_t":"Step 7 — Check health","setup3.s8_t":"Step 8 — Populate KB & ask agent","setup3.s9_t":"Step 9 — Open access points","setup3.s9_cm":"# Dashboard :3005 | API :8000/docs | pgweb :8081","setup3.trouble_t":"Troubleshooting","setup3.trouble_1":"llama_ready=false → check RAM & logs","setup3.trouble_2":"Model not downloaded → logs model-downloader","setup3.trouble_3":"Port conflict → change FRONTEND_PORT/API_PORT","setup3.webhook_t":"Telegram Webhook (Optional)","setup3.webhook_d":"After domain is active, point bot webhook to /api/telegram/webhook endpoint.",
-    "dash.eyebrow":"UI Mockup","dash.title":"Raksa IoT Dashboard","dash.subtitle":"Six monitoring tabs: devices, telemetry, simulator, alerts, history, AI control","dash.tab_devices":"Devices","dash.tab_telemetry":"Telemetry","dash.tab_simulator":"Simulator","dash.tab_alerts":"Alerts","dash.tab_history":"History","dash.tab_aicontrol":"AI Control",
-    "dash.live":"LIVE","dash.dev1_st":"Online · temp 42°C","dash.dev2_st":"Online · gas normal","dash.dev3_st":"Online · dist 2.4m","dash.ac":"AC","dash.fan":"Fan","dash.pump":"Pump",
-    "dash.alert_critical":"Critical temperature: 42°C","dash.alert_high":"High temperature: 38°C","dash.alert_offline":"Device offline","dash.resolve":"Resolve","dash.banner_text":"Automated action awaiting operator confirmation","dash.banner_yes":"✅ Execute","dash.banner_no":"❌ Reject",
-    "dash.log1":"Send Telegram confirmation","dash.log2":"LLM forms plan: AC ON 22°C","dash.log3":"Operator approved","dash.status_pending":"pending","dash.status_executed":"executed",
-    "esp.eyebrow":"Edge Device","esp.title":"ESP32 / Wokwi Simulator","esp.subtitle":"Three sensors, three real-time anomaly detection case studies",
-    "views.eyebrow":"Frontend","views.title":"Frontend Dashboard — 5 Views","views.subtitle":"Chat, Tutor, IoT, RAG, and Feedback in one sidebar","views.chat":"Chat","views.tutor":"Tutor","views.iot":"IoT","views.rag":"RAG","views.feedback":"Feedback",
-    "views.chat_q1":"How does RAG work?","views.chat_a1":"RAG combines vector retrieval with LLM generation...","views.tutor_q":"What do you understand about this topic?","views.tutor_a":"I think vectors are like directions...","views.tutor_q2":"Why like directions? Explain further.","views.socratic":"Socratic Mode","views.rag_upload":"Upload PDF/DOCX/TXT document","views.similarity":"Similarity","views.iot_dev1":"42°C · 55%","views.iot_dev2":"320ppm","views.feedback_q":"How was the session?","views.thanks_fb":"Thank you for your feedback!",
-    "api.eyebrow":"Backend","api.title":"API Reference","api.subtitle":"REST endpoints for quick integration","api.core_t":"Core","api.rag_t":"RAG","api.tg_t":"Telemetry & Telegram","api.misc_t":"Misc","api.cmd_cm":"# Ask via Autonomous Agent","api.resp_ok":"Response: 200 OK",
+    "dash.eyebrow":"UI Mockup","dash.title":"Institutional Admin Dashboard","dash.subtitle":"Six monitoring tabs: students, reports, simulator, alerts, history, AI control","dash.tab_devices":"Students","dash.tab_telemetry":"Reports","dash.tab_simulator":"Simulator","dash.tab_alerts":"Alerts","dash.tab_history":"History","dash.tab_aicontrol":"AI Control",
+    "dash.live":"LIVE","dash.dev1_st":"GPA 1.85 (Issue)","dash.dev2_st":"GPA 3.8 (Good)","dash.dev3_st":"Tuition Debt","dash.ac":"SP 1","dash.fan":"-","dash.pump":"Bill",
+    "dash.alert_critical":"Critical GPA: 1.85 (John)","dash.alert_high":"Tuition Debt: Bob","dash.alert_offline":"Missing KRS input","dash.resolve":"Resolve","dash.banner_text":"AI suggests generating a Warning Letter. Approve?","dash.banner_yes":"✅ Approve","dash.banner_no":"❌ Reject",
+    "dash.log1":"Send SP proposal to Admin","dash.log2":"LLM drafts letter","dash.log3":"Admin approved","dash.status_pending":"pending","dash.status_executed":"executed",
+    "esp.eyebrow":"External Integration","esp.title":"Information System Integration","esp.subtitle":"Three methods for data connection, sync, and automatic triggers","esp.c1":"Pull GPA data from SIS on schedule","esp.c2":"Upload academic rule documents (PDF)","esp.c3":"Trigger agent when KHS grades inputted",
+    "views.eyebrow":"Frontend","views.title":"Frontend Dashboard — 5 Views","views.subtitle":"Chat, Tutor, Campus, RAG, and Feedback in one sidebar","views.chat":"Chat","views.tutor":"Tutor","views.iot":"Campus","views.rag":"RAG","views.feedback":"Feedback",
+    "views.chat_q1":"What is the UTB registration procedure?","views.chat_a1":"Accessible on the academic portal...","views.tutor_q":"Explain machine learning concept","views.tutor_a":"ML is a branch of AI...","views.tutor_q2":"What is an example?","views.socratic":"Socratic Mode","views.rag_upload":"Upload PDF/DOCX/TXT document","views.similarity":"Similarity","views.iot_dev1":"1,245","views.iot_dev2":"32","views.feedback_q":"How was the session?","views.thanks_fb":"Thank you for your feedback!",
+    "api.eyebrow":"Backend","api.title":"API Reference","api.subtitle":"REST endpoints for quick integration","api.core_t":"Core","api.rag_t":"RAG","api.tg_t":"SIS & Telegram","api.misc_t":"Misc","api.cmd_cm":"# Ask via Autonomous Agent","api.resp_ok":"Response: 200 OK",
     "svc.eyebrow":"Deployment","svc.title":"Services (Docker Compose)","svc.subtitle":"5 production containers from docker-compose.hub.yml","svc.cmd_cm":"# Run from Docker Hub image","svc.creating":"Creating...","svc.started":"Started",
     "env.eyebrow":"Configuration","env.title":"Environment Variables","env.subtitle":"Default values from docker-compose.hub.yml","env.ctx_cm":"# Can be increased to 2048 if RAM is sufficient","env.threads_cm":"# Increased to 4 for faster CPU","env.optional":"optional",
     "ci.eyebrow":"Automation","ci.title":"CI/CD GitHub Actions","ci.subtitle":"Three sequential jobs: build, push, update description","ci.job1_dur":"~2 mins (Bun + Vite)","ci.job2_dur":"~15-20 mins (cached ~5m)","ci.job3_dur":"~30 secs","ci.chip_latest":"latest",
-    "links.eyebrow":"Resource","links.title":"Links & QR","links.subtitle":"Try it now — Telegram bot, source, and Docker image","links.docker":"Docker Hub","links.github":"GitHub","links.telegram":"Telegram Bot","links.raksa":"Raksa-Cloud","links.scan":"Scan QR",
+    "links.eyebrow":"Resource","links.title":"Links & QR","links.subtitle":"Try it now — Telegram bot, source, and Docker image","links.docker":"Docker Hub","links.github":"GitHub","links.telegram":"Telegram Bot","links.raksa":"Institution Case","links.scan":"Scan QR",
     "explore.eyebrow":"Advanced Exploration","explore.title":"Enterprise & Cloud Integration","explore.subtitle":"Applying Agentic AI architecture to business domains and cloud infrastructure",
     "explore.erp_t":"Agentic-AI-Knowledge-ERP","explore.erp_d":"Expanding the agentic pipeline for Enterprise Resource Planning. The LLM interacts with internal company knowledge bases, answers complex queries, and automates administrative tasks based on ERP data.",
     "explore.erp_f1_t":"ERP Knowledge Base:","explore.erp_f1_d":"Ingest SOP manuals, transaction data, and policy documents into pgvector.","explore.erp_f2_t":"Agent Task Automation:","explore.erp_f2_d":"Agents design completion plans for processes like report generation or data validation.","explore.erp_f3_t":"Natural Language Query:","explore.erp_f3_d":"Explore ERP databases using safe, structured human language.",
@@ -1348,7 +1349,7 @@ function runSlideAnimations(idx) {
     const term = document.getElementById('apiTerm');
     const cmd = `curl -X POST /chat \\
   -H "Content-Type: application/json" \\
-  -d '{"message":"bagaimana cara IoT ngukur suhu?"}'`;
+  -d '{"message":"siapa mahasiswa dengan IPK < 2.0?"}'`;
     term.innerHTML = `<span class="cm">${I18N[curLang]['api.cmd_cm']}</span>\n`;
     let i = 0;
     activeIntervals.push(setInterval(() => {
@@ -1361,7 +1362,7 @@ function runSlideAnimations(idx) {
         i++;
       } else {
         clearInterval(activeIntervals[0]);
-        term.innerHTML += `\n<span class="ok">${I18N[curLang]['api.resp_ok']}</span>\n{\n  "agent_steps": [...],\n  "response": "Suhu diukur oleh sensor..."\n}<span class="cur"></span>`;
+        term.innerHTML += `\n<span class="ok">${I18N[curLang]['api.resp_ok']}</span>\n{\n  "agent_steps": [...],\n  "response": "John Doe..."\n}<span class="cur"></span>`;
       }
     }, 20));
   }
