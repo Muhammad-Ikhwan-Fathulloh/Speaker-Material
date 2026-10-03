@@ -52,7 +52,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 .footer-repo a{color:var(--green);text-decoration:none}
 
 @keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes popIn{0%{opacity:0;transform:scale(.7)}60%{opacity:1;transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes popIn{0%{opacity:0;transform:scale(.7)}60%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 @keyframes drawLine{from{stroke-dashoffset:var(--len,800)}to{stroke-dashoffset:0}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
@@ -61,10 +61,13 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 @keyframes typingDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
 @keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(900px) rotate(720deg)}}
 @keyframes glowPulse{0%,100%{filter:drop-shadow(0 0 4px var(--green))}50%{filter:drop-shadow(0 0 16px var(--green))}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
 .slide .stagger{opacity:0}
 .slide.active .stagger{animation:fadeInUp .55s cubic-bezier(.4,0,.2,1) forwards;animation-delay:calc(var(--i,0) * .08s)}
 .slide .pop{opacity:0}
 .slide.active .pop{animation:popIn .5s cubic-bezier(.34,1.56,.64,1) forwards;animation-delay:calc(var(--i,0) * .1s)}
+.slide.active .pop.floaty{animation:popIn .5s cubic-bezier(.34,1.56,.64,1) forwards, float 4s ease-in-out infinite;animation-delay:calc(var(--i,0) * .1s), calc((var(--i,0) * .3s) + .8s)}
 .draw-line{stroke-dasharray:var(--len,800);stroke-dashoffset:var(--len,800)}
 .slide.active .draw-line{animation:drawLine 1.4s ease-out forwards;animation-delay:calc(var(--i,0) * .15s + .3s)}
 @media (prefers-reduced-motion:reduce){.slide,.slide *{transition:none!important;animation:none!important}.slide .stagger,.slide .pop,.draw-line{opacity:1;stroke-dashoffset:0}}
@@ -82,7 +85,18 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
 .slide.active .s1-speaker{animation:fadeInUp .7s ease forwards 1.5s}
 .s1-speaker .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--green);text-transform:uppercase}
 .s1-speaker .nm{font-family:var(--display);font-weight:600;font-size:clamp(18px,1.5vw,22px);color:var(--txt);margin-top:4px}
-.s1-speaker .ev{font-size:12px;color:var(--txt-d);margin-top:2px}
+.s1-speaker .ev{font-size:12px;color:var(--txt-d);margin-top:2px; display:flex; align-items:center; gap:8px;}
+.s1-speaker .ev a{color:var(--blue); text-decoration:none; display:inline-flex; align-items:center; gap:4px;}
+
+/* Slide 2: Foundations */
+.s-foundations{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;min-height:0}
+.s-found-card{padding:28px;background:var(--glass);border:1px solid var(--bdr);border-radius:16px;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden}
+.s-found-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--green)}
+.s-found-card .ic{width:56px;height:56px;background:rgba(115,186,37,.15);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--green)}
+.s-found-card .ic svg{width:28px;height:28px}
+.s-found-card .ttl{font-family:var(--display);font-weight:700;font-size:18px;color:var(--txt)}
+.s-found-card .desc{font-size:12px;color:var(--txt-d);line-height:1.6;flex:1}
+.s-found-card .tag-bottom{margin-top:auto;font-family:var(--mono);font-size:10px;color:var(--blue);background:rgba(38,165,228,.1);padding:4px 10px;border-radius:6px;border:1px solid rgba(38,165,228,.2);align-self:flex-start}
 
 .s2-grid{position:relative;flex:1;min-height:0}
 .s2-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:170px;height:170px;display:flex;align-items:center;justify-content:center;z-index:3}
@@ -417,12 +431,48 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="s1-speaker">
     <div class="lbl" data-i18n="opening.speaker_label">Pembicara</div>
     <div class="nm">Muhammad Ikhwan Fathulloh</div>
-    <div class="ev">openSUSE Asia Summit 2026</div>
+    <div class="ev">
+      <span>openSUSE Asia Summit 2026 · </span>
+      <a href="https://www.linkedin.com/in/muhammad-ikhwan-fathulloh/" target="_blank" title="LinkedIn">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        LinkedIn
+      </a>
+    </div>
   </div>
 </section>
 
-<!-- 2. Overview -->
+<!-- 2. Tiga Fondasi Utama -->
 <section class="slide bg-material" data-slide="2">
+  <div class="safe">
+    <div class="slide-head">
+      <div><div class="eyebrow" data-i18n="foundation.eyebrow">Pengantar</div><h2 data-i18n="foundation.title">Tiga Fondasi Utama</h2><div class="sub" data-i18n="foundation.subtitle">Konsep dasar LLM, openSUSE, dan Agentic AI sebelum membangun arsitektur kompleks</div></div>
+    </div>
+    <div class="s-foundations">
+      <div class="s-found-card stagger" style="--i:0">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v1a3 3 0 0 0-3 3v1a3 3 0 0 0-3 3v3a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-3a3 3 0 0 0-3-3V9a3 3 0 0 0-3-3V5a3 3 0 0 0-3-3z"/></svg></div>
+        <div class="ttl" data-i18n="foundation.llm_t">Large Language Model (LLM)</div>
+        <div class="desc" data-i18n="foundation.llm_d">Model AI yang dilatih dengan miliaran token teks untuk memahami konteks, menjawab pertanyaan, dan menulis kode. Di sini kita menggunakan Qwen 2.5 yang dijalankan secara lokal (offline) via llama.cpp untuk menjaga privasi data institusi.</div>
+        <div class="tag-bottom">Qwen 2.5 + llama.cpp</div>
+      </div>
+      <div class="s-found-card stagger" style="--i:1">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="ttl" data-i18n="foundation.suse_t">openSUSE</div>
+        <div class="desc" data-i18n="foundation.suse_d">Sistem operasi open-source berbasis Linux (Tumbleweed) yang stabil, aman, dan ringan. Digunakan sebagai base image Docker untuk backend, memastikan lingkungan inferensi AI yang konsisten, terisolasi, dan mendukung ekosistem cloud-native.</div>
+        <div class="tag-bottom">Tumbleweed Base Image</div>
+      </div>
+      <div class="s-found-card stagger" style="--i:2">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <div class="ttl" data-i18n="foundation.agent_t">Agentic AI</div>
+        <div class="desc" data-i18n="foundation.agent_d">Evolusi dari chatbot biasa. AI diberikan agen "tool" (seperti query database, API, kirim email) dan kebebasan untuk merencanakan (plan), bertindak (execute), dan mengevaluasi (reflect) secara otonom hingga tujuan institusi tercapai.</div>
+        <div class="tag-bottom">Plan → Execute → Reflect</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
+</section>
+
+<!-- 3. Overview -->
+<section class="slide bg-material" data-slide="3">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="overview.eyebrow">Ikhtisar Sistem</div><h2 data-i18n="overview.title">Enam Komponen Utama</h2><div class="sub" data-i18n="overview.subtitle">Arsitektur modular untuk mendukung Agen AI Otonom di lingkungan institusi</div></div>
@@ -447,8 +497,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 3. Arsitektur -->
-<section class="slide bg-material" data-slide="3">
+<!-- 4. Arsitektur -->
+<section class="slide bg-material" data-slide="4">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="arch.eyebrow">Arsitektur & Server</div><h2 data-i18n="arch.title">Architecting on openSUSE</h2><div class="sub" data-i18n="arch.subtitle">Satu kontainer backend openSUSE berisi FastAPI, Saka-NLP, RAG, dan llama.cpp internal</div></div>
@@ -478,8 +528,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 4. LLM Lifecycle -->
-<section class="slide bg-material" data-slide="4">
+<!-- 5. LLM Lifecycle -->
+<section class="slide bg-material" data-slide="5">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="llm_flow.eyebrow">Runtime</div><h2 data-i18n="llm_flow.title">Alur Kerja LLM Serving</h2><div class="sub" data-i18n="llm_flow.subtitle">Lifecycle request dari admin hingga respons agentic dihasilkan</div></div>
@@ -509,8 +559,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 5. Agentic Flow -->
-<section class="slide bg-material" data-slide="5">
+<!-- 6. Agentic Flow -->
+<section class="slide bg-material" data-slide="6">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="flow.eyebrow">Pipeline</div><h2 data-i18n="flow.title">Agentic Academic Control Flow</h2><div class="sub" data-i18n="flow.subtitle">Dari trigger Sistem Informasi hingga eksekusi surat peringatan dengan persetujuan admin</div></div>
@@ -533,8 +583,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 6. Mockup Telegram -->
-<section class="slide bg-material" data-slide="6">
+<!-- 7. Mockup Telegram -->
+<section class="slide bg-material" data-slide="7">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="tg.eyebrow">Mockup UI</div><h2 data-i18n="tg.title">Bot Telegram Konfirmasi Admin</h2><div class="sub" data-i18n="tg.subtitle">Admin menyetujui eksekusi tugas akademik dari ponsel</div></div>
@@ -579,8 +629,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 7. State Machine -->
-<section class="slide bg-material" data-slide="7">
+<!-- 8. State Machine -->
+<section class="slide bg-material" data-slide="8">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="sm.eyebrow">Runtime</div><h2 data-i18n="sm.title">Mesin Status Agentic</h2><div class="sub" data-i18n="sm.subtitle">Siklus Plan → Select → Execute → Reflect → Complete</div></div>
@@ -609,8 +659,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 8. Chat Agentic -->
-<section class="slide bg-material" data-slide="8">
+<!-- 9. Chat Agentic -->
+<section class="slide bg-material" data-slide="9">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="chat.eyebrow">Mockup UI</div><h2 data-i18n="chat.title">Chat Agentic dengan Step Trace</h2><div class="sub" data-i18n="chat.subtitle">Setiap jawaban menampilkan jejak langkah agen yang transparan</div></div>
@@ -659,8 +709,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 9. 11 Agent Tools -->
-<section class="slide bg-material" data-slide="9">
+<!-- 10. 11 Agent Tools -->
+<section class="slide bg-material" data-slide="10">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="tools.eyebrow">Kemampuan Agen</div><h2 data-i18n="tools.title">11 Agent Tools</h2><div class="sub" data-i18n="tools.subtitle">Tiga kelompok: NLP, Knowledge, dan Institusi — siap dirantai oleh LLM</div></div>
@@ -697,8 +747,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 10. Setup 1-3 -->
-<section class="slide bg-material" data-slide="10">
+<!-- 11. Setup 1-3 -->
+<section class="slide bg-material" data-slide="11">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="setup1.eyebrow">Deployment</div><h2 data-i18n="setup1.title">Langkah 1-3: Siapkan Server openSUSE</h2><div class="sub" data-i18n="setup1.subtitle">Instalasi Docker dan persiapan sumber daya pada openSUSE Tumbleweed/Leap</div></div>
@@ -734,8 +784,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 11. Setup 4-6 -->
-<section class="slide bg-material" data-slide="11">
+<!-- 12. Setup 4-6 -->
+<section class="slide bg-material" data-slide="12">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="setup2.eyebrow">Deployment</div><h2 data-i18n="setup2.title">Langkah 4-6: Deploy & Aktifkan LLM</h2><div class="sub" data-i18n="setup2.subtitle">Eksekusi docker compose dengan profile llm untuk inferensi lokal</div></div>
@@ -769,8 +819,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 12. Setup 7-9 -->
-<section class="slide bg-material" data-slide="12">
+<!-- 13. Setup 7-9 -->
+<section class="slide bg-material" data-slide="13">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="setup3.eyebrow">Deployment</div><h2 data-i18n="setup3.title">Langkah 7-9: Verifikasi & Uji Coba</h2><div class="sub" data-i18n="setup3.subtitle">Cek kesehatan layanan dan uji endpoint AI agentic</div></div>
@@ -803,8 +853,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 13. Dashboard -->
-<section class="slide bg-material" data-slide="13">
+<!-- 14. Dashboard -->
+<section class="slide bg-material" data-slide="14">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="dash.eyebrow">Mockup UI</div><h2 data-i18n="dash.title">Dashboard Admin Institusi</h2><div class="sub" data-i18n="dash.subtitle">Enam tab pantauan: students, reports, simulator, alerts, history, AI control</div></div>
@@ -873,8 +923,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 14. Integrasi SIA -->
-<section class="slide bg-material" data-slide="14">
+<!-- 15. Integrasi SIA -->
+<section class="slide bg-material" data-slide="15">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="esp.eyebrow">External Integration</div><h2 data-i18n="esp.title">Integrasi Sistem Informasi Institusi</h2><div class="sub" data-i18n="esp.subtitle">Tiga metode koneksi data, sinkronisasi, dan trigger otomatis</div></div>
@@ -903,8 +953,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 15. Frontend -->
-<section class="slide bg-material" data-slide="15">
+<!-- 16. Frontend -->
+<section class="slide bg-material" data-slide="16">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="views.eyebrow">Frontend</div><h2 data-i18n="views.title">Dashboard Frontend — 5 View</h2><div class="sub" data-i18n="views.subtitle">Chat, Tutor, Campus, RAG, dan Feedback dalam satu sidebar</div></div>
@@ -932,8 +982,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 16. API Reference -->
-<section class="slide bg-material" data-slide="16">
+<!-- 17. API Reference -->
+<section class="slide bg-material" data-slide="17">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="api.eyebrow">Backend</div><h2 data-i18n="api.title">API Reference</h2><div class="sub" data-i18n="api.subtitle">Endpoint REST untuk integrasi cepat</div></div>
@@ -975,8 +1025,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 17. Services -->
-<section class="slide bg-material" data-slide="17">
+<!-- 18. Services -->
+<section class="slide bg-material" data-slide="18">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="svc.eyebrow">Deployment</div><h2 data-i18n="svc.title">Services (Docker Compose)</h2><div class="sub" data-i18n="svc.subtitle">5 container produksi dari docker-compose.hub.yml</div></div>
@@ -995,8 +1045,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 18. Env Variables -->
-<section class="slide bg-material" data-slide="18">
+<!-- 19. Env Variables -->
+<section class="slide bg-material" data-slide="19">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="env.eyebrow">Konfigurasi</div><h2 data-i18n="env.title">Variabel Environment</h2><div class="sub" data-i18n="env.subtitle">Nilai default dari docker-compose.hub.yml</div></div>
@@ -1020,8 +1070,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 19. CI/CD -->
-<section class="slide bg-material" data-slide="19">
+<!-- 20. CI/CD -->
+<section class="slide bg-material" data-slide="20">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="ci.eyebrow">Automation</div><h2 data-i18n="ci.title">CI/CD GitHub Actions</h2><div class="sub" data-i18n="ci.subtitle">Tiga job berurutan: build, push, update deskripsi</div></div>
@@ -1038,8 +1088,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 20. Links & QR -->
-<section class="slide bg-material" data-slide="20">
+<!-- 21. Links & QR -->
+<section class="slide bg-material" data-slide="21">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="links.eyebrow">Resource</div><h2 data-i18n="links.title">Tautan & QR</h2><div class="sub" data-i18n="links.subtitle">Coba langsung — bot Telegram, source, dan image Docker</div></div>
@@ -1048,7 +1098,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
       <div class="s20-card" style="--i:0"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg></div><div class="info"><div class="nm" data-i18n="links.docker">Docker Hub</div><div class="ds">ikhwan17/agentic-ai-backend</div></div></div>
       <div class="s20-card" style="--i:1"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.1-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg></div><div class="info"><div class="nm" data-i18n="links.github">GitHub</div><div class="ds">Raksa-Agentic-AI-OpenSUSE</div></div></div>
       <div class="s20-card" style="--i:2"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></div><div class="info"><div class="nm" data-i18n="links.telegram">Telegram Bot</div><div class="ds">@campus_admin_bot</div></div></div>
-      <div class="s20-card" style="--i:3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div><div class="info"><div class="nm" data-i18n="links.raksa">Institusi Case</div><div class="ds">integral.utb-univ.ac.id</div></div></div>
+      <div class="s20-card" style="--i:3"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div><div class="info"><div class="nm" data-i18n="links.linkedin">LinkedIn</div><div class="ds">/muhammad-ikhwan-fathulloh</div></div></div>
       <div class="s20-qr">
         <div class="qr-box"><div class="qr-grid"></div><div class="qr-corner qc1"></div><div class="qr-corner qc2"></div><div class="qr-corner qc3"></div><div class="scan"></div></div>
         <div><div class="lbl" data-i18n="links.scan">Pindai QR</div><div class="sub">muhammad-ikhwan-fathulloh.github.io/Speaker-Material</div></div>
@@ -1058,8 +1108,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 21. Eksplorasi Lanjutan -->
-<section class="slide bg-material" data-slide="21">
+<!-- 22. Eksplorasi Lanjutan -->
+<section class="slide bg-material" data-slide="22">
   <div class="safe">
     <div class="slide-head">
       <div><div class="eyebrow" data-i18n="explore.eyebrow">Eksplorasi Lanjutan</div><h2 data-i18n="explore.title">Integrasi Enterprise & Cloud</h2><div class="sub" data-i18n="explore.subtitle">Penerapan arsitektur Agentic AI pada domain bisnis dan infrastruktur cloud</div></div>
@@ -1096,8 +1146,8 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <div class="footer-repo"><a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Agentic-AI-OpenSUSE</a></div>
 </section>
 
-<!-- 22. Thanks -->
-<section class="slide bg-thanks" data-slide="22">
+<!-- 23. Thanks -->
+<section class="slide bg-thanks" data-slide="23">
   <div class="s22-content">
     <div class="qa" data-i18n="thanks.qa">Terima kasih — Q&amp;A</div>
     <div class="sp">Muhammad Ikhwan Fathulloh · openSUSE Asia Summit 2026</div>
@@ -1113,7 +1163,7 @@ html,body{width:100%;height:100%;background:#000;font-family:var(--sans);color:v
   <button class="nav-btn nav-prev" id="prevBtn" aria-label="Previous">‹</button>
   <button class="nav-btn nav-next" id="nextBtn" aria-label="Next">›</button>
   <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-  <div class="slide-num"><span id="curNum">1</span> / <span id="totalNum">22</span></div>
+  <div class="slide-num"><span id="curNum">1</span> / <span id="totalNum">23</span></div>
 </div>
 
 </div>
@@ -1123,6 +1173,10 @@ const I18N = {
   id:{
     "opening.subtitle":"Studi Kasus Institusi: Automasi Pemantauan Akademik & ERP menggunakan LLM Lokal",
     "opening.speaker_label":"Pembicara",
+    "foundation.eyebrow":"Pengantar","foundation.title":"Tiga Fondasi Utama","foundation.subtitle":"Konsep dasar LLM, openSUSE, dan Agentic AI sebelum membangun arsitektur kompleks",
+    "foundation.llm_t":"Large Language Model (LLM)","foundation.llm_d":"Model AI yang dilatih dengan miliaran token teks untuk memahami konteks, menjawab pertanyaan, dan menulis kode. Di sini kita menggunakan Qwen 2.5 yang dijalankan secara lokal (offline) via llama.cpp untuk menjaga privasi data institusi.",
+    "foundation.suse_t":"openSUSE","foundation.suse_d":"Sistem operasi open-source berbasis Linux (Tumbleweed) yang stabil, aman, dan ringan. Digunakan sebagai base image Docker untuk backend, memastikan lingkungan inferensi AI yang konsisten, terisolasi, dan mendukung ekosistem cloud-native.",
+    "foundation.agent_t":"Agentic AI","foundation.agent_d":"Evolusi dari chatbot biasa. AI diberikan agen 'tool' (seperti query database, API, kirim email) dan kebebasan untuk merencanakan (plan), bertindak (execute), dan mengevaluasi (reflect) secara otonom hingga tujuan institusi tercapai.",
     "overview.eyebrow":"Ikhtisar Sistem","overview.title":"Enam Komponen Utama","overview.subtitle":"Arsitektur modular untuk mendukung Agen AI Otonom di lingkungan institusi","overview.center":"Agentic AI",
     "overview.qwen_desc":"Penalaran & tool-calling","overview.saka_desc":"Normalisasi bahasa","overview.pgvector_desc":"Basis pengetahuan institusi","overview.raksa_desc":"Integrasi data akademik","overview.telegram_desc":"Notifikasi & persetujuan","overview.ws_desc":"Pantauan real-time",
     "arch.eyebrow":"Arsitektur & Server","arch.title":"Architecting on openSUSE","arch.subtitle":"Satu kontainer backend openSUSE berisi FastAPI, Saka-NLP, RAG, dan llama.cpp internal","arch.single_container_lbl":"BACKEND CONTAINER (openSUSE Tumbleweed)",
@@ -1153,19 +1207,23 @@ const I18N = {
     "svc.eyebrow":"Deployment","svc.title":"Services (Docker Compose)","svc.subtitle":"5 container produksi dari docker-compose.hub.yml","svc.cmd_cm":"# Jalankan dari Docker Hub image","svc.creating":"Membuat...","svc.started":"Started",
     "env.eyebrow":"Konfigurasi","env.title":"Variabel Environment","env.subtitle":"Nilai default dari docker-compose.hub.yml","env.ctx_cm":"# Dapat dinaikkan ke 2048 jika RAM cukup","env.threads_cm":"# Dinaikkan ke 4 untuk CPU lebih cepat","env.optional":"opsional",
     "ci.eyebrow":"Automation","ci.title":"CI/CD GitHub Actions","ci.subtitle":"Tiga job berurutan: build, push, update deskripsi","ci.job1_dur":"~2 menit (Bun + Vite)","ci.job2_dur":"~15-20 menit (cached ~5m)","ci.job3_dur":"~30 detik","ci.chip_latest":"latest",
-    "links.eyebrow":"Resource","links.title":"Tautan & QR","links.subtitle":"Coba langsung — bot Telegram, source, dan image Docker","links.docker":"Docker Hub","links.github":"GitHub","links.telegram":"Telegram Bot","links.raksa":"Institusi Case","links.scan":"Pindai QR",
+    "links.eyebrow":"Resource","links.title":"Tautan & QR","links.subtitle":"Coba langsung — bot Telegram, source, dan image Docker","links.docker":"Docker Hub","links.github":"GitHub","links.telegram":"Telegram Bot","links.linkedin":"LinkedIn","links.scan":"Pindai QR",
     "explore.eyebrow":"Eksplorasi Lanjutan","explore.title":"Integrasi Enterprise & Cloud","explore.subtitle":"Penerapan arsitektur Agentic AI pada domain bisnis dan infrastruktur cloud",
     "explore.erp_t":"Agentic-AI-Knowledge-ERP","explore.erp_d":"Ekspansi pipeline agentic untuk Enterprise Resource Planning. LLM berinteraksi dengan knowledge base internal perusahaan, menjawab query kompleks, dan mengotomatisasi task administratif berbasis data ERP.",
     "explore.erp_f1_t":"Knowledge Base ERP:","explore.erp_f1_d":"Ingest manual SOP, data transaksi, dan dokumen kebijakan ke pgvector.","explore.erp_f2_t":"Agent Task Automation:","explore.erp_f2_d":"Agen merancang rencana penyelesaian untuk proses seperti pembuatan laporan atau validasi data.","explore.erp_f3_t":"Natural Language Query:","explore.erp_f3_d":"Eksplorasi database ERP menggunakan bahasa manusia yang aman dan terstruktur.",
     "explore.erp_link":"Pelajari: github.com/Muhammad-Ikhwan-Fathulloh/Agentic-AI-Knowledge-ERP",
     "explore.cloud_t":"Raksa-Cloud","explore.cloud_d":"Platform manajemen perangkat IoT dan edge computing. Menyediakan infrastruktur untuk mendaftarkan perangkat, mengelola aktuator, dan melakukan analitik data sensor secara terpusat dengan integrasi ML.",
-    "explore.cloud_f1_t":"Device Management:","explore.cloud_f1_d":"API untuk pendaftaran dan pemantauan status perangkat IoT (ESP32) secara real-time.","explore.cloud_f2_t":"TinyML Integration:","explore.cloud_f2_d":"Menyinkronkan model machine learning ringan ke edge device untuk inferensi lokal.","explore.cloud_f3_t":"Data Pipeline:","explore.cloud_f3_d":"Pengumpulan telemetry terstandar untuk dashboarding dan pelatihan model anomaly detection.",
+    "explore.cloud_f1_t":"Device Management:","explore.cloud_f1_d":"API untuk pendaftaran dan pemantauan status perangkat IoT (ESP32) secara real-time.","explore.cloud_f2_t":"TinyML Integration:","explore.cloud_f2_d":"Menyinkronkan model machine learning ringan ke edge device untuk inferensi lokal.","explore.cloud_f3_t":"Data Pipeline:","explore.cloud_f3_d":"Pengumpulan telemetry terstandar untuk dashboarding dan pelatikan model anomaly detection.",
     "explore.cloud_link":"Pelajari: github.com/Muhammad-Ikhwan-Fathulloh/Raksa-Cloud",
     "thanks.qa":"Terima kasih — Q&A"
   },
   en:{
     "opening.subtitle":"Institutional Case Study: Academic Monitoring & ERP Automation using Local LLM",
     "opening.speaker_label":"Speaker",
+    "foundation.eyebrow":"Introduction","foundation.title":"Three Main Foundations","foundation.subtitle":"Basic concepts of LLM, openSUSE, and Agentic AI before building complex architecture",
+    "foundation.llm_t":"Large Language Model (LLM)","foundation.llm_d":"AI model trained on billions of text tokens to understand context, answer questions, and write code. Here we use Qwen 2.5 run locally (offline) via llama.cpp to maintain data privacy.",
+    "foundation.suse_t":"openSUSE","foundation.suse_d":"Stable, secure, and lightweight open-source Linux OS (Tumbleweed). Used as the Docker base image for the backend, ensuring a consistent, isolated AI inference environment supporting cloud-native ecosystems.",
+    "foundation.agent_t":"Agentic AI","foundation.agent_d":"Evolution of standard chatbots. AI is given 'tools' (like DB queries, APIs, email sending) and the autonomy to plan, execute, and reflect autonomously until the institutional goal is achieved.",
     "overview.eyebrow":"System Overview","overview.title":"Six Core Components","overview.subtitle":"Modular architecture to support Autonomous AI Agents in institutional environments","overview.center":"Agentic AI",
     "overview.qwen_desc":"Reasoning & tool-calling","overview.saka_desc":"Language normalization","overview.pgvector_desc":"Institutional knowledge base","overview.raksa_desc":"Academic data integration","overview.telegram_desc":"Notification & approval","overview.ws_desc":"Real-time monitoring",
     "arch.eyebrow":"Architecture & Server","arch.title":"Architecting on openSUSE","arch.subtitle":"Single backend container on openSUSE containing FastAPI, Saka-NLP, RAG, and internal llama.cpp","arch.single_container_lbl":"BACKEND CONTAINER (openSUSE Tumbleweed)",
@@ -1196,7 +1254,7 @@ const I18N = {
     "svc.eyebrow":"Deployment","svc.title":"Services (Docker Compose)","svc.subtitle":"5 production containers from docker-compose.hub.yml","svc.cmd_cm":"# Run from Docker Hub image","svc.creating":"Creating...","svc.started":"Started",
     "env.eyebrow":"Configuration","env.title":"Environment Variables","env.subtitle":"Default values from docker-compose.hub.yml","env.ctx_cm":"# Can be increased to 2048 if RAM is sufficient","env.threads_cm":"# Increased to 4 for faster CPU","env.optional":"optional",
     "ci.eyebrow":"Automation","ci.title":"CI/CD GitHub Actions","ci.subtitle":"Three sequential jobs: build, push, update description","ci.job1_dur":"~2 mins (Bun + Vite)","ci.job2_dur":"~15-20 mins (cached ~5m)","ci.job3_dur":"~30 secs","ci.chip_latest":"latest",
-    "links.eyebrow":"Resource","links.title":"Links & QR","links.subtitle":"Try it now — Telegram bot, source, and Docker image","links.docker":"Docker Hub","links.github":"GitHub","links.telegram":"Telegram Bot","links.raksa":"Institution Case","links.scan":"Scan QR",
+    "links.eyebrow":"Resource","links.title":"Links & QR","links.subtitle":"Try it now — Telegram bot, source, and Docker image","links.docker":"Docker Hub","links.github":"GitHub","links.telegram":"Telegram Bot","links.linkedin":"LinkedIn","links.scan":"Scan QR",
     "explore.eyebrow":"Advanced Exploration","explore.title":"Enterprise & Cloud Integration","explore.subtitle":"Applying Agentic AI architecture to business domains and cloud infrastructure",
     "explore.erp_t":"Agentic-AI-Knowledge-ERP","explore.erp_d":"Expanding the agentic pipeline for Enterprise Resource Planning. The LLM interacts with internal company knowledge bases, answers complex queries, and automates administrative tasks based on ERP data.",
     "explore.erp_f1_t":"ERP Knowledge Base:","explore.erp_f1_d":"Ingest SOP manuals, transaction data, and policy documents into pgvector.","explore.erp_f2_t":"Agent Task Automation:","explore.erp_f2_d":"Agents design completion plans for processes like report generation or data validation.","explore.erp_f3_t":"Natural Language Query:","explore.erp_f3_d":"Explore ERP databases using safe, structured human language.",
@@ -1273,7 +1331,7 @@ function goSlide(idx) {
 function runSlideAnimations(idx) {
   const slide = slides[idx];
   
-  if (idx === 5) { // Telegram
+  if (idx === 6) { // Telegram (Slide 7)
     const alert = document.getElementById('tgAlert');
     const result = document.getElementById('tgResult');
     const btnExec = document.getElementById('btnExec');
@@ -1302,7 +1360,7 @@ function runSlideAnimations(idx) {
     activeTimers.push(setTimeout(() => { result.style.display = 'block'; }, 4200));
   }
   
-  if (idx === 12) { // Dashboard
+  if (idx === 13) { // Dashboard (Slide 14)
     const tabs = document.querySelectorAll('#dashTabs .s13-tab');
     const panels = document.querySelectorAll('.s13-panel');
     const banner = document.getElementById('dashBanner');
@@ -1332,7 +1390,7 @@ function runSlideAnimations(idx) {
     }, 500));
   }
   
-  if (idx === 15) { // Frontend view side
+  if (idx === 16) { // Frontend view side (Slide 16)
     const items = document.querySelectorAll('#viewSide .s15-item');
     const panels = document.querySelectorAll('.s15-view .s15-panel');
     let viewIdx = 0;
@@ -1345,7 +1403,7 @@ function runSlideAnimations(idx) {
     }, 2500));
   }
   
-  if (idx === 16) { // API
+  if (idx === 17) { // API (Slide 17)
     const term = document.getElementById('apiTerm');
     const cmd = `curl -X POST /chat \\
   -H "Content-Type: application/json" \\
@@ -1367,7 +1425,7 @@ function runSlideAnimations(idx) {
     }, 20));
   }
   
-  if (idx === 17) { // Services
+  if (idx === 18) { // Services (Slide 18)
     const containers = slide.querySelectorAll('.s17-c');
     const term = document.getElementById('svcTerm');
     containers.forEach(c => {
@@ -1398,7 +1456,7 @@ function runSlideAnimations(idx) {
     }, 30));
   }
   
-  if (idx === 19) { // CI/CD
+  if (idx === 20) { // CI/CD (Slide 20)
     const jobs = [
       { el: document.getElementById('job1'), dur: 2000, fill: 40 },
       { el: document.getElementById('job2'), dur: 3000, fill: 70 },
@@ -1470,7 +1528,7 @@ stage.addEventListener('touchend', e => {
 });
 
 const observer = new MutationObserver(() => {
-  if (slides[21].classList.contains('active')) {
+  if (slides[22].classList.contains('active')) { // Confetti (Slide 23)
     const box = document.getElementById('confettiBox');
     if (box.children.length === 0) {
       for(let i=0; i<30; i++) {
@@ -1484,7 +1542,7 @@ const observer = new MutationObserver(() => {
     }
   }
 });
-observer.observe(slides[21], { attributes: true });
+observer.observe(slides[22], { attributes: true });
 </script>
 </body>
 </html>
