@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Maung Architecture — Cloud Optimization, Team Collaboration, and AI Acceleration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Impact:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f8f9fa;
+    --surface-2: #f1f3f5;
+    --ink: #1a202c;
+    --muted: #6b7280;
+    --dim: #9ca3af;
+    --line: rgba(0,0,0,0.08);
+    --line-strong: rgba(0,0,0,0.15);
+    --blue: #3b82f6;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --purple: #8b5cf6;
+    --red: #ef4444;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-snap-type: y mandatory; scroll-behavior: smooth; background: var(--bg); }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 400; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+  body[data-lang="id"] .en { display: none !important; }
+  body[data-lang="en"] .id { display: none !important; }
+
+  .lang-toggle { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; gap: 2px; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line-strong); border-radius: 8px; padding: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .lang-toggle button { background: none; border: none; color: var(--muted); font-family: var(--mono); font-size: 14px; font-weight: 600; letter-spacing: 0.1em; padding: 10px 18px; cursor: pointer; border-radius: 5px; transition: all 0.2s ease; }
+  .lang-toggle button:hover { color: var(--ink); background: var(--surface); }
+  .lang-toggle button.active { background: var(--ink); color: var(--bg); }
+
+  .progress-bar { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: var(--surface-2); z-index: 9998; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--purple), var(--red), var(--yellow), var(--green)); width: 0%; transition: width 0.15s ease; }
+
+  .slide { width: 100vw; min-height: 100vh; background: var(--bg); position: relative; overflow: hidden; padding: 48px 64px; display: flex; flex-direction: column; scroll-snap-align: start; scroll-snap-stop: always; border-bottom: 1px solid var(--line); }
+  .slide::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 64px 64px; pointer-events: none; z-index: 0; }
+  .slide > * { position: relative; z-index: 1; }
+
+  .s-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 14px; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; padding-bottom: 16px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+  .s-head .num { color: var(--blue); font-weight: 600; }
+  
+  .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; gap: 32px; padding: 32px 0; overflow: hidden; }
+  .s-foot { padding-top: 16px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; color: var(--dim); text-transform: uppercase; flex-shrink: 0; }
+
+  .eyebrow { font-family: var(--mono); font-size: 16px; font-weight: 600; letter-spacing: 0.22em; color: var(--blue); text-transform: uppercase; display: inline-flex; align-items: center; gap: 12px; align-self: flex-start; }
+  .eyebrow::before { content: ''; width: 36px; height: 3px; background: var(--blue); border-radius: 2px; }
+  .eyebrow.green { color: var(--green); } .eyebrow.green::before { background: var(--green); }
+  .eyebrow.red { color: var(--red); } .eyebrow.red::before { background: var(--red); }
+  .eyebrow.purple { color: var(--purple); } .eyebrow.purple::before { background: var(--purple); }
+  .eyebrow.yellow { color: var(--yellow); } .eyebrow.yellow::before { background: var(--yellow); }
+
+  h1.display { font-family: var(--serif); font-weight: 400; font-size: clamp(72px, 10vw, 140px); line-height: 1.02; letter-spacing: -0.03em; color: var(--ink); }
+  h1.display em { font-style: italic; font-weight: 300; color: var(--blue); }
+  h2.title { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 5vw, 72px); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); }
+  h2.title em { font-style: italic; color: var(--blue); font-weight: 300; }
+  h2.title.green em { color: var(--green); } h2.title.red em { color: var(--red); } h2.title.purple em { color: var(--purple); }
+
+  .split-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; width: 100%; }
+  .split-layout.reverse { grid-template-columns: 1fr 1.2fr; }
+  .big-visual { width: 100%; height: 400px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 24px; display: flex; align-items: center; justify-content: center; padding: 32px; box-shadow: 0 20px 60px -20px rgba(0,0,0,0.1); }
+  .big-visual svg { width: 100%; height: 100%; }
+  
+  .split-text h3 { font-family: var(--serif); font-size: 80px; font-weight: 600; line-height: 1; margin-bottom: 24px; color: var(--ink); }
+  .split-text .tagline { font-family: var(--mono); font-size: 20px; color: var(--blue); letter-spacing: 0.1em; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; }
+  .split-text .tagline.purple { color: var(--purple); }
+  .split-text .tagline.green { color: var(--green); }
+  .split-text .desc { font-size: 22px; color: var(--muted); line-height: 1.5; margin-bottom: 32px; }
+  .split-text .impact { padding: 24px; border-left: 5px solid var(--blue); background: rgba(59,130,246,0.05); border-radius: 0 12px 12px 0; font-size: 18px; color: var(--ink); font-style: italic; line-height: 1.5; }
+  .split-text .impact.purple { border-color: var(--purple); background: rgba(139,92,246,0.05); }
+  .split-text .impact.green { border-color: var(--green); background: rgba(16,185,129,0.05); }
+  .split-text .impact.red { border-color: var(--red); background: rgba(239,68,68,0.05); }
+  .split-text .impact.yellow { border-color: var(--yellow); background: rgba(245,158,11,0.05); }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; width: 100%; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; width: 100%; }
+  .grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; width: 100%; }
+
+  .title-kicker { font-family: var(--mono); font-size: 18px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; font-weight: 500; }
+  .title-kicker span { color: var(--blue); }
+  .subtitle { font-family: var(--serif); font-weight: 300; font-size: clamp(28px, 3vw, 42px); line-height: 1.3; color: var(--muted); max-width: 1000px; margin-top: 24px; }
+  .title-meta { display: flex; gap: 16px; margin-top: 48px; flex-wrap: wrap; font-family: var(--mono); font-size: 14px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .title-meta span { padding: 10px 20px; border: 1px solid var(--line-strong); border-radius: 6px; background: var(--surface); }
+  .title-meta span.dot { color: var(--blue); border: none; padding: 10px 0; background: none; }
+  .title-bg-diagram { position: absolute; right: -150px; top: 50%; transform: translateY(-50%); width: 1000px; opacity: 0.12; z-index: 0; pointer-events: none; }
+
+  .hook-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; width: 100%; }
+  .hook-quote { font-family: var(--serif); font-weight: 300; font-size: clamp(48px, 6vw, 88px); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink); }
+  .hook-quote em { font-style: italic; color: var(--red); font-weight: 300; }
+  .hook-tag { margin-top: 32px; font-family: var(--mono); font-size: 18px; color: var(--blue); letter-spacing: 0.08em; font-weight: 600; }
+  .hook-tag::before { content: '→ '; }
+  .velocity-chart { background: var(--surface); border: 1px solid var(--line-strong); border-radius: 16px; padding: 32px; width: 100%; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+  .vc-title { font-family: var(--mono); font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; display: flex; justify-content: space-between; font-weight: 600; }
+
+  /* Meme Box & Animations */
+  .meme-box { background: #fff; border: 3px solid var(--ink); border-radius: 8px; padding: 16px 24px; font-family: 'Impact', sans-serif; font-size: 20px; text-transform: uppercase; text-align: center; box-shadow: 6px 6px 0px var(--ink); margin-top: 24px; display: inline-block; transform: rotate(-2deg); }
+  .meme-box .emoji { font-size: 32px; display: block; margin-bottom: 8px; }
+  
+  @keyframes wiggle { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(0, -15px); } }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  
+  .anim-wiggle { animation: wiggle 2s infinite ease-in-out; }
+  .anim-bounce { animation: bounce 2s infinite ease-in-out; }
+  .anim-float { animation: float 3s infinite ease-in-out; }
+
+  .pipeline { display: flex; align-items: stretch; gap: 12px; width: 100%; }
+  .pipe-node { flex: 1; border: 1px solid var(--line-strong); background: var(--surface); border-radius: 12px; padding: 24px 16px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .pipe-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--bg); margin-bottom: 16px; }
+  .pipe-node.blue .pipe-icon { background: var(--blue); } .pipe-node.blue { border-top: 4px solid var(--blue); }
+  .pipe-node.red .pipe-icon { background: var(--red); } .pipe-node.red { border-top: 4px solid var(--red); }
+  .pipe-node.green .pipe-icon { background: var(--green); } .pipe-node.green { border-top: 4px solid var(--green); }
+  .pipe-node.yellow .pipe-icon { background: var(--yellow); } .pipe-node.yellow { border-top: 4px solid var(--yellow); }
+  .pipe-node.dark .pipe-icon { background: var(--ink); } .pipe-node.dark { border-top: 4px solid var(--ink); }
+  .pipe-node.purple .pipe-icon { background: var(--purple); } .pipe-node.purple { border-top: 4px solid var(--purple); }
+  .pipe-title { font-family: var(--serif); font-size: 20px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+  .pipe-tools { font-family: var(--mono); font-size: 14px; color: var(--muted); font-weight: 600; }
+  .pipe-arrow { display: flex; align-items: center; color: var(--dim); font-size: 24px; }
+
+  .evo-story-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; width: 100%; }
+  .evo-story-card { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  .evo-story-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--blue); }
+  .evo-story-card:nth-child(2)::before { background: var(--purple); }
+  .evo-story-card:nth-child(3)::before { background: var(--green); }
+  .evo-era-tag { font-family: var(--mono); font-size: 12px; color: var(--blue); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; margin-bottom: 16px; }
+  .evo-story-card:nth-child(2) .evo-era-tag { color: var(--purple); }
+  .evo-story-card:nth-child(3) .evo-era-tag { color: var(--green); }
+  .evo-team-name { font-family: var(--serif); font-size: 28px; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+  .evo-arch-name { font-family: var(--mono); font-size: 14px; color: var(--muted); margin-bottom: 24px; font-weight: 600; background: var(--bg); padding: 4px 12px; border-radius: 4px; display: inline-block; align-self: flex-start; border: 1px solid var(--line); }
+  .evo-illu { height: 100px; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; }
+  .evo-desc { font-size: 15px; color: var(--muted); line-height: 1.5; }
+
+  .quote-block { border-left: 5px solid var(--purple); padding-left: 32px; }
+  .quote-block .q { font-family: var(--serif); font-weight: 300; font-style: italic; font-size: clamp(24px, 2.5vw, 36px); line-height: 1.4; color: var(--ink); }
+  .quote-block .attr { font-family: var(--mono); font-size: 14px; color: var(--purple); margin-top: 20px; letter-spacing: 0.08em; font-weight: 600; }
+
+  .inverse-flow { display: flex; align-items: stretch; gap: 16px; width: 100%; }
+  .inverse-card { flex: 1; border: 1px solid var(--line-strong); background: var(--surface); padding: 32px; border-radius: 16px; }
+  .inverse-card.top { border-color: var(--blue); background: rgba(59,130,246,0.05); }
+  .inverse-card .step { font-family: var(--mono); font-size: 14px; color: var(--blue); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; font-weight: 600; }
+  .inverse-card .ttl { font-family: var(--serif); font-size: 32px; font-weight: 500; line-height: 1.2; margin-bottom: 16px; color: var(--ink); }
+  .inverse-arrow { display: flex; align-items: center; color: var(--blue); font-family: var(--mono); font-size: 32px; font-weight: 600; }
+  
+  .topo-card { border: 1px solid var(--line-strong); padding: 24px; border-radius: 16px; background: var(--surface); position: relative; overflow: hidden; }
+  .topo-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--blue); }
+  .topo-card.green::before { background: var(--green); } .topo-card.purple::before { background: var(--purple); } .topo-card.red::before { background: var(--red); }
+  .topo-card .tnum { font-family: var(--mono); font-size: 14px; color: var(--blue); letter-spacing: 0.18em; font-weight: 600; }
+  .topo-card.green .tnum { color: var(--green); } .topo-card.purple .tnum { color: var(--purple); } .topo-card.red .tnum { color: var(--red); }
+  .topo-card .tname { font-family: var(--serif); font-size: 24px; font-weight: 600; margin: 12px 0 8px; line-height: 1.2; color: var(--ink); }
+  .topo-card .tdesc { font-size: 16px; color: var(--muted); line-height: 1.5; }
+
+  .premium-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: center; width: 100%; }
+  .premium-chart { background: var(--surface); border: 1px solid var(--line-strong); border-radius: 16px; padding: 32px; width: 100%; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+  .pc-legend { display: flex; gap: 32px; font-family: var(--mono); font-size: 16px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 24px; font-weight: 600; }
+  .pc-legend .dot { display: inline-block; width: 16px; height: 16px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+  .redflag-list { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+  .redflag { display: flex; gap: 20px; align-items: center; padding: 20px 24px; border: 1px solid var(--line-strong); border-left: 5px solid var(--red); border-radius: 12px; background: rgba(239,68,68,0.05); }
+  .redflag .x { color: var(--red); font-family: var(--mono); font-size: 20px; flex-shrink: 0; font-weight: 700; }
+  .redflag .txt { font-size: 20px; color: var(--ink); line-height: 1.4; }
+
+  .diag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; width: 100%; }
+  .diag-flow { display: flex; flex-direction: column; gap: 16px; }
+  .diag-step { border: 1px solid var(--line-strong); padding: 24px 28px; border-radius: 16px; background: var(--surface); display: flex; align-items: center; gap: 24px; }
+  .diag-step.q { border-left: 5px solid var(--yellow); } .diag-step.yes { border-left: 5px solid var(--red); background: rgba(239,68,68,0.05); } .diag-step.no { border-left: 5px solid var(--green); background: rgba(16,185,129,0.05); }
+  .diag-step .ic { font-family: var(--mono); font-size: 18px; color: var(--yellow); width: 40px; flex-shrink: 0; font-weight: 700; }
+  .diag-step.yes .ic { color: var(--red); } .diag-step.no .ic { color: var(--green); }
+  .diag-step .t { font-size: 20px; color: var(--ink); line-height: 1.4; }
+  .diag-arrow { text-align: center; color: var(--dim); font-family: var(--mono); font-size: 20px; margin: -8px 0; }
+
+  .arch-diagram { background: var(--surface); border: 1px solid var(--line-strong); border-radius: 16px; padding: 40px; width: 100%; display: flex; flex-direction: column; gap: 32px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+  .arch-layer { display: flex; align-items: center; gap: 24px; }
+  .arch-layer-label { font-family: var(--mono); font-size: 14px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; width: 120px; flex-shrink: 0; font-weight: 600; }
+  .arch-nodes { flex: 1; display: flex; gap: 16px; }
+  .arch-node { flex: 1; padding: 20px 16px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--bg); text-align: center; min-width: 0; }
+  .arch-node.svc { border-color: var(--blue); background: rgba(59,130,246,0.05); } .arch-node.ext { border-style: dashed; border-color: var(--dim); } .arch-node.team { border-color: var(--green); background: rgba(16,185,129,0.05); }
+  .arch-node .nn { font-family: var(--mono); font-size: 12px; color: var(--blue); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+  .arch-node.ext .nn { color: var(--muted); } .arch-node.team .nn { color: var(--green); }
+  .arch-node .nt { font-family: var(--serif); font-size: 22px; font-weight: 600; margin-top: 8px; line-height: 1.2; color: var(--ink); }
+
+  .sec-stairs { display: flex; align-items: flex-end; gap: 16px; width: 100%; height: 400px; }
+  .sec-step { flex: 1; border: 1px solid var(--line-strong); background: var(--surface); border-radius: 16px 16px 0 0; padding: 24px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  .sec-step::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 6px; background: var(--green); }
+  .sec-step:nth-child(2)::before { background: var(--blue); } .sec-step:nth-child(3)::before { background: var(--purple); } .sec-step:nth-child(4)::before { background: var(--red); }
+  .sec-step:nth-child(2) { height: 70%; } .sec-step:nth-child(3) { height: 85%; } .sec-step:nth-child(4) { height: 100%; } .sec-step:nth-child(1) { height: 50%; }
+  .sec-level { font-family: var(--mono); font-size: 14px; color: var(--green); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; margin-bottom: 16px; }
+  .sec-step:nth-child(2) .sec-level { color: var(--blue); } .sec-step:nth-child(3) .sec-level { color: var(--purple); } .sec-step:nth-child(4) .sec-level { color: var(--red); }
+  .sec-title { font-family: var(--serif); font-size: 26px; font-weight: 600; margin-bottom: 16px; color: var(--ink); line-height: 1.2; }
+  .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+  .sec-tag { font-family: var(--mono); font-size: 12px; padding: 6px 10px; background: var(--bg); border: 1px solid var(--line-strong); border-radius: 6px; color: var(--ink); font-weight: 600; }
+
+  .ai-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: center; width: 100%; }
+  .ai-list { display: flex; flex-direction: column; gap: 16px; }
+  .ai-item { display: grid; grid-template-columns: 50px 1fr 120px; gap: 24px; align-items: center; padding: 20px 24px; border: 1px solid var(--line-strong); border-radius: 16px; background: var(--surface); }
+  .ai-item.green { border-left: 5px solid var(--green); } .ai-item.purple { border-left: 5px solid var(--purple); }
+  .ai-item .num { font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--green); line-height: 1; }
+  .ai-item.purple .num { color: var(--purple); }
+  .ai-item .txt { font-size: 20px; color: var(--ink); line-height: 1.4; }
+  .ai-item .tag { font-family: var(--mono); font-size: 12px; color: var(--green); letter-spacing: 0.12em; text-transform: uppercase; text-align: right; font-weight: 600; }
+  .ai-item.purple .tag { color: var(--purple); }
+  .ai-meter { background: var(--surface); border: 1px solid var(--line-strong); border-radius: 16px; padding: 40px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+  .ai-meter-title { font-family: var(--mono); font-size: 16px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 32px; font-weight: 600; }
+  .ai-bar-row { margin-bottom: 24px; }
+  .ai-bar-label { display: flex; justify-content: space-between; font-size: 18px; color: var(--ink); margin-bottom: 8px; font-weight: 500; }
+  .ai-bar-label span:last-child { font-family: var(--mono); color: var(--green); font-weight: 600; }
+  .ai-bar-label.purple span:last-child { color: var(--purple); }
+  .ai-bar-track { height: 12px; background: var(--surface-2); border-radius: 6px; overflow: hidden; }
+  .ai-bar-fill { height: 100%; background: var(--green); border-radius: 6px; }
+  .ai-bar-fill.purple { background: var(--purple); }
+
+  .pit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; width: 100%; }
+  .pit-card { border: 1px solid var(--line-strong); border-top: 6px solid var(--red); padding: 40px; border-radius: 16px; background: var(--surface); display: flex; flex-direction: column; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+  .pit-illu { height: 140px; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; }
+  .pit-card .pnum { font-family: var(--mono); font-size: 14px; color: var(--red); letter-spacing: 0.2em; margin-bottom: 16px; font-weight: 700; }
+  .pit-card .ptitle { font-family: var(--serif); font-size: 32px; font-weight: 600; line-height: 1.2; margin-bottom: 16px; color: var(--ink); }
+  .pit-card .pen { font-size: 18px; color: var(--muted); font-style: italic; }
+
+  .assess-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 48px; width: 100%; }
+  .assess-q { padding: 40px 48px; border: 1px solid var(--line-strong); border-radius: 16px; background: var(--surface); display: flex; gap: 24px; align-items: flex-start; position: relative; overflow: hidden; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+  .assess-q::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--blue); }
+  .assess-q .aq { font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.3; color: var(--ink); }
+  .assess-q .b { color: var(--blue); font-family: var(--serif); font-size: 48px; line-height: 1; flex-shrink: 0; font-weight: 300; }
+
+  .take-card { border: 1px solid var(--line-strong); background: var(--surface); border-radius: 16px; padding: 40px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+  .take-card .tn { font-family: var(--serif); font-size: 64px; font-weight: 300; color: var(--blue); line-height: 1; margin-bottom: 24px; }
+  .take-card:nth-child(2) .tn { color: var(--purple); } .take-card:nth-child(3) .tn { color: var(--green); } .take-card:nth-child(4) .tn { color: var(--yellow); } .take-card:nth-child(5) .tn { color: var(--red); } .take-card:nth-child(6) .tn { color: var(--blue); }
+  .take-card .tt { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 8px; }
+  .take-card .te { font-size: 16px; color: var(--muted); font-style: italic; line-height: 1.4; }
+
+  .ref-item { border: 1px solid var(--line-strong); background: var(--surface); padding: 32px 40px; border-radius: 16px; display: flex; gap: 24px; align-items: flex-start; transition: all 0.2s ease; }
+  .ref-item:hover { border-color: var(--blue); background: var(--bg); transform: translateY(-2px); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+  .ref-num { font-family: var(--serif); font-size: 48px; font-weight: 300; color: var(--blue); line-height: 1; flex-shrink: 0; }
+  .ref-item:nth-child(2) .ref-num { color: var(--purple); } .ref-item:nth-child(3) .ref-num { color: var(--green); } .ref-item:nth-child(4) .ref-num { color: var(--yellow); } .ref-item:nth-child(5) .ref-num { color: var(--red); } .ref-item:nth-child(6) .ref-num { color: var(--blue); }
+  .ref-content { flex: 1; min-width: 0; }
+  .ref-title { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .ref-author { font-size: 16px; color: var(--muted); margin-bottom: 16px; }
+  .ref-link { font-family: var(--mono); font-size: 14px; color: var(--blue); text-decoration: none; word-break: break-all; font-weight: 600; }
+
+  .closing-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: center; width: 100%; }
+  .closing .big { font-family: var(--serif); font-weight: 300; font-size: clamp(80px, 10vw, 160px); line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+  .closing .big em { font-style: italic; color: var(--blue); font-weight: 300; }
+  .closing .sub { font-family: var(--sans); font-style: italic; font-size: 28px; color: var(--muted); margin-top: 40px; }
+  .closing .qa { margin-top: 56px; font-family: var(--mono); font-size: 18px; color: var(--blue); letter-spacing: 0.16em; text-transform: uppercase; border-top: 2px solid var(--blue); padding-top: 24px; display: inline-block; font-weight: 600; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .slide-content > * { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .slide-content > *:nth-child(2) { animation-delay: 0.1s; } .slide-content > *:nth-child(3) { animation-delay: 0.2s; } .slide-content > *:nth-child(4) { animation-delay: 0.3s; }
+
+  @media (max-width: 900px) {
+    .slide { min-height: auto; padding: 32px; }
+    .split-layout, .split-layout.reverse, .hook-grid, .premium-grid, .diag-grid, .ai-grid, .closing-grid, .pipeline, .sec-stairs, .evo-story-grid { grid-template-columns: 1fr; gap: 32px; height: auto; display: grid; }
+    .topo-map, .pit-grid, .take-grid, .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr 1fr; }
+    .assess-grid { grid-template-columns: 1fr; }
+    .inverse-flow, .pipeline { flex-direction: column; display: flex; } .inverse-arrow, .pipe-arrow { transform: rotate(90deg); justify-content: center; }
+    .arch-nodes { flex-wrap: wrap; display: flex; } .arch-node { min-width: 45%; }
+    .sec-step { height: auto !important; }
+    .lang-toggle { top: 16px; right: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body data-lang="id">
+
+<div class="lang-toggle">
+  <button data-lang="id" class="active">ID</button>
+  <button data-lang="en">EN</button>
+</div>
+
+<div class="progress-bar"><div class="progress-fill"></div></div>
+
+<!-- ============ SLIDE 1: TITLE ============ -->
+<section class="slide" id="s1">
+  <div class="s-head"><span>The Maung Architecture · CFP Talk</span><span class="num">01 / 31</span></div>
+  <div class="slide-content">
+    <svg class="title-bg-diagram" viewBox="0 0 600 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="560" height="460" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4 4" rx="8"/>
+      <g stroke="#3b82f6" stroke-width="1" fill="none">
+        <rect x="60" y="60" width="120" height="60" rx="6"/><rect x="240" y="60" width="120" height="60" rx="6"/><rect x="420" y="60" width="120" height="60" rx="6"/>
+        <rect x="60" y="180" width="120" height="60" rx="6"/><rect x="240" y="180" width="120" height="60" rx="6"/><rect x="420" y="180" width="120" height="60" rx="6"/>
+        <rect x="150" y="320" width="120" height="60" rx="6"/><rect x="330" y="320" width="120" height="60" rx="6"/>
+      </g>
+      <g stroke="#3b82f6" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.6">
+        <line x1="180" y1="90" x2="240" y2="90"/><line x1="360" y1="90" x2="420" y2="90"/>
+        <line x1="120" y1="120" x2="120" y2="180"/><line x1="300" y1="120" x2="300" y2="180"/><line x1="480" y1="120" x2="480" y2="180"/>
+        <line x1="180" y1="210" x2="240" y2="210"/><line x1="360" y1="210" x2="420" y2="210"/>
+        <line x1="120" y1="240" x2="210" y2="320"/><line x1="300" y1="240" x2="300" y2="320"/><line x1="480" y1="240" x2="390" y2="320"/>
+      </g>
+      <g fill="#3b82f6" font-family="IBM Plex Mono" font-size="12" font-weight="600">
+        <text x="75" y="95">LOCAL</text><text x="255" y="95">CLOUD</text><text x="435" y="95">AI</text>
+        <text x="75" y="215">DATA</text><text x="255" y="215">CORE</text><text x="435" y="215">SEC</text>
+        <text x="165" y="355">HYBRID PIPELINE</text><text x="345" y="355">TEAM COLLAB</text>
+      </g>
+    </svg>
+    <div style="position: relative; z-index: 2; width: 100%;">
+      <div class="title-kicker"><span class="id">Studi Kasus <span>Hybrid Cloud & AI</span></span><span class="en">Case Study <span>Hybrid Cloud & AI</span></span></div>
+      <h1 class="display">The Maung<br>Architecture<em>.</em></h1>
+      <div class="subtitle"><span class="id">Cloud Optimization, Team Collaboration, and AI Acceleration</span><span class="en">Cloud Optimization, Team Collaboration, and AI Acceleration</span></div>
+      <div class="title-meta"><span>Talk · 30 min</span><span class="dot">·</span><span>Main Track</span><span class="dot">·</span><span>Intermediate</span></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Blind review edition</span><span>Waterfall · Agile · XP · Conway's Law · Team Topologies · Tooling · Hybrid Cloud · Security · AI</span></div>
+</section>
+
+<!-- ============ SLIDE 2: HOOK ============ -->
+<section class="slide" id="s2">
+  <div class="s-head"><span><span class="id">Pembuka</span><span class="en">The Hook</span></span><span class="num">02 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Gejala yang tak asing</span><span class="en">A familiar symptom</span></div>
+    <div class="hook-grid">
+      <div>
+        <p class="hook-quote"><span class="id">Pernah ngalamin nggak? Tim growing, tapi rilis fitur kok malah makin <em>lambat</em>?</span><span class="en">Ever felt this? Team growing, but shipping features feels <em>slower</em>?</span></p>
+        <div class="hook-tag"><span class="id">Gejalanya teknis. Tapi akarnya organisasional.</span><span class="en">Symptoms are technical. But the root is organizational.</span></div>
+        <div class="meme-box anim-wiggle">
+          <span class="emoji">🤔</span>
+          <span class="id">WAIT... LEBIH BANYAK ORANG, KOK LEBIH LAMBAT?</span>
+          <span class="en">WAIT... MORE PEOPLE, BUT SLOWER?</span>
+        </div>
+      </div>
+      <div class="velocity-chart">
+        <div class="vc-title"><span><span class="id">Velocity vs Ukuran Tim</span><span class="en">Velocity vs Team Size</span></span><span>↓</span></div>
+        <svg viewBox="0 0 400 240" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="20" x2="40" y2="200" stroke="#9ca3af" stroke-width="1.5"/>
+          <line x1="40" y1="200" x2="380" y2="200" stroke="#9ca3af" stroke-width="1.5"/>
+          <g fill="#6b7280" font-family="IBM Plex Mono" font-size="14" font-weight="500"><text x="30" y="28" text-anchor="end">High</text><text x="30" y="110" text-anchor="end">Med</text><text x="30" y="200" text-anchor="end">Low</text></g>
+          <g fill="#6b7280" font-family="IBM Plex Mono" font-size="14" font-weight="500"><text x="60" y="220" text-anchor="middle">5p</text><text x="140" y="220" text-anchor="middle">10p</text><text x="220" y="220" text-anchor="middle">20p</text><text x="300" y="220" text-anchor="middle">40p</text></g>
+          <g stroke="#e9ecef" stroke-width="2"><line x1="40" y1="60" x2="380" y2="60"/><line x1="40" y1="110" x2="380" y2="110"/><line x1="40" y1="160" x2="380" y2="160"/></g>
+          <path d="M 60 180 Q 140 130 220 90 T 380 50" stroke="#10b981" stroke-width="4" fill="none" stroke-dasharray="8 4"/>
+          <path d="M 60 170 Q 140 100 220 110 Q 280 130 320 170" stroke="#ef4444" stroke-width="4" fill="none"/>
+          <g fill="#ef4444"><circle cx="60" cy="170" r="6"/><circle cx="140" cy="105" r="6"/><circle cx="220" cy="108" r="6"/><circle cx="300" cy="145" r="6"/><circle cx="370" cy="180" r="6"/></g>
+          <line x1="220" y1="108" x2="220" y2="80" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="225" y="76" fill="#3b82f6" font-family="IBM Plex Mono" font-size="14" font-weight="600">Bottleneck</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Gejala teknis · Akar organisasional</span><span class="en">Technical symptom · Organizational root</span></span><span>02</span></div>
+</section>
+
+<!-- ============ SLIDE 3: WATERFALL ============ -->
+<section class="slide" id="s3">
+  <div class="s-head"><span><span class="id">Evolusi Manajemen Proyek · 1/4</span><span class="en">Project Management Evolution · 1/4</span></span><span class="num">03 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout">
+      <div class="split-text">
+        <div class="eyebrow">Era Kaku</div>
+        <h3>Waterfall</h3>
+        <div class="tagline"><span class="id">Proses linir & berurutan</span><span class="en">Linear & sequential</span></div>
+        <div class="desc"><span class="id">Dulu kita pakai Waterfall. Semuanya kaku. Plan-Build-Test-Deploy. Semua harus dikunci dari awal.</span><span class="en">We used Waterfall. Everything was rigid. Plan-Build-Test-Deploy. All locked from the start.</span></div>
+        <div class="impact"><span class="id">Klien tiba-tiba minta revisi di tengah jalan? Drama. Begadang!</span><span class="en">Client suddenly asks for mid-way revision? Drama. All nighter!</span></div>
+      </div>
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#3b82f6" stroke-width="3" fill="none">
+            <rect x="50" y="50" width="100" height="50" rx="8"/>
+            <rect x="150" y="100" width="100" height="50" rx="8"/>
+            <rect x="250" y="150" width="100" height="50" rx="8"/>
+            <rect x="150" y="200" width="100" height="50" rx="8"/>
+          </g>
+          <g fill="#3b82f6" font-family="IBM Plex Mono" font-size="16" font-weight="600" text-anchor="middle">
+            <text x="100" y="80">Plan</text>
+            <text x="200" y="130">Build</text>
+            <text x="300" y="180">Test</text>
+            <text x="200" y="230">Deploy</text>
+          </g>
+          <path d="M 150 75 L 150 100 M 250 125 L 250 150 M 300 200 L 200 200" stroke="#9ca3af" stroke-width="2" stroke-dasharray="6 4"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Waterfall</span><span>03</span></div>
+</section>
+
+<!-- ============ SLIDE 4: AGILE ============ -->
+<section class="slide" id="s4">
+  <div class="s-head"><span><span class="id">Evolusi Manajemen Proyek · 2/4</span><span class="en">Project Management Evolution · 2/4</span></span><span class="num">04 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout reverse">
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="150" r="100" fill="none" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="12 6"/>
+          <g fill="#8b5cf6" font-family="IBM Plex Mono" font-size="16" font-weight="600" text-anchor="middle">
+            <text x="200" y="60">Plan</text>
+            <text x="300" y="150">Do</text>
+            <text x="200" y="250">Check</text>
+            <text x="100" y="150">Act</text>
+          </g>
+          <path d="M 230 65 A 100 100 0 0 1 295 130 M 280 170 A 100 100 0 0 1 215 225 M 170 230 A 100 100 0 0 1 105 170 M 120 130 A 100 100 0 0 1 185 75" stroke="#8b5cf6" stroke-width="4" fill="none"/>
+          <polygon points="295,130 305,125 300,140" fill="#8b5cf6"/>
+        </svg>
+      </div>
+      <div class="split-text">
+        <div class="eyebrow purple">Era Fleksibel</div>
+        <h3>Agile</h3>
+        <div class="tagline purple"><span class="id">Iterasi singkat & adaptif</span><span class="en">Short iterations & adaptive</span></div>
+        <div class="desc"><span class="id">Lalu dunia sadar kalo ini nggak bisa lanjut. Masuk Agile. Kita jadi fleksibel, iterasi singkat.</span><span class="en">Then the world realized this couldn't continue. Enter Agile. We became flexible, short iterations.</span></div>
+        <div class="impact purple"><span class="id">Klien minta revisi kilat? Oke, gas! Asal komunikasi internal antar-tim rapi.</span><span class="en">Client wants flash revisions? Go! As long as internal cross-team comms are neat.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Agile</span><span>04</span></div>
+</section>
+
+<!-- ============ SLIDE 5: EXTREME PROGRAMMING ============ -->
+<section class="slide" id="s5">
+  <div class="s-head"><span><span class="id">Evolusi Manajemen Proyek · 3/4</span><span class="en">Project Management Evolution · 3/4</span></span><span class="num">05 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout">
+      <div class="split-text">
+        <div class="eyebrow green">Era Ekstrem</div>
+        <h3>Extreme Programming</h3>
+        <div class="tagline green"><span class="id">Engineering kental: TDD, CI/CD</span><span class="en">Heavy engineering: TDD, CI/CD</span></div>
+        <div class="desc"><span class="id">Fleksibilitas tanpa disiplin bikin kode berantakan. Lahir lah XP. Kualitas kode jadi benteng utama.</span><span class="en">Flexibility without discipline ruins code. XP was born. Code quality is the main fortress.</span></div>
+        <div class="impact green"><span class="id">Walau klien ngasih kejutan, tim tetap tenang karena sistem udah dikunci tes otomatis.</span><span class="en">Even with client surprises, the team stays calm because the system is locked by automated tests.</span></div>
+      </div>
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#10b981" stroke-width="3" fill="none">
+            <rect x="80" y="100" width="100" height="60" rx="8"/>
+            <rect x="220" y="100" width="100" height="60" rx="8"/>
+            <rect x="150" y="180" width="100" height="60" rx="8"/>
+          </g>
+          <g fill="#10b981" font-family="IBM Plex Mono" font-size="16" font-weight="600" text-anchor="middle">
+            <text x="130" y="135">Code</text>
+            <text x="270" y="135">Test</text>
+            <text x="200" y="215">Refactor</text>
+          </g>
+          <path d="M 180 130 L 220 130 M 270 160 L 250 180 M 150 240 L 150 160" stroke="#10b981" stroke-width="3"/>
+          <polygon points="220,130 215,125 215,135" fill="#10b981"/>
+          <polygon points="250,180 245,175 245,185" fill="#10b981"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Extreme Programming (XP)</span><span>05</span></div>
+</section>
+
+<!-- ============ SLIDE 6: METHODOLOGY SUMMARY ============ -->
+<section class="slide" id="s6">
+  <div class="s-head"><span><span class="id">Evolusi Manajemen Proyek · 4/4</span><span class="en">Project Management Evolution · 4/4</span></span><span class="num">06 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Kesimpulan</span><span class="en">Conclusion</span></div>
+    <h2 class="title"><span class="id">Mana yang paling <em>relate</em> sama tim kamu? 💻✨</span><span class="en">Which one <em>relates</em> most to your team? 💻✨</span></h2>
+    <div class="grid-3">
+      <div class="take-card" style="border-top: 6px solid var(--blue);"><div class="tn">01</div><div class="tt">Waterfall</div><div class="te"><span class="id">Kaku, susah revisi.</span><span class="en">Rigid, hard to revise.</span></div></div>
+      <div class="take-card" style="border-top: 6px solid var(--purple);"><div class="tn" style="color: var(--purple);">02</div><div class="tt">Agile</div><div class="te"><span class="id">Fleksibel, komunikasi rapi.</span><span class="en">Flexible, neat comms.</span></div></div>
+      <div class="take-card" style="border-top: 6px solid var(--green);"><div class="tn" style="color: var(--green);">03</div><div class="tt">Extreme Programming</div><div class="te"><span class="id">Otomatis & teruji.</span><span class="en">Automated & tested.</span></div></div>
+    </div>
+    <div style="text-align: center; font-family: var(--mono); font-size: 20px; color: var(--ink); margin-top: 16px; padding: 24px 32px; background: var(--surface); border: 2px dashed var(--line-strong); border-radius: 16px;">
+      <span class="id">🚀 Apapun alirannya, tantangannya tetap satu: <strong>komunikasi & eksekusi yang rapi!</strong></span>
+      <span class="en">🚀 Whatever the flow, the challenge remains: <strong>neat communication & execution!</strong></span>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Pilih aliran mana pun</span><span class="en">Whichever flow you choose</span></span><span>06</span></div>
+</section>
+
+<!-- ============ SLIDE 7: EVOLUTION STORY ============ -->
+<section class="slide" id="s7">
+  <div class="s-head"><span><span class="id">Bercerita: Evolusi Tim & Arsitektur</span><span class="en">Storytelling: Team & Architecture Evolution</span></span><span class="num">07 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Perjalanan dari kaku ke otonom</span><span class="en">Journey from rigid to autonomous</span></div>
+    <h2 class="title"><span class="id">Metodologi berubah, <em>arsitektur mengikuti</em>.</span><span class="en">Methodology changes, <em>architecture follows</em>.</span></h2>
+    
+    <div class="evo-story-grid">
+      <div class="evo-story-card">
+        <div class="evo-era-tag">Era Waterfall</div>
+        <div class="evo-team-name">Tim Silo</div>
+        <div class="evo-arch-name">Monolith</div>
+        <div class="evo-illu">
+          <svg viewBox="0 0 200 100" width="100%" height="100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="50" y="20" width="100" height="60" fill="none" stroke="#3b82f6" stroke-width="3" rx="4"/>
+            <text x="100" y="55" fill="#3b82f6" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">ALL IN ONE</text>
+            <text x="100" y="70" fill="#3b82f6" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">DEPLOY</text>
+          </svg>
+        </div>
+        <div class="evo-desc"><span class="id">Satu sistem raksasa, satu tim besar. Rilis kudu nunggu semua tim selesai.</span><span class="en">One giant system, one big team. Release must wait for everyone.</span></div>
+      </div>
+
+      <div class="evo-story-card">
+        <div class="evo-era-tag">Era Agile</div>
+        <div class="evo-team-name">Tim Cross-Fungsi</div>
+        <div class="evo-arch-name">Modular Monolith</div>
+        <div class="evo-illu">
+          <svg viewBox="0 0 200 100" width="100%" height="100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="20" width="50" height="60" fill="none" stroke="#8b5cf6" stroke-width="3" rx="4"/>
+            <rect x="90" y="20" width="50" height="60" fill="none" stroke="#8b5cf6" stroke-width="3" rx="4"/>
+            <rect x="150" y="20" width="30" height="60" fill="none" stroke="#8b5cf6" stroke-width="3" rx="4"/>
+            <text x="55" y="55" fill="#8b5cf6" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">FE</text>
+            <text x="115" y="55" fill="#8b5cf6" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">BE</text>
+            <text x="165" y="55" fill="#8b5cf6" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">DB</text>
+          </svg>
+        </div>
+        <div class="evo-desc"><span class="id">Kode mulai dipisah per modul. Rilis lebih cepat, tapi tetap nunggu di deploy.</span><span class="en">Code separated by modules. Faster releases, but still waits at deploy.</span></div>
+      </div>
+
+      <div class="evo-story-card">
+        <div class="evo-era-tag">Era Extreme Microservices</div>
+        <div class="evo-team-name">Tim Otonom</div>
+        <div class="evo-arch-name">Distributed / Microservices</div>
+        <div class="evo-illu">
+          <svg viewBox="0 0 200 100" width="100%" height="100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="50" r="15" fill="none" stroke="#10b981" stroke-width="3"/>
+            <circle cx="100" cy="30" r="15" fill="none" stroke="#10b981" stroke-width="3"/>
+            <circle cx="100" cy="70" r="15" fill="none" stroke="#10b981" stroke-width="3"/>
+            <circle cx="160" cy="50" r="15" fill="none" stroke="#10b981" stroke-width="3"/>
+            <path d="M 55 50 L 85 30 M 55 50 L 85 70 M 115 30 L 145 50 M 115 70 L 145 50" stroke="#10b981" stroke-width="2" stroke-dasharray="4 2"/>
+          </svg>
+        </div>
+        <div class="evo-desc"><span class="id">Servis terpecah sempurna. Tim otonom bisa rilis kapan saja tanpa tunggu tim lain.</span><span class="en">Services fully decomposed. Autonomous teams release anytime without waiting.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Tim berevolusi, sistem ikut terurai</span><span class="en">Team evolves, system decomposes</span></span><span>07</span></div>
+</section>
+
+<!-- ============ SLIDE 8: TOOLING PIPELINE ============ -->
+<section class="slide" id="s8">
+  <div class="s-head"><span><span class="id">Stack Tooling</span><span class="en">Tooling Stack</span></span><span class="num">08 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow purple"><span class="id">Pisahkan tim, satukan eksekusi</span><span class="en">Separate teams, unify execution</span></div>
+    <h2 class="title purple"><span class="id">Pipeline <em>End-to-End</em>.</span><span class="en"><em>End-to-End</em> Pipeline.</span></h2>
+    <div class="pipeline">
+      <div class="pipe-node blue"><div class="pipe-icon">PM</div><div class="pipe-title"><span class="id">Manajemen</span><span class="en">Management</span></div><div class="pipe-tools">Odoo Project</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node red"><div class="pipe-icon">VCS</div><div class="pipe-title"><span class="id">Kode</span><span class="en">Code</span></div><div class="pipe-tools">GitLab (Develop vs Main)</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node green"><div class="pipe-icon">OPS</div><div class="pipe-title"><span class="id">Deploy</span><span class="en">Deploy</span></div><div class="pipe-tools">Docker + Portainer</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node yellow"><div class="pipe-icon">QA</div><div class="pipe-title">Quality</div><div class="pipe-tools">QA + K6 (Load)</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node dark"><div class="pipe-icon">MON</div><div class="pipe-title">Monitoring</div><div class="pipe-tools">Grafana</div></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node purple"><div class="pipe-icon">SEC</div><div class="pipe-title">Security</div><div class="pipe-tools">Wazuh</div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Dari PM ke Security</span><span class="en">From PM to Security</span></span><span>08</span></div>
+</section>
+
+<!-- ============ SLIDE 9: CONWAY ============ -->
+<section class="slide" id="s9">
+  <div class="s-head"><span><span class="id">Konsep</span><span class="en">Concept</span></span><span class="num">09 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow purple">Conway's Law · Hukum Conway</div>
+    <div class="split-layout">
+      <div class="quote-block">
+        <p class="q">"Any organization that designs a system will produce a design whose structure is a copy of the organization's communication structure."</p>
+        <p class="attr">— MELVIN CONWAY, 1967</p>
+        <p style="margin-top: 24px; font-size: 18px; color: var(--muted); line-height: 1.6;"><span class="id">Kalau tim Frontend, Backend, dan Data kerjanya terpisah-pisah, jangan harap sistemnya bisa terintegrasi rapat. Pasti jadi monolitik & saling nunggu.</span><span class="en">If FE, BE, and Data teams work in silos, don't expect the system to be tightly integrated. It will be monolithic & blocking.</span></p>
+      </div>
+      <div class="big-visual" style="height: 350px;">
+        <svg viewBox="0 0 480 320" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <text x="20" y="30" fill="#6b7280" font-family="IBM Plex Mono" font-size="16" letter-spacing="2" font-weight="600">ORG STRUCTURE</text>
+          <g><rect x="180" y="40" width="120" height="36" fill="#f8f9fa" stroke="#8b5cf6" stroke-width="2" rx="4"/><text x="240" y="63" fill="#8b5cf6" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="600">CTO / VP</text></g>
+          <g stroke="#9ca3af" stroke-width="1.5"><line x1="240" y1="76" x2="100" y2="104"/><line x1="240" y1="76" x2="240" y2="104"/><line x1="240" y1="76" x2="380" y2="104"/></g>
+          <g>
+            <rect x="50" y="104" width="100" height="32" fill="#f8f9fa" stroke="#8b5cf6" stroke-width="2" rx="4"/><text x="100" y="125" fill="#1a202c" font-family="IBM Plex Sans" font-size="14" text-anchor="middle" font-weight="500">Frontend</text>
+            <rect x="190" y="104" width="100" height="32" fill="#f8f9fa" stroke="#8b5cf6" stroke-width="2" rx="4"/><text x="240" y="125" fill="#1a202c" font-family="IBM Plex Sans" font-size="14" text-anchor="middle" font-weight="500">Backend</text>
+            <rect x="330" y="104" width="100" height="32" fill="#f8f9fa" stroke="#8b5cf6" stroke-width="2" rx="4"/><text x="380" y="125" fill="#1a202c" font-family="IBM Plex Sans" font-size="14" text-anchor="middle" font-weight="500">Data</text>
+          </g>
+          <g><line x1="240" y1="152" x2="240" y2="184" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="6 3"/><polygon points="240,190 235,180 245,180" fill="#8b5cf6"/><text x="260" y="172" fill="#8b5cf6" font-family="IBM Plex Mono" font-size="14" font-style="italic" font-weight="600">mirrors</text></g>
+          <text x="20" y="208" fill="#6b7280" font-family="IBM Plex Mono" font-size="16" letter-spacing="2" font-weight="600">SYSTEM ARCHITECTURE</text>
+          <g><rect x="50" y="224" width="380" height="84" fill="#f8f9fa" stroke="#ef4444" stroke-width="3" rx="6" stroke-dasharray="8 4"/>
+            <text x="240" y="254" fill="#ef4444" font-family="Fraunces" font-size="22" text-anchor="middle" font-style="italic" font-weight="600">Tightly coupled monolith</text>
+            <text x="240" y="280" fill="#6b7280" font-family="IBM Plex Sans" font-size="14" text-anchor="middle">All in one deploy unit</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Arsitektur meniru komunikasi</span><span class="en">Architecture mirrors communication</span></span><span>09</span></div>
+</section>
+
+<!-- ============ SLIDE 10: INVERSE CONWAY ============ -->
+<section class="slide" id="s10">
+  <div class="s-head"><span>Inverse Conway Maneuver</span><span class="num">10 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Balik arahnya</span><span class="en">Reverse the direction</span></div>
+    <h2 class="title"><span class="id">Desain tim lebih dulu — <em>arsitektur mengikuti</em>.</span><span class="en">Design the team first — <em>architecture follows</em>.</span></h2>
+    <div class="inverse-flow">
+      <div class="inverse-card top"><div class="step">Step 01</div><div class="ttl"><span class="id">Tentukan Arsitektur Target</span><span class="en">Define Target Architecture</span></div></div>
+      <div class="inverse-arrow">→</div>
+      <div class="inverse-card"><div class="step">Step 02</div><div class="ttl"><span class="id">Restrukturisasi Tim</span><span class="en">Restructure Teams</span></div></div>
+      <div class="inverse-arrow">→</div>
+      <div class="inverse-card"><div class="step">Step 03</div><div class="ttl"><span class="id">Sistem Muncul Alami</span><span class="en">System Emerges Naturally</span></div></div>
+    </div>
+    <div class="eyebrow purple"><span class="id">Team Topologies — 4 tipe tim</span><span class="en">Team Topologies — 4 team types</span></div>
+    <div class="grid-4">
+      <div class="topo-card"><div class="tnum">01</div><div class="tname">Stream-aligned</div><div class="tdesc"><span class="id">Aliran nilai end-to-end.</span><span class="en">End-to-end value stream.</span></div></div>
+      <div class="topo-card green"><div class="tnum">02</div><div class="tname">Platform</div><div class="tdesc"><span class="id">Layanan internal sebagai produk.</span><span class="en">Internal services as a product.</span></div></div>
+      <div class="topo-card purple"><div class="tnum">03</div><div class="tname">Enabling</div><div class="tdesc"><span class="id">Bantu tim menguasai kapabilitas.</span><span class="en">Help teams acquire capabilities.</span></div></div>
+      <div class="topo-card red"><div class="tnum">04</div><div class="tname">Complicated-subsystem</div><div class="tdesc"><span class="id">Spesialis domain mendalam.</span><span class="en">Deep domain specialists.</span></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Team Topologies · Skelton &amp; Pais</span><span>10</span></div>
+</section>
+
+<!-- ============ SLIDE 11: PREMIUM ============ -->
+<section class="slide" id="s11">
+  <div class="s-head"><span>MicroservicePremium</span><span class="num">11 / 31</span></div>
+  <div class="slide-content">
+    <div class="premium-grid">
+      <div>
+        <div class="eyebrow red"><span class="id">Hold on! Jangan buru-buru</span><span class="en">Hold on! Don't rush</span></div>
+        <h2 class="title red"><span class="id">Microservices itu <em>mahal</em>.</span><span class="en">Microservices are <em>expensive</em>.</span></h2>
+        <div class="redflag-list">
+          <div class="redflag"><span class="x">✕</span><span class="txt"><span class="id">Tim engineering &lt; 8 orang</span><span class="en">Team smaller than 8 engineers</span></span></div>
+          <div class="redflag"><span class="x">✕</span><span class="txt"><span class="id">Boundary domain belum jelas</span><span class="en">Domain boundaries unclear</span></span></div>
+          <div class="redflag"><span class="x">✕</span><span class="txt"><span class="id">CI/CD & observability ngos-ngosan</span><span class="en">CI/CD & observability struggling</span></span></div>
+        </div>
+        <div class="meme-box anim-bounce" style="border-color: var(--red); color: var(--red); box-shadow: 6px 6px 0px var(--red);">
+          <span class="emoji">🚫☕</span>
+          <span class="id">TIM 5 ORANG MAU MICROSERVICES? MENDING BELI MESIN KOPI</span>
+          <span class="en">5-PERSON TEAM WANTS MICROSERVICES? BUY A COFFEE MACHINE INSTEAD</span>
+        </div>
+      </div>
+      <div class="premium-chart">
+        <div class="pc-legend"><span><span class="dot" style="background:#10b981;"></span>Monolith</span><span><span class="dot" style="background:#ef4444;"></span>Microservices</span></div>
+        <svg viewBox="0 0 400 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="20" x2="40" y2="240" stroke="#9ca3af" stroke-width="1.5"/>
+          <line x1="40" y1="240" x2="380" y2="240" stroke="#9ca3af" stroke-width="1.5"/>
+          <text x="20" y="135" fill="#6b7280" font-family="IBM Plex Mono" font-size="14" transform="rotate(-90 20 135)" text-anchor="middle" font-weight="600">COST / COMPLEXITY</text>
+          <text x="210" y="265" fill="#6b7280" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="600">SYSTEM SIZE →</text>
+          <g stroke="#e9ecef" stroke-width="2"><line x1="40" y1="80" x2="380" y2="80"/><line x1="40" y1="140" x2="380" y2="140"/><line x1="40" y1="200" x2="380" y2="200"/></g>
+          <path d="M 60 220 Q 150 215 220 200 Q 290 175 370 100" stroke="#10b981" stroke-width="4" fill="none"/>
+          <path d="M 60 180 Q 100 100 180 80 Q 280 65 370 55" stroke="#ef4444" stroke-width="4" fill="none"/>
+          <path d="M 60 180 Q 100 100 180 80 L 180 200 Q 150 215 60 220 Z" fill="#ef4444" opacity="0.08"/>
+          <text x="100" y="155" fill="#ef4444" font-family="IBM Plex Mono" font-size="14" font-style="italic" font-weight="600">Premium zone</text>
+          <line x1="280" y1="65" x2="280" y2="240" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="285" y="78" fill="#f59e0b" font-family="IBM Plex Mono" font-size="14" font-weight="600">Crossover</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Martin Fowler, "MicroservicePremium"</span><span>11</span></div>
+</section>
+
+<!-- ============ SLIDE 12: DIAGNOSIS ============ -->
+<section class="slide" id="s12">
+  <div class="s-head"><span><span class="id">Diagnosis Mandiri</span><span class="en">Self-Diagnosis</span></span><span class="num">12 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow yellow"><span class="id">Yuk diagnos dulu</span><span class="en">Let's diagnose first</span></div>
+    <h2 class="title"><span class="id">Masalah <em>teknis</em> atau <em>organisasional</em>?</span><span class="en">Is it <em>technical</em> or <em>organizational</em>?</span></h2>
+    <div class="diag-grid">
+      <div class="diag-flow">
+        <div class="diag-step q"><span class="ic">Q1</span><span class="t"><span class="id">Perubahan kecil butuh sinkronisasi 3+ tim?</span><span class="en">Small change needs 3+ teams sync?</span></span></div>
+        <div class="diag-arrow">↓</div>
+        <div class="diag-step q"><span class="ic">Q2</span><span class="t"><span class="id">Deploy butuh koordinasi manual antar-tim?</span><span class="en">Deploy needs manual cross-team coord?</span></span></div>
+        <div class="diag-arrow">↓</div>
+        <div class="diag-step q"><span class="ic">Q3</span><span class="t"><span class="id">Tim saling menunggu rilis fitur?</span><span class="en">Teams blocking each other's releases?</span></span></div>
+      </div>
+      <div>
+        <div class="diag-step yes" style="margin-bottom: 20px;">
+          <span class="ic">≥3</span>
+          <span class="t"><strong style="color:var(--red); font-size: 24px; display:block; margin-bottom:8px;"><span class="id">Masalah Organisasional</span><span class="en">Organizational Problem</span></strong><span class="id">Microservices nggak akan menyelesaikan ini.</span><span class="en">Microservices won't fix this.</span></span>
+        </div>
+        <div class="diag-step no">
+          <span class="ic">≤1</span>
+          <span class="t"><strong style="color:var(--green); font-size: 24px; display:block; margin-bottom:8px;"><span class="id">Masalah Teknis</span><span class="en">Technical Problem</span></strong><span class="id">Oke, optimasi arsitektur bisa jadi solusi.</span><span class="en">Ok, architecture optimization may help.</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Diagnosis sebelum dekomposisi</span><span class="en">Diagnose before you decompose</span></span><span>12</span></div>
+</section>
+
+<!-- ============ SLIDE 13: ARCHITECTURE ============ -->
+<section class="slide" id="s13">
+  <div class="s-head"><span><span class="id">Studi Kasus</span><span class="en">Case Study</span></span><span class="num">13 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Platform multi-layanan</span><span class="en">Multi-service platform</span></div>
+    <h2 class="title"><span class="id">Batas servis = <em>Batas kepemilikan tim</em>.</span><span class="en">Service boundary = <em>Team ownership</em>.</span></h2>
+    <div class="arch-diagram">
+      <div class="arch-layer"><div class="arch-layer-label">External</div><div class="arch-nodes"><div class="arch-node ext"><div class="nn">EXT · 01</div><div class="nt">SIA Akademik</div></div><div class="arch-node ext"><div class="nn">EXT · 02</div><div class="nt">Payment GW</div></div><div class="arch-node ext"><div class="nn">EXT · 03</div><div class="nt">LLM Provider</div></div></div></div>
+      <div class="arch-layer"><div class="arch-layer-label">Services</div><div class="arch-nodes"><div class="arch-node svc"><div class="nn">SVC · AUTH</div><div class="nt">Authentication</div></div><div class="arch-node svc"><div class="nn">SVC · AGG</div><div class="nt">Data Aggregator</div></div><div class="arch-node svc"><div class="nn">SVC · AI</div><div class="nt">AI Analytics</div></div><div class="arch-node svc"><div class="nn">SVC · NOTIF</div><div class="nt">Notification</div></div></div></div>
+      <div class="arch-layer"><div class="arch-layer-label">Teams</div><div class="arch-nodes"><div class="arch-node team"><div class="nn">TEAM · 01</div><div class="nt">Identity</div></div><div class="arch-node team"><div class="nn">TEAM · 02</div><div class="nt">Integration</div></div><div class="arch-node team"><div class="nn">TEAM · 03</div><div class="nt">AI Lab</div></div><div class="arch-node team"><div class="nn">TEAM · 04</div><div class="nt">Platform</div></div></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Bataskonteks = batas servis</span><span class="en">Context = Service boundary</span></span><span>13</span></div>
+</section>
+
+<!-- ============ SLIDE 14: MAUNG ARCHITECTURE INTRO ============ -->
+<section class="slide" id="s14">
+  <div class="s-head"><span>Studi Kasus · Maung Architecture</span><span class="num">14 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow">The Maung Architecture</div>
+    <h2 class="title">Hybrid Cloud yang <em>Cerdas & Tangguh</em>.</h2>
+    <div class="split-layout">
+      <div style="font-size: 20px; color: var(--muted); line-height: 1.6;">
+        <p style="margin-bottom: 24px;">
+          <span class="id">Realita di kampus: kita punya data berat (video kuliah, arsip) dan sistem yang butuh stabil diakses publik (SIA/KRS). Taruh semua di Cloud? Bakal boncos biaya egress. Cuma di lokal? Nggak kuat nampung trafik mahasiswa.</span>
+          <span class="en">Campus reality: we have heavy data (lectures, archives) and systems needing public access stability (SIA/KRS). All in Cloud? Egress costs will bleed us. Only local? Can't handle student traffic.</span>
+        </p>
+        <p>
+          <span class="id">Jadinya, kita pakai <strong style="color: var(--ink);">Hybrid Cloud</strong>. Local Server jadi gudang & benteng data internal. Google Cloud (VPS) jadi mesin penggerak yang cepat dan stabil.</span>
+          <span class="en">So, we use <strong style="color: var(--ink);">Hybrid Cloud</strong>. Local Server as the warehouse & internal data fortress. Google Cloud (VPS) as the fast and stable engine.</span>
+        </p>
+      </div>
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="50" width="160" height="200" fill="none" stroke="#10b981" stroke-width="4" rx="12"/>
+          <text x="100" y="80" fill="#10b981" font-family="IBM Plex Mono" font-size="16" text-anchor="middle" font-weight="700">LOCAL SERVER</text>
+          <text x="100" y="120" fill="#6b7280" font-family="IBM Plex Sans" font-size="14" text-anchor="middle">Storage</text>
+          <text x="100" y="150" fill="#6b7280" font-family="IBM Plex Sans" font-size="14" text-anchor="middle">Backup</text>
+          <text x="100" y="180" fill="#6b7280" font-family="IBM Plex Sans" font-size="14" text-anchor="middle">Wazuh Agent</text>
+          
+          <rect x="220" y="50" width="160" height="200" fill="none" stroke="#3b82f6" stroke-width="4" rx="12"/>
+          <text x="300" y="80" fill="#3b82f6" font-family="IBM Plex Mono" font-size="16" text-anchor="middle" font-weight="700">GOOGLE CLOUD</text>
+          <text x="300" y="120" fill="#6b7280" font-family="IBM Plex Sans" font-size="14" text-anchor="middle">Core System</text>
+          <text x="300" y="150" fill="#6b7280" font-family="IBM Plex Sans" font-size="14" text-anchor="middle">reCAPTCHA</text>
+          <text x="300" y="180" fill="#6b7280" font-family="IBM Plex Sans" font-size="14" text-anchor="middle">Workspace AI</text>
+
+          <line x1="180" y1="150" x2="220" y2="150" stroke="#9ca3af" stroke-width="3" stroke-dasharray="6 4"/>
+          <text x="200" y="140" fill="#6b7280" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">VPN</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Hybrid Cloud Architecture</span><span>14</span></div>
+</section>
+
+<!-- ============ SLIDE 15: HYBRID EXECUTION ============ -->
+<section class="slide" id="s15">
+  <div class="s-head"><span>Studi Kasus · Eksekusi</span><span class="num">15 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow">Manajemen Lintas Lingkungan</div>
+    <h2 class="title">Satu <em>Pipeline</em>, Dua Lingkungan.</h2>
+    <div class="pipeline" style="margin-top: 32px;">
+      <div class="pipe-node red">
+        <div class="pipe-icon">VCS</div>
+        <div class="pipe-title">GitLab CI/CD</div>
+        <div class="pipe-tools">Build & Push Docker</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      
+      <div style="display: flex; flex-direction: column; gap: 16px; flex: 1;">
+        <div class="pipe-node green" style="flex: 1;">
+          <div class="pipe-icon">OPS</div>
+          <div class="pipe-title">Portainer (Local)</div>
+          <div class="pipe-tools">Deploy to Local Docker</div>
+        </div>
+        <div class="pipe-node blue" style="flex: 1;">
+          <div class="pipe-icon">OPS</div>
+          <div class="pipe-title">Portainer (Cloud VPS)</div>
+          <div class="pipe-tools">Deploy to GCP VPS</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      
+      <div style="display: flex; flex-direction: column; gap: 16px; flex: 1;">
+        <div class="pipe-node dark" style="flex: 1;">
+          <div class="pipe-icon">MON</div>
+          <div class="pipe-title">Wazuh (Terpusat)</div>
+          <div class="pipe-tools">Monitor Local + Cloud</div>
+        </div>
+        <div class="pipe-node purple" style="flex: 1;">
+          <div class="pipe-icon">SEC</div>
+          <div class="pipe-title">reCAPTCHA</div>
+          <div class="pipe-tools">Bot Protection (Web)</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 16px; font-size: 18px; color: var(--muted); text-align: center; font-style: italic;">
+      <span class="id">Rapi, aman, tanpa hambatan birokrasi.</span>
+      <span class="en">Neat, secure, without bureaucratic hurdles.</span>
+    </div>
+  </div>
+  <div class="s-foot"><span>Eksekusi Tanpa Hambatan</span><span>15</span></div>
+</section>
+
+<!-- ============ SLIDE 16: PATTERN 1 (Contract-First) ============ -->
+<section class="slide" id="s16">
+  <div class="s-head"><span><span class="id">Pola Lintas-Servis · 1/7</span><span class="en">Agile Patterns · 1/7</span></span><span class="num">16 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout">
+      <div class="split-text">
+        <div class="eyebrow">Pattern · 01</div>
+        <h3>Contract-First API</h3>
+        <div class="tagline"><span class="id">Kontrak sebelum implementasi</span><span class="en">Contract before implementation</span></div>
+        <div class="desc"><span class="id">Jangan nunggu backend selesai baru frontend ngoding. Bikin OpenAPI kontrak dulu. FE pakai mock data, BE tinggal penuhi kontrak. Beres, nggak saling nunggu.</span><span class="en">Don't wait for backend to finish before frontend codes. Create OpenAPI contract first. FE uses mock data, BE just fulfills it. Done, no blocking.</span></div>
+      </div>
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect x="40" y="100" width="80" height="100" fill="none" stroke="#10b981" stroke-width="4" rx="12"/>
+          <text x="80" y="155" fill="#10b981" font-family="IBM Plex Mono" font-size="20" text-anchor="middle" font-weight="700">FE</text>
+          <rect x="280" y="100" width="80" height="100" fill="none" stroke="#3b82f6" stroke-width="4" rx="12"/>
+          <text x="320" y="155" fill="#3b82f6" font-family="IBM Plex Mono" font-size="20" text-anchor="middle" font-weight="700">BE</text>
+          <rect x="160" y="80" width="80" height="140" fill="#f8f9fa" stroke="#3b82f6" stroke-width="4" stroke-dasharray="8 4" rx="12"/>
+          <text x="200" y="145" fill="#3b82f6" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">OpenAPI</text>
+          <text x="200" y="170" fill="#3b82f6" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">Contract</text>
+          <line x1="120" y1="150" x2="160" y2="150" stroke="#9ca3af" stroke-width="3"/>
+          <line x1="240" y1="150" x2="280" y2="150" stroke="#9ca3af" stroke-width="3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Contract-First API</span><span>16</span></div>
+</section>
+
+<!-- ============ SLIDE 17: PATTERN 2 (Adapter) ============ -->
+<section class="slide" id="s17">
+  <div class="s-head"><span><span class="id">Pola Lintas-Servis · 2/7</span><span class="en">Agile Patterns · 2/7</span></span><span class="num">17 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout reverse">
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect x="40" y="120" width="80" height="60" fill="none" stroke="#9ca3af" stroke-width="4" stroke-dasharray="8 4" rx="12"/>
+          <text x="80" y="155" fill="#6b7280" font-family="IBM Plex Mono" font-size="16" text-anchor="middle" font-weight="700">SIA</text>
+          <rect x="120" y="80" width="40" height="140" fill="#f8f9fa" stroke="#8b5cf6" stroke-width="4" rx="8"/>
+          <text x="140" y="155" fill="#8b5cf6" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700" transform="rotate(-90 140 155)">ADAPTER</text>
+          <rect x="240" y="80" width="40" height="140" fill="#f8f9fa" stroke="#8b5cf6" stroke-width="4" rx="8"/>
+          <text x="260" y="155" fill="#8b5cf6" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700" transform="rotate(-90 260 155)">ADAPTER</text>
+          <rect x="320" y="120" width="60" height="60" fill="none" stroke="#10b981" stroke-width="4" rx="12"/>
+          <text x="350" y="155" fill="#10b981" font-family="IBM Plex Mono" font-size="16" text-anchor="middle" font-weight="700">SVC</text>
+          <line x1="120" y1="150" x2="120" y2="150" stroke="#9ca3af" stroke-width="3"/>
+          <line x1="280" y1="150" x2="320" y2="150" stroke="#9ca3af" stroke-width="3"/>
+        </svg>
+      </div>
+      <div class="split-text">
+        <div class="eyebrow purple">Pattern · 02</div>
+        <h3>Adapter Pattern</h3>
+        <div class="tagline purple"><span class="id">Bungkus sumber eksternal</span><span class="en">Wrap external sources</span></div>
+        <div class="desc"><span class="id">Kalau nyambung ke sistem eksternal (seperti SIA lama), bungkus pakai adapter. Kalau API-nya berubah, sistem utama nggak ikut rubuh.</span><span class="en">If connecting to external systems (like legacy SIA), wrap with an adapter. If the API changes, the main system doesn't crash.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Adapter Pattern</span><span>17</span></div>
+</section>
+
+<!-- ============ SLIDE 18: PATTERN 3 (Event-Driven) ============ -->
+<section class="slide" id="s18">
+  <div class="s-head"><span><span class="id">Pola Lintas-Servis · 3/7</span><span class="en">Agile Patterns · 3/7</span></span><span class="num">18 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout">
+      <div class="split-text">
+        <div class="eyebrow green">Pattern · 03</div>
+        <h3>Event-Driven Async</h3>
+        <div class="tagline green"><span class="id">Publikasi pesan, langganan</span><span class="en">Publish events, subscribe</span></div>
+        <div class="desc"><span class="id">Servis Auth habis registrasi user, dia publish event ke Event Bus. Nggak nunggu servis Notif atau AI. Pemanggil nggak ke-lock prosesnya.</span><span class="en">Auth service finishes user registration, publishes event to Bus. Doesn't wait for Notif or AI. Caller isn't locked.</span></div>
+      </div>
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="120" width="80" height="60" fill="none" stroke="#3b82f6" stroke-width="4" rx="12"/>
+          <text x="60" y="155" fill="#3b82f6" font-family="IBM Plex Mono" font-size="16" text-anchor="middle" font-weight="700">AUTH</text>
+          <rect x="160" y="90" width="80" height="120" fill="#f8f9fa" stroke="#3b82f6" stroke-width="4" rx="12"/>
+          <text x="200" y="145" fill="#3b82f6" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">EVENT</text>
+          <text x="200" y="165" fill="#3b82f6" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">BUS</text>
+          <rect x="300" y="80" width="80" height="50" fill="none" stroke="#10b981" stroke-width="4" rx="12"/>
+          <text x="340" y="110" fill="#10b981" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">NOTIF</text>
+          <rect x="300" y="170" width="80" height="50" fill="none" stroke="#10b981" stroke-width="4" rx="12"/>
+          <text x="340" y="200" fill="#10b981" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">AI</text>
+          <line x1="100" y1="150" x2="160" y2="150" stroke="#3b82f6" stroke-width="3"/>
+          <polygon points="160,150 150,145 150,155" fill="#3b82f6"/>
+          <line x1="240" y1="130" x2="300" y2="105" stroke="#10b981" stroke-width="3"/>
+          <polygon points="300,105 290,105 295,115" fill="#10b981"/>
+          <line x1="240" y1="170" x2="300" y2="195" stroke="#10b981" stroke-width="3"/>
+          <polygon points="300,195 290,195 295,185" fill="#10b981"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Event-Driven Async</span><span>18</span></div>
+</section>
+
+<!-- ============ SLIDE 19: PATTERN 4 (Clear Ownership) ============ -->
+<section class="slide" id="s19">
+  <div class="s-head"><span><span class="id">Pola Lintas-Servis · 4/7</span><span class="en">Agile Patterns · 4/7</span></span><span class="num">19 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout reverse">
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect x="40" y="100" width="120" height="100" fill="none" stroke="#3b82f6" stroke-width="4" rx="12"/>
+          <text x="100" y="145" fill="#3b82f6" font-family="IBM Plex Mono" font-size="18" text-anchor="middle" font-weight="700">SVC A</text>
+          <text x="100" y="175" fill="#10b981" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">Team A</text>
+          <rect x="240" y="100" width="120" height="100" fill="none" stroke="#10b981" stroke-width="4" rx="12"/>
+          <text x="300" y="145" fill="#10b981" font-family="IBM Plex Mono" font-size="18" text-anchor="middle" font-weight="700">SVC B</text>
+          <text x="300" y="175" fill="#3b82f6" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">Team B</text>
+          <line x1="160" y1="150" x2="240" y2="150" stroke="#9ca3af" stroke-width="3" stroke-dasharray="8 4"/>
+        </svg>
+      </div>
+      <div class="split-text">
+        <div class="eyebrow yellow">Pattern · 04</div>
+        <h3>Clear Ownership</h3>
+        <div class="tagline" style="color: var(--yellow);"><span class="id">Satu servis, satu tim</span><span class="en">One service, one team</span></div>
+        <div class="desc"><span class="id">Nggak ada 'layanan yatim'. Kalau tengah malam server down, on-call nya jelas siapa yang harus bangun.</span><span class="en">No 'orphan services'. If server goes down at midnight, it's clear who's on-call and must wake up.</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Clear Ownership</span><span>19</span></div>
+</section>
+
+<!-- ============ SLIDE 20: PATTERN 5 (Async Standup) ============ -->
+<section class="slide" id="s20">
+  <div class="s-head"><span><span class="id">Pola Lintas-Servis · 5/7</span><span class="en">Agile Patterns · 5/7</span></span><span class="num">20 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout">
+      <div class="split-text">
+        <div class="eyebrow">Pattern · 05</div>
+        <h3>Async Standup</h3>
+        <div class="tagline"><span class="id">Tertulis di living docs</span><span class="en">Written in living docs</span></div>
+        <div class="desc"><span class="id">Kita hentikan budaya meeting pagi yang makan waktu. Standup pakai living docs. Tim lintas zona waktu tetap bisa baca update tanpa diganggu.</span><span class="en">We stop the culture of time-consuming morning meetings. Standups use living docs. Cross-timezone teams can read updates without interruption.</span></div>
+      </div>
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="80" width="80" height="40" fill="none" stroke="#3b82f6" stroke-width="4" rx="8"/>
+          <text x="60" y="105" fill="#3b82f6" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">DEV 1</text>
+          <rect x="20" y="180" width="80" height="40" fill="none" stroke="#3b82f6" stroke-width="4" rx="8"/>
+          <text x="60" y="205" fill="#3b82f6" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">DEV 2</text>
+          <rect x="160" y="120" width="80" height="60" fill="#f8f9fa" stroke="#10b981" stroke-width="4" rx="12"/>
+          <text x="200" y="155" fill="#10b981" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">ASYNC</text>
+          <text x="200" y="170" fill="#10b981" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">DOC</text>
+          <rect x="300" y="80" width="80" height="40" fill="none" stroke="#10b981" stroke-width="4" rx="8"/>
+          <text x="340" y="105" fill="#10b981" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">DEV 3</text>
+          <rect x="300" y="180" width="80" height="40" fill="none" stroke="#10b981" stroke-width="4" rx="8"/>
+          <text x="340" y="205" fill="#10b981" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-weight="700">DEV 4</text>
+          <line x1="100" y1="100" x2="160" y2="135" stroke="#9ca3af" stroke-width="2"/>
+          <line x1="100" y1="200" x2="160" y2="165" stroke="#9ca3af" stroke-width="2"/>
+          <line x1="240" y1="135" x2="300" y2="100" stroke="#9ca3af" stroke-width="2"/>
+          <line x1="240" y1="165" x2="300" y2="200" stroke="#9ca3af" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Async Standup</span><span>20</span></div>
+</section>
+
+<!-- ============ SLIDE 21: PATTERN 6 (Distributed Monolith) ============ -->
+<section class="slide" id="s21">
+  <div class="s-head"><span><span class="id">Pola Lintas-Servis · 6/7</span><span class="en">Agile Patterns · 6/7</span></span><span class="num">21 / 31</span></div>
+  <div class="slide-content">
+    <div class="split-layout reverse">
+      <div class="big-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="80" width="70" height="140" fill="none" stroke="#ef4444" stroke-width="4" rx="12"/>
+          <text x="65" y="155" fill="#ef4444" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">SVC1</text>
+          <rect x="120" y="80" width="70" height="140" fill="none" stroke="#ef4444" stroke-width="4" rx="12"/>
+          <text x="155" y="155" fill="#ef4444" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">SVC2</text>
+          <rect x="210" y="80" width="70" height="140" fill="none" stroke="#ef4444" stroke-width="4" rx="12"/>
+          <text x="245" y="155" fill="#ef4444" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">SVC3</text>
+          <rect x="300" y="80" width="70" height="140" fill="none" stroke="#ef4444" stroke-width="4" rx="12"/>
+          <text x="335" y="155" fill="#ef4444" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="700">SVC4</text>
+          <g stroke="#ef4444" stroke-width="2">
+            <line x1="100" y1="100" x2="120" y2="100"/><line x1="100" y1="120" x2="120" y2="120"/><line x1="100" y1="140" x2="120" y2="140"/><line x1="100" y1="160" x2="120" y2="160"/><line x1="100" y1="180" x2="120" y2="180"/><line x1="100" y1="200" x2="120" y2="200"/>
+            <line x1="190" y1="100" x2="210" y2="100"/><line x1="190" y1="120" x2="210" y2="120"/><line x1="190" y1="140" x2="210" y2="140"/><line x1="190" y1="160" x2="210" y2="160"/><line x1="190" y1="180" x2="210" y2="180"/><line x1="190" y1="200" x2="210" y2="200"/>
+            <line x1="280" y1="100" x2="300" y2="100"/><line x1="280" y1="120" x2="300" y2="120"/><line x1="280" y1="140" x2="300" y2="140"/><line x1="280" y1="160" x2="300" y2="160"/><line x1="280" y1="180" x2="300" y2="180"/><line x1="280" y1="200" x2="300" y2="200"/>
+          </g>
+        </svg>
+      </div>
+      <div class="split-text">
+        <div class="eyebrow red">Pattern · 06</div>
+        <h3 style="color: var(--red);">Avoid Distributed Monolith</h3>
+        <div class="tagline" style="color: var(--red);"><span class="id">Coupling tinggi = monolith</span><span class="en">Tight coupling = monolith</span></div>
+        <div class="desc"><span class="id">Hindari bikin servis banyak, tapi pas di-deploy kudu serempak. Itu bukan microservices, itu monolith yang dibagi-bagi.</span><span class="en">Avoid making many services that must deploy together. That's not microservices, that's a split monolith.</span></div>
+        <div class="meme-box anim-wiggle" style="border-color: var(--red); color: var(--red); box-shadow: 6px 6px 0px var(--red);">
+          <span class="emoji">🌭🔥</span>
+          <span class="id">BUKAN MICROSERVICES, TAPI MONOLITH YANG DIPOTONG-POTONG</span>
+          <span class="en">NOT MICROSERVICES, JUST A SLICED MONOLITH</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>Avoid Distributed Monolith</span><span>21</span></div>
+</section>
+
+<!-- ============ SLIDE 22: PATTERNS SUMMARY ============ -->
+<section class="slide" id="s22">
+  <div class="s-head"><span><span class="id">Pola Lintas-Servis · 7/7</span><span class="en">Agile Patterns · 7/7</span></span><span class="num">22 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Kesimpulan</span><span class="en">Conclusion</span></div>
+    <h2 class="title"><span class="id">Ramah untuk <em>tim kecil</em>.</span><span class="en">Friendly for <em>small teams</em>.</span></h2>
+    <div class="grid-6">
+      <div class="take-card" style="border-top: 6px solid var(--blue); padding: 24px;"><div class="tn" style="font-size: 48px;">01</div><div class="tt" style="font-size: 18px;">Contract-First</div><div class="te"><span class="id">Kontrak dulu.</span><span class="en">Contract first.</span></div></div>
+      <div class="take-card" style="border-top: 6px solid var(--purple); padding: 24px;"><div class="tn" style="color: var(--purple); font-size: 48px;">02</div><div class="tt" style="font-size: 18px;">Adapter</div><div class="te"><span class="id">Bungkus eksternal.</span><span class="en">Wrap external.</span></div></div>
+      <div class="take-card" style="border-top: 6px solid var(--green); padding: 24px;"><div class="tn" style="color: var(--green); font-size: 48px;">03</div><div class="tt" style="font-size: 18px;">Event-Driven</div><div class="te"><span class="id">Async flow.</span><span class="en">Async flow.</span></div></div>
+      <div class="take-card" style="border-top: 6px solid var(--yellow); padding: 24px;"><div class="tn" style="color: var(--yellow); font-size: 48px;">04</div><div class="tt" style="font-size: 18px;">Ownership</div><div class="te"><span class="id">Satu tim, satu servis.</span><span class="en">One team, one svc.</span></div></div>
+      <div class="take-card" style="border-top: 6px solid var(--blue); padding: 24px;"><div class="tn" style="font-size: 48px;">05</div><div class="tt" style="font-size: 18px;">Async Standup</div><div class="te"><span class="id">Living docs.</span><span class="en">Living docs.</span></div></div>
+      <div class="take-card" style="border-top: 6px solid var(--red); padding: 24px;"><div class="tn" style="color: var(--red); font-size: 48px;">06</div><div class="tt" style="font-size: 18px;">No Monolith</div><div class="te"><span class="id">Hindari coupling.</span><span class="en">Avoid coupling.</span></div></div>
+    </div>
+    <div style="margin-top: 16px; font-size: 20px; color: var(--ink); text-align: center; font-weight: 600;">
+      <span class="id">🎯 Tujuan akhir: Independent Deploy (rilis kapan saja) & Loose Coupling (nggak gampang rubuh).</span>
+      <span class="en">🎯 Ultimate goal: Independent Deploy (release anytime) & Loose Coupling (doesn't break easily).</span>
+    </div>
+  </div>
+  <div class="s-foot"><span>Independent deploy · Loose coupling</span><span>22</span></div>
+</section>
+
+<!-- ============ SLIDE 23: SECURITY ============ -->
+<section class="slide" id="s23">
+  <div class="s-head"><span><span class="id">Keamanan Bertahap</span><span class="en">Incremental Security</span></span><span class="num">23 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow green"><span class="id">Jangan tunggu sempurna</span><span class="en">Don't wait for perfection</span></div>
+    <h2 class="title green"><span class="id">Security berevolusi seiring <em>sistem bertumbuh</em>.</span><span class="en">Security evolves as the <em>system grows</em>.</span></h2>
+    <div class="sec-stairs">
+      <div class="sec-step"><div class="sec-level">Level 01</div><div class="sec-title"><span class="id">Dasar</span><span class="en">Basics</span></div><div class="sec-tags"><span class="sec-tag">AuthN</span><span class="sec-tag">TLS</span><span class="sec-tag">WAF</span></div></div>
+      <div class="sec-step"><div class="sec-level">Level 02</div><div class="sec-title"><span class="id">Batas Servis</span><span class="en">Service Boundaries</span></div><div class="sec-tags"><span class="sec-tag">API Gateway</span><span class="sec-tag">JWT</span><span class="sec-tag">Secrets</span></div></div>
+      <div class="sec-step"><div class="sec-level">Level 03</div><div class="sec-title"><span class="id">Zero Trust</span><span class="en">Zero Trust</span></div><div class="sec-tags"><span class="sec-tag">mTLS</span><span class="sec-tag">Mesh</span><span class="sec-tag">Encrypt</span></div></div>
+      <div class="sec-step"><div class="sec-level">Level 04</div><div class="sec-title"><span class="id">Proaktif</span><span class="en">Proactive</span></div><div class="sec-tags"><span class="sec-tag">Threat Model</span><span class="sec-tag">Pentest</span><span class="sec-tag">Wazuh</span></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Naik tangga perlahan</span><span class="en">Climb the stairs slowly</span></span><span>23</span></div>
+</section>
+
+<!-- ============ SLIDE 24: AI HELPS ============ -->
+<section class="slide" id="s24">
+  <div class="s-head"><span><span class="id">Akselerasi AI · Bagian 1</span><span class="en">AI Acceleration · Part 1</span></span><span class="num">24 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow green"><span class="id">Yang dipercepat AI</span><span class="en">What AI accelerates</span></div>
+    <h2 class="title green"><span class="id">AI jago mempercepat <em>eksekusi repetitif</em>.</span><span class="en">AI excels at accelerating <em>repetitive execution</em>.</span></h2>
+    <div class="ai-grid">
+      <div class="ai-list">
+        <div class="ai-item green"><div class="num">01</div><div class="txt"><span class="id">Scaffolding servis baru</span><span class="en">Scaffolding new services</span></div><div class="tag">Execution</div></div>
+        <div class="ai-item green"><div class="num">02</div><div class="txt"><span class="id">Draft OpenAPI contract</span><span class="en">OpenAPI contract drafts</span></div><div class="tag">Execution</div></div>
+        <div class="ai-item green"><div class="num">03</div><div class="txt"><span class="id">Migrasi modul legacy</span><span class="en">Migrating legacy modules</span></div><div class="tag">Execution</div></div>
+        <div class="ai-item green"><div class="num">04</div><div class="txt"><span class="id">Tes integrasi awal</span><span class="en">Initial integration tests</span></div><div class="tag">Execution</div></div>
+      </div>
+      <div class="ai-meter">
+        <div class="ai-meter-title"><span class="id">Cakupan akselerasi AI</span><span class="en">AI acceleration coverage</span></div>
+        <div class="ai-bar-row"><div class="ai-bar-label"><span><span class="id">Scaffolding</span><span class="en">Scaffolding</span></span><span>~85%</span></div><div class="ai-bar-track"><div class="ai-bar-fill" style="width: 85%;"></div></div></div>
+        <div class="ai-bar-row"><div class="ai-bar-label"><span><span class="id">Draft Contract</span><span class="en">Contract draft</span></span><span>~70%</span></div><div class="ai-bar-track"><div class="ai-bar-fill" style="width: 70%;"></div></div></div>
+        <div class="ai-bar-row"><div class="ai-bar-label"><span><span class="id">Tes integrasi</span><span class="en">Integration tests</span></span><span>~60%</span></div><div class="ai-bar-track"><div class="ai-bar-fill" style="width: 60%;"></div></div></div>
+        <div class="ai-bar-row"><div class="ai-bar-label"><span><span class="id">Migrasi legacy</span><span class="en">Legacy migration</span></span><span>~45%</span></div><div class="ai-bar-track"><div class="ai-bar-fill" style="width: 45%;"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">AI mempercepat eksekusi</span><span class="en">AI accelerates execution</span></span><span>24</span></div>
+</section>
+
+<!-- ============ SLIDE 25: AI STAYS HUMAN ============ -->
+<section class="slide" id="s25">
+  <div class="s-head"><span><span class="id">Akselerasi AI · Bagian 2</span><span class="en">AI Acceleration · Part 2</span></span><span class="num">25 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow purple"><span class="id">Tapi ingat!</span><span class="en">But remember!</span></div>
+    <h2 class="title purple"><span class="id">Keputusan strategis tetap di <em>tangan manusia</em>.</span><span class="en">Strategic decisions remain in <em>human hands</em>.</span></h2>
+    <div class="ai-grid">
+      <div class="ai-list">
+        <div class="ai-item purple"><div class="num">01</div><div class="txt"><span class="id">Batas domain & tim</span><span class="en">Domain & team boundaries</span></div><div class="tag">Decision</div></div>
+        <div class="ai-item purple"><div class="num">02</div><div class="txt"><span class="id">Trade-off arsitektural</span><span class="en">Architectural trade-offs</span></div><div class="tag">Decision</div></div>
+        <div class="ai-item purple"><div class="num">03</div><div class="txt"><span class="id">Prioritas migrasi</span><span class="en">Migration priority</span></div><div class="tag">Decision</div></div>
+        <div class="ai-item purple"><div class="num">04</div><div class="txt"><span class="id">Definisi bounded context</span><span class="en">Bounded context definition</span></div><div class="tag">Decision</div></div>
+      </div>
+      <div class="ai-meter">
+        <div class="ai-meter-title"><span class="id">Distribusi keputusan</span><span class="en">Decision distribution</span></div>
+        <svg viewBox="0 0 240 240" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-width: 220px; display: block; margin: 0 auto;">
+          <circle cx="120" cy="120" r="80" fill="none" stroke="#f1f3f5" stroke-width="40"/>
+          <circle cx="120" cy="120" r="80" fill="none" stroke="#10b981" stroke-width="40" stroke-dasharray="201 503" stroke-dashoffset="0" transform="rotate(-90 120 120)"/>
+          <circle cx="120" cy="120" r="80" fill="none" stroke="#8b5cf6" stroke-width="40" stroke-dasharray="302 503" stroke-dashoffset="-201" transform="rotate(-90 120 120)"/>
+          <text x="120" y="115" fill="#1a202c" font-family="Fraunces" font-size="44" text-anchor="middle" font-weight="500">60%</text>
+          <text x="120" y="145" fill="#6b7280" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" letter-spacing="2" font-weight="600">HUMAN</text>
+        </svg>
+        <div style="display: flex; justify-content: space-around; margin-top: 32px; font-family: var(--mono); font-size: 16px; font-weight: 600;">
+          <div style="text-align: center;"><div style="display: inline-block; width: 16px; height: 16px; background: var(--purple); border-radius: 50%; margin-right: 8px;"></div><span style="color: var(--purple);">Human</span></div>
+          <div style="text-align: center;"><div style="display: inline-block; width: 16px; height: 16px; background: var(--green); border-radius: 50%; margin-right: 8px;"></div><span style="color: var(--green);">AI</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="meme-box anim-bounce" style="align-self: center;">
+      <span class="emoji">🤖🔨</span>
+      <span class="id">AI: "SAYA BIKININ ARSITEKTURNYA YA" | MANUSIA: "TETAP SAYA YANG REVIEW"</span>
+      <span class="en">AI: "I'LL MAKE THE ARCHITECTURE" | HUMAN: "I STILL REVIEW IT"</span>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Keputusan arsitektural tetap manusiawi</span><span class="en">Architectural decisions remain human</span></span><span>25</span></div>
+</section>
+
+<!-- ============ SLIDE 26: PITFALLS ============ -->
+<section class="slide" id="s26">
+  <div class="s-head"><span><span class="id">Jebakan</span><span class="en">Pitfalls</span></span><span class="num">26 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow red"><span class="id">Sebagai peringatan</span><span class="en">As a warning</span></div>
+    <h2 class="title red"><span class="id">Jangan masuk <em>3 jebakan klasik</em> ini.</span><span class="en">Don't fall into these <em>3 classic traps</em>.</span></h2>
+    <div class="pit-grid">
+      <div class="pit-card"><div class="pit-illu"><svg viewBox="0 0 200 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="40" height="60" fill="none" stroke="#ef4444" stroke-width="2" rx="4"/><rect x="70" y="20" width="40" height="60" fill="none" stroke="#ef4444" stroke-width="2" rx="4"/><rect x="120" y="20" width="40" height="60" fill="none" stroke="#ef4444" stroke-width="2" rx="4"/><text x="40" y="55" fill="#ef4444" font-family="IBM Plex Mono" font-size="12" text-anchor="middle">SVC1</text><text x="90" y="55" fill="#ef4444" font-family="IBM Plex Mono" font-size="12" text-anchor="middle">SVC2</text><text x="140" y="55" fill="#ef4444" font-family="IBM Plex Mono" font-size="12" text-anchor="middle">SVC3</text><g stroke="#ef4444" stroke-width="1.5"><line x1="60" y1="30" x2="70" y2="30"/><line x1="60" y1="40" x2="70" y2="40"/><line x1="60" y1="50" x2="70" y2="50"/><line x1="60" y1="60" x2="70" y2="60"/><line x1="60" y1="70" x2="70" y2="70"/><line x1="110" y1="30" x2="120" y2="30"/><line x1="110" y1="40" x2="120" y2="40"/><line x1="110" y1="50" x2="120" y2="50"/><line x1="110" y1="60" x2="120" y2="60"/><line x1="110" y1="70" x2="120" y2="70"/></g></svg></div><div class="pnum">PITFALL · 01</div><div class="ptitle">Distributed Monolith</div><div class="pen"><span class="id">Servisnya banyak, tapi pas di-deploy kudu serempak.</span><span class="en">Many services, but must deploy simultaneously.</span></div></div>
+      <div class="pit-card"><div class="pit-illu"><svg viewBox="0 0 200 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#ef4444" stroke-width="1.5"><rect x="10" y="10" width="22" height="22" rx="3"/><rect x="38" y="10" width="22" height="22" rx="3"/><rect x="66" y="10" width="22" height="22" rx="3"/><rect x="94" y="10" width="22" height="22" rx="3"/><rect x="122" y="10" width="22" height="22" rx="3"/><rect x="150" y="10" width="22" height="22" rx="3"/><rect x="10" y="38" width="22" height="22" rx="3"/><rect x="38" y="38" width="22" height="22" rx="3"/><rect x="66" y="38" width="22" height="22" rx="3"/><rect x="94" y="38" width="22" height="22" rx="3"/><rect x="122" y="38" width="22" height="22" rx="3"/><rect x="150" y="38" width="22" height="22" rx="3"/><rect x="10" y="66" width="22" height="22" rx="3"/><rect x="38" y="66" width="22" height="22" rx="3"/><rect x="66" y="66" width="22" height="22" rx="3"/><rect x="94" y="66" width="22" height="22" rx="3"/><rect x="122" y="66" width="22" height="22" rx="3"/><rect x="150" y="66" width="22" height="22" rx="3"/></g></svg></div><div class="pnum">PITFALL · 02</div><div class="ptitle">Over-Decomposition</div><div class="pen"><span class="id">Pecah terlalu halus, sampai on-call jadi mimpi buruk.</span><span class="en">Split too fine, until on-call becomes a nightmare.</span></div></div>
+      <div class="pit-card"><div class="pit-illu"><svg viewBox="0 0 200 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="60" y="20" width="80" height="50" fill="none" stroke="#ef4444" stroke-width="2" rx="6"/><text x="100" y="42" fill="#ef4444" font-family="IBM Plex Mono" font-size="14" text-anchor="middle">AI OUTPUT</text><text x="100" y="60" fill="#ef4444" font-family="IBM Plex Mono" font-size="12" text-anchor="middle" font-style="italic">"looks correct"</text><g stroke="#10b981" stroke-width="2" fill="none"><path d="M 30 80 L 60 80 L 100 70"/><path d="M 170 80 L 140 80 L 100 70"/></g><text x="20" y="84" fill="#10b981" font-family="IBM Plex Mono" font-size="12">human</text><text x="155" y="84" fill="#10b981" font-family="IBM Plex Mono" font-size="12">review?</text></svg></div><div class="pnum">PITFALL · 03</div><div class="ptitle">Over-Reliance on AI</div><div class="pen"><span class="id">Skip review AI, akhirnya utang teknis numpuk.</span><span class="en">Skip AI review, ends up in tech debt piling up.</span></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Kompleksitas tanpa manfaat</span><span class="en">Complexity without benefit</span></span><span>26</span></div>
+</section>
+
+<!-- ============ SLIDE 27: SELF-ASSESS ============ -->
+<section class="slide" id="s27">
+  <div class="s-head"><span><span class="id">Bawa Pulang</span><span class="en">Take Home</span></span><span class="num">27 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Sebelum saya tutup</span><span class="en">Before I close</span></div>
+    <h2 class="title"><span class="id">Bawa pulang <em>4 pertanyaan</em> ini.</span><span class="en">Take these <em>4 questions</em> home.</span></h2>
+    <div class="assess-grid">
+      <div class="assess-q"><span class="b">?</span><div><div class="aq"><span class="id">Butuh microservices sekarang?</span><span class="en">Need microservices right now?</span></div></div></div>
+      <div class="assess-q"><span class="b">?</span><div><div class="aq"><span class="id">Atau benahi tim dulu?</span><span class="en">Or fix the team first?</span></div></div></div>
+      <div class="assess-q"><span class="b">?</span><div><div class="aq"><span class="id">Bagian mana yang dipercepat AI?</span><span class="en">Which parts AI accelerates?</span></div></div></div>
+      <div class="assess-q"><span class="b">?</span><div><div class="aq"><span class="id">Bagian mana yang tetap manusia?</span><span class="en">Which parts stay human?</span></div></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Jawab dengan jujur</span><span class="en">Answer honestly</span></span><span>27</span></div>
+</section>
+
+<!-- ============ SLIDE 28: MANUSIA UNGGUL (NEW) ============ -->
+<section class="slide" id="s28">
+  <div class="s-head"><span>Filosofi Maung</span><span class="num">28 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow green"><span class="id">Menuju Manusia Unggul 🐯</span><span class="en">Towards Superior Humans 🐯</span></div>
+    <h2 class="title green"><span class="id">Bukan cuma soal kode, tapi cara <em>berpikir & hidup</em>.</span><span class="en">Not just about code, but how to <em>think & live</em>.</span></h2>
+    <div class="grid-3">
+      <div class="take-card" style="border-top: 6px solid var(--blue);">
+        <div class="tn anim-float">🧠</div>
+        <div class="tt">Berpikir Komputasi</div>
+        <div class="te"><span class="id">Memecah masalah raksasa jadi kecil yang bisa di-solve. Sistematis, nggak panik.</span><span class="en">Breaking giant problems into solvable small ones. Systematic, no panic.</span></div>
+      </div>
+      <div class="take-card" style="border-top: 6px solid var(--green);">
+        <div class="tn anim-float" style="color: var(--green); animation-delay: 0.5s;">🤝</div>
+        <div class="tt">Kolaborasi</div>
+        <div class="te"><span class="id">Tim otonom tapi satu napas. Gotong royong > Bekerja sendiri tanpa arah.</span><span class="en">Autonomous teams but one breath. Collaboration > Working solo without direction.</span></div>
+      </div>
+      <div class="take-card" style="border-top: 6px solid var(--purple);">
+        <div class="tn anim-float" style="color: var(--purple); animation-delay: 1s;">🎯</div>
+        <div class="tt">Satu Arah</div>
+        <div class="te"><span class="id">Eksekusi rapi. Dari Odoo ke Wazuh, semua ngalir satu arah menuju tujuan. Nggak ada yang nyimpang.</span><span class="en">Neat execution. From Odoo to Wazuh, everything flows one direction to the goal. No deviations.</span></div>
+      </div>
+    </div>
+    <div style="margin-top: 16px; font-size: 20px; color: var(--ink); text-align: center; font-weight: 600;">
+      <span class="id">Inilah esensi Maung: Tangguh, lincah, dan cerdas secara berkelanjutan.</span>
+      <span class="en">This is the essence of Maung: Resilient, agile, and sustainably smart.</span>
+    </div>
+  </div>
+  <div class="s-foot"><span>Manusia Unggul</span><span>28</span></div>
+</section>
+
+<!-- ============ SLIDE 29: TAKEAWAYS ============ -->
+<section class="slide" id="s29">
+  <div class="s-head"><span><span class="id">Poin Utama</span><span class="en">Key Takeaways</span></span><span class="num">29 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Ringkasannya</span><span class="en">The summary</span></div>
+    <div class="grid-6">
+      <div class="take-card"><div class="tn">01</div><div class="tt"><span class="id">Diagnosa dulu.</span><span class="en">Diagnose first.</span></div><div class="te"><span class="id">Org vs Teknis.</span><span class="en">Org vs Tech.</span></div></div>
+      <div class="take-card"><div class="tn" style="color: var(--purple);">02</div><div class="tt"><span class="id">Evolusi metodologi.</span><span class="en">Methodology evolution.</span></div><div class="te"><span class="id">Waterfall → XP.</span><span class="en">Waterfall → XP.</span></div></div>
+      <div class="take-card"><div class="tn" style="color: var(--green);">03</div><div class="tt"><span class="id">Tooling terintegrasi.</span><span class="en">Integrated tooling.</span></div><div class="te"><span class="id">Odoo, GitLab, Docker, Wazuh.</span><span class="en">Odoo, GitLab, Docker, Wazuh.</span></div></div>
+      <div class="take-card"><div class="tn" style="color: var(--yellow);">04</div><div class="tt"><span class="id">Inverse Conway.</span><span class="en">Inverse Conway.</span></div><div class="te"><span class="id">Desain tim dulu.</span><span class="en">Design teams first.</span></div></div>
+      <div class="take-card"><div class="tn" style="color: var(--red);">05</div><div class="tt"><span class="id">Security bertahap.</span><span class="en">Incremental security.</span></div><div class="te"><span class="id">Level 1 → Level 4.</span><span class="en">Level 1 → Level 4.</span></div></div>
+      <div class="take-card"><div class="tn">06</div><div class="tt"><span class="id">AI mempercepat eksekusi.</span><span class="en">AI accelerates execution.</span></div><div class="te"><span class="id">Bukan keputusan.</span><span class="en">Not decisions.</span></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Skalakan tim &amp; sistem bersama-sama</span><span class="en">Scale teams &amp; systems together</span></span><span>29</span></div>
+</section>
+
+<!-- ============ SLIDE 30: REFERENCES ============ -->
+<section class="slide" id="s30">
+  <div class="s-head"><span><span class="id">Sumber &amp; Referensi</span><span class="en">Sources &amp; References</span></span><span class="num">30 / 31</span></div>
+  <div class="slide-content">
+    <div class="eyebrow"><span class="id">Daftar Pustaka</span><span class="en">Bibliography</span></div>
+    <h2 class="title"><span class="id">Referensi inti & <em>bacaan lanjutan</em>.</span><span class="en">Core references & <em>further reading</em>.</span></h2>
+    <div class="grid-6" style="grid-template-columns: repeat(2, 1fr); gap: 24px;">
+      <div class="ref-item"><div class="ref-num">01</div><div class="ref-content"><div class="ref-title">Microservices & Premium</div><div class="ref-author">Martin Fowler</div><a href="https://martinfowler.com/articles/microservices.html" class="ref-link">martinfowler.com</a></div></div>
+      <div class="ref-item"><div class="ref-num" style="color: var(--purple);">02</div><div class="ref-content"><div class="ref-title">Team Topologies</div><div class="ref-author">Skelton & Pais</div><a href="https://teamtopologies.com/key-concepts" class="ref-link" style="color: var(--purple);">teamtopologies.com</a></div></div>
+      <div class="ref-item"><div class="ref-num" style="color: var(--green);">03</div><div class="ref-content"><div class="ref-title">Microservices Patterns</div><div class="ref-author">Chris Richardson</div><a href="https://microservices.io/patterns/index.html" class="ref-link" style="color: var(--green);">microservices.io</a></div></div>
+      <div class="ref-item"><div class="ref-num" style="color: var(--yellow);">04</div><div class="ref-content"><div class="ref-title">Inverse Conway Maneuver</div><div class="ref-author">ThoughtWorks</div><a href="https://www.thoughtworks.com/radar/techniques/inverse-conway-maneuver" class="ref-link" style="color: var(--yellow);">thoughtworks.com</a></div></div>
+      <div class="ref-item"><div class="ref-num" style="color: var(--red);">05</div><div class="ref-content"><div class="ref-title">DDD Reference</div><div class="ref-author">Eric Evans</div><a href="https://www.domainlanguage.com/ddd/reference/" class="ref-link" style="color: var(--red);">domainlanguage.com</a></div></div>
+      <div class="ref-item"><div class="ref-num">06</div><div class="ref-content"><div class="ref-title">2026 Agentic Coding</div><div class="ref-author">Anthropic</div><a href="https://resources.anthropic.com/" class="ref-link">resources.anthropic.com</a></div></div>
+    </div>
+  </div>
+  <div class="s-foot"><span><span class="id">Semua tautan publik</span><span class="en">All links public</span></span><span>30</span></div>
+</section>
+
+<!-- ============ SLIDE 31: CLOSING ============ -->
+<section class="slide" id="s31">
+  <div class="s-head"><span><span class="id">Terima Kasih</span><span class="en">Thank You</span></span><span class="num">31 / 31</span></div>
+  <div class="slide-content">
+    <div class="closing-grid">
+      <div>
+        <div class="eyebrow"><span class="id">Akhir sesi</span><span class="en">End of session</span></div>
+        <div class="big"><span class="id">Terima<br>kasih<em>.</em></span><span class="en">Thank<br>you<em>.</em></span></div>
+        <div class="sub" style="font-size: 22px; line-height: 1.5;">
+          <span class="id">Kembali ke pertanyaan awal: mengapa rilis fitur makin lambat saat tim bertumbuh? Jawabannya selalu sama: <strong style="color: var(--ink);">perhatikan organisasi Anda sama seriusnya dengan arsitektur Anda.</strong></span>
+          <span class="en">Back to the initial question: why do feature releases slow down as teams grow? The answer is always the same: <strong style="color: var(--ink);">pay attention to your organization as seriously as your architecture.</strong></span>
+        </div>
+        <div class="qa">→ Q &amp; A</div>
+      </div>
+      <div>
+        <svg viewBox="0 0 400 320" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <g stroke-width="2" stroke-dasharray="4 4" opacity="0.5">
+            <line x1="200" y1="160" x2="80" y2="60" stroke="#3b82f6"/><line x1="200" y1="160" x2="320" y2="60" stroke="#8b5cf6"/>
+            <line x1="200" y1="160" x2="80" y2="260" stroke="#f59e0b"/><line x1="200" y1="160" x2="320" y2="260" stroke="#ef4444"/>
+            <line x1="80" y1="60" x2="320" y2="60" stroke="#10b981"/><line x1="80" y1="260" x2="320" y2="260" stroke="#10b981"/>
+          </g>
+          <circle cx="200" cy="160" r="48" fill="#f8f9fa" stroke="#3b82f6" stroke-width="3"/>
+          <text x="200" y="155" fill="#3b82f6" font-family="Fraunces" font-size="22" text-anchor="middle" font-style="italic">your</text>
+          <text x="200" y="180" fill="#3b82f6" font-family="Fraunces" font-size="22" text-anchor="middle" font-style="italic">institution</text>
+          <g><circle cx="80" cy="60" r="32" fill="#f8f9fa" stroke="#10b981" stroke-width="3"/><text x="80" y="65" fill="#10b981" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="600">TEAMS</text></g>
+          <g><circle cx="320" cy="60" r="32" fill="#f8f9fa" stroke="#8b5cf6" stroke-width="3"/><text x="320" y="65" fill="#8b5cf6" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="600">SVC</text></g>
+          <g><circle cx="80" cy="260" r="32" fill="#f8f9fa" stroke="#f59e0b" stroke-width="3"/><text x="80" y="265" fill="#f59e0b" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="600">AI</text></g>
+          <g><circle cx="320" cy="260" r="32" fill="#f8f9fa" stroke="#ef4444" stroke-width="3"/><text x="320" y="265" fill="#ef4444" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="600">DDD</text></g>
+          <circle cx="200" cy="160" r="160" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="3 6" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="s-foot"><span>The Maung Architecture · Cloud Optimization, Team Collaboration, and AI Acceleration</span><span>Blind review · 30 min</span></div>
+</section>
+
+<script>
+  const langButtons = document.querySelectorAll('.lang-toggle button');
+  langButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      document.body.dataset.lang = lang;
+      langButtons.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    });
+  });
+
+  const progressFill = document.querySelector('.progress-fill');
+  function updateProgress() {
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / scrollHeight) * 100;
+    progressFill.style.width = scrolled + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  document.addEventListener('keydown', (e) => {
+    const slides = document.querySelectorAll('.slide');
+    const current = Math.round(window.scrollY / window.innerHeight);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+      e.preventDefault();
+      if (current < slides.length - 1) slides[current + 1].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      if (current > 0) slides[current - 1].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      slides[0].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+
+</body>
+</html>
