@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Operasi Diri — OXIGEN OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --bg:#f4f8fd;--surface:#ffffff;--surface-2:#eaf1fa;
+  --ink:#0c1e3e;--ink-2:#1e293b;--muted:#5e6c84;--muted-2:#94a3b8;
+  --border:#dde5ef;--border-2:#c4d0e0;
+  --accent:#1d4ed8;--accent-soft:#dbeafe;--accent-2:#0ea5e9;
+  --green:#059669;--green-soft:#d1fae5;
+  --amber:#d97706;--amber-soft:#fef3c7;
+  --red:#dc2626;--live:#ff3b30;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+.bg-noise{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:radial-gradient(circle at 0% 0%,rgba(29,78,216,.05),transparent 40%),radial-gradient(circle at 100% 100%,rgba(14,165,233,.04),transparent 40%)}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(29,78,216,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(29,78,216,.03) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 90%)}
+.app{position:relative;z-index:2;height:100vh;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.7);backdrop-filter:blur(10px);flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em}
+.topbar .left{display:flex;align-items:center;gap:14px}
+.logo-mark{width:26px;height:26px;border-radius:5px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border)}
+.logo-mark img{width:100%;height:100%;object-fit:contain}
+.crumb{color:var(--muted);text-transform:uppercase}.crumb b{color:var(--ink)}
+.topbar .right{display:flex;align-items:center;gap:20px;color:var(--muted)}
+.live{display:flex;align-items:center;gap:7px;color:var(--ink-2)}.live .pip{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.stage{flex:1;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;padding:30px 56px 70px;display:flex;flex-direction:column;justify-content:center;gap:14px;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease;overflow:hidden}
+.slide.active{opacity:1;pointer-events:auto;transform:translateY(0)}
+.slide-meta{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;flex-shrink:0}
+.slide-meta::before{content:'';width:28px;height:1px;background:var(--accent)}
+.slide-meta .num{color:var(--accent);font-weight:600}
+
+h1.title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(34px,5vw,68px);line-height:.98;letter-spacing:-.03em;color:var(--ink)}
+h1.title .accent{color:var(--accent)}
+h1.title .em{font-style:italic;font-weight:500}
+h1.title .light{font-weight:300;color:var(--muted)}
+
+.subtitle{font-size:clamp(14px,1.2vw,16px);line-height:1.55;color:var(--ink-2);max-width:760px}
+.subtitle b{color:var(--ink);font-weight:600}
+.subtitle code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--accent-soft);padding:1px 6px;border-radius:3px;color:var(--accent)}
+
+.body{display:grid;gap:20px;min-height:0;max-height:100%;overflow:hidden}
+
+.intro-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;align-items:center}
+.intro-side{border-left:1px solid var(--border);padding-left:22px;display:flex;flex-direction:column;gap:14px}
+.intro-side .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+.glossary{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.gloss-item{display:flex;gap:14px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.gloss-item .ic{width:32px;height:32px;border-radius:7px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.gloss-item .t{font-family:'JetBrains Mono';font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.gloss-item .d{font-size:11px;color:var(--muted);line-height:1.45}
+
+.about-grid{display:grid;grid-template-columns:.85fr 1.3fr;gap:28px;align-items:stretch;max-height:100%}
+.about-left{display:flex;flex-direction:column;gap:10px;min-height:0}
+.about-right{display:flex;flex-direction:column;gap:10px;min-height:0}
+.speaker-frame{flex:1;display:flex;flex-direction:column;min-height:0;border-radius:14px;border:1px solid var(--border);background:linear-gradient(180deg,#fff,var(--surface-2));overflow:hidden}
+.speaker-photo-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;min-height:0;position:relative}
+.speaker-photo-wrap img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px;display:block}
+.speaker-overlay-badge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--border);padding:5px 9px;border-radius:6px;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.15em;color:var(--ink);text-transform:uppercase}
+.speaker-overlay-badge img{width:14px;height:14px;object-fit:contain}
+.speaker-info-card{padding:12px 16px;border-top:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:12px}
+.speaker-info-card .oxi-logo{width:30px;height:30px;object-fit:contain;flex-shrink:0}
+.speaker-info-card .name{font-family:'Space Grotesk';font-size:14px;font-weight:600;color:var(--ink);line-height:1.2}
+.speaker-info-card .role{font-family:'JetBrains Mono';font-size:10px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-top:3px}
+.portfolio-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--ink);color:#fff;border-radius:10px;text-decoration:none;font-family:'JetBrains Mono';font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:all .25s}
+.portfolio-btn:hover{background:var(--accent);transform:translateY(-1px)}
+.portfolio-btn .label{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.portfolio-btn .label .l{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.2em}
+.portfolio-btn .label .v{font-size:12px;color:#fff;font-weight:600;text-transform:none;letter-spacing:0}
+.portfolio-btn i{color:var(--accent-2)}
+.roles-section{flex:1;display:flex;flex-direction:column;min-height:0}
+.roles-section .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.roles-section .section-head .h{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.roles-section .section-head .c{font-family:'JetBrains Mono';font-size:11px;color:var(--accent);font-weight:600}
+.roles-list{display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;align-content:stretch;min-height:0}
+.role-item{display:flex;gap:11px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:9px;align-items:flex-start;transition:all .25s}
+.role-item:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,78,216,.06)}
+.role-item .ic{width:30px;height:30px;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.role-item .rt{font-size:12px;font-weight:600;color:var(--ink);line-height:1.3}
+.role-item .ro{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.35}
+.role-item .ro b{color:var(--ink-2);font-weight:600}
+.journey-note{margin-top:8px;padding:10px 12px;background:var(--accent-soft);border-left:2px solid var(--accent);border-radius:0 6px 6px 0;font-size:11px;color:var(--ink-2);line-height:1.5;display:flex;align-items:center;gap:10px}
+.journey-note i{color:var(--accent)}.journey-note b{color:var(--accent);font-weight:700}
+
+.video-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:30px;align-items:center;max-height:100%;min-height:0}
+.video-main{display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0;position:relative}
+.video-frame{position:relative;width:100%;height:0;padding-bottom:56.25%;max-width:calc((100vh - 240px) * 16 / 9);margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#000;box-shadow:0 16px 48px rgba(12,30,62,.2),0 4px 12px rgba(12,30,62,.08)}
+.video-thumb{position:absolute;inset:0;z-index:4;cursor:pointer;overflow:hidden}
+.video-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.55));transition:background .3s}
+.video-thumb:hover .play-overlay{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.45))}
+.play-btn{position:relative;width:74px;height:74px;border-radius:50%;background:#ff0033;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;padding-left:6px;box-shadow:0 8px 32px rgba(255,0,51,.5);transition:transform .3s}
+.video-thumb:hover .play-btn{transform:scale(1.1)}
+.play-btn::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid #ff0033;opacity:0;animation:playPulse 2.5s infinite}
+@keyframes playPulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+.play-text{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:#fff;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+.video-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;z-index:3}
+.vtag{position:absolute;z-index:6;display:flex;align-items:center;gap:7px;padding:6px 10px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:6px;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.15em;color:#fff;text-transform:uppercase}
+.vtag--live{top:12px;left:12px}
+.vtag--signal{top:12px;right:12px;color:#5dd6ff}
+.vtag--signal i{font-size:11px}
+.vtag--signal .bars{display:inline-flex;gap:2px;align-items:flex-end;height:10px}
+.vtag--signal .bars span{width:2px;background:#5dd6ff;border-radius:1px}
+.vtag--signal .bars span:nth-child(1){height:4px;animation:sigbar 1.2s ease-in-out infinite}
+.vtag--signal .bars span:nth-child(2){height:7px;animation:sigbar 1.2s ease-in-out .2s infinite}
+.vtag--signal .bars span:nth-child(3){height:10px;animation:sigbar 1.2s ease-in-out .4s infinite}
+@keyframes sigbar{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--live);animation:livepulse 1.5s infinite;box-shadow:0 0 8px var(--live)}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.bcast-deco{position:absolute;top:-10px;right:-10px;width:72px;height:72px;pointer-events:none;z-index:6}
+.bcast-tower{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 4px 12px rgba(29,78,216,.4);z-index:2}
+.bcast-wave{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);opacity:0;animation:bcast 2.4s linear infinite}
+.bcast-wave:nth-child(2){animation-delay:.8s}
+.bcast-wave:nth-child(3){animation-delay:1.6s}
+@keyframes bcast{0%{transform:scale(1);opacity:.8}100%{transform:scale(2.8);opacity:0}}
+.video-meta-bar{display:flex;align-items:center;justify-content:space-between;max-width:calc((100vh - 240px) * 16 / 9);margin:0 auto;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-family:'JetBrains Mono';font-size:11px}
+.video-meta-bar .left{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.video-meta-bar .left img{width:18px;height:18px;object-fit:contain}
+.video-meta-bar .right{color:var(--muted);letter-spacing:.1em}
+.video-meta-bar .play-tag{display:flex;align-items:center;gap:6px;color:var(--accent);font-weight:600}
+.video-side{display:flex;flex-direction:column;gap:12px;min-width:0;justify-content:center;min-height:0}
+.video-side .label{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.video-side .label .tag{padding:2px 7px;background:var(--accent-soft);color:var(--accent);border-radius:3px;font-weight:600}
+.big-heading{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,3.4vw,46px);font-weight:700;line-height:1.05;letter-spacing:-.025em;color:var(--ink)}
+.big-heading .accent{color:var(--accent)}.big-heading .em{font-style:italic;font-weight:600}
+.desc{font-size:14px;line-height:1.6;color:var(--ink-2)}.desc b{color:var(--ink);font-weight:600}
+.analogy-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px}
+.analogy-card{padding:11px 12px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:flex;gap:10px;align-items:flex-start;transition:all .3s}
+.analogy-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 16px rgba(29,78,216,.08)}
+.analogy-card .ic{width:30px;height:30px;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all .3s}
+.analogy-card:hover .ic{background:var(--accent);color:#fff;transform:rotate(-8deg) scale(1.05)}
+.analogy-card .t{font-size:12px;font-weight:600;color:var(--ink);line-height:1.25;margin-bottom:2px}
+.analogy-card .d{font-size:10px;color:var(--muted);line-height:1.4}
+.analogy-card .d b{color:var(--ink-2);font-weight:600}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:2px}
+.stat-card{padding:12px 8px;background:linear-gradient(135deg,var(--surface),var(--surface-2));border:1px solid var(--border);border-radius:9px;text-align:center;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.stat-card .v{font-family:'Space Grotesk';font-size:20px;font-weight:700;color:var(--accent);line-height:1;letter-spacing:-.02em}
+.stat-card .l{font-family:'JetBrains Mono';font-size:9px;letter-spacing:.13em;color:var(--muted);text-transform:uppercase;margin-top:5px}
+.marquee{margin-top:4px;padding:9px 0;background:var(--ink);border-radius:8px;overflow:hidden;position:relative;flex-shrink:0}
+.marquee::before,.marquee::after{content:'';position:absolute;top:0;bottom:0;width:50px;z-index:2;pointer-events:none}
+.marquee::before{left:0;background:linear-gradient(90deg,var(--ink),transparent)}
+.marquee::after{right:0;background:linear-gradient(270deg,var(--ink),transparent)}
+.marquee-track{display:flex;align-items:center;gap:20px;white-space:nowrap;animation:marquee 38s linear infinite;font-family:'JetBrains Mono';font-size:11px;color:rgba(255,255,255,.55);letter-spacing:.15em;text-transform:uppercase;width:max-content}
+.marquee-track span{display:flex;align-items:center;gap:7px}
+.marquee-track span i{color:var(--accent-2);font-size:12px}
+.marquee-track .dot{color:var(--accent);font-weight:700;font-size:7px}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.compare-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;display:flex;flex-direction:column}
+.compare-card .tag{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.compare-card.bad .tag{color:var(--red)}.compare-card.good .tag{color:var(--green)}
+.compare-card h3{font-family:'Space Grotesk';font-size:24px;font-weight:600;margin-bottom:8px;color:var(--ink)}
+.compare-card .lede{font-size:14px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.compare-card .highlight{background:var(--surface-2);border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+.compare-card.good .highlight{background:var(--green-soft);color:var(--ink)}
+.compare-card.bad .highlight{background:#fee2e2;color:var(--ink)}
+.compare-card .highlight b{font-weight:600}
+.neuro-viz{margin-top:auto;height:70px;position:relative;background:var(--surface-2);border-radius:8px}
+.node{width:10px;height:10px;border-radius:50%;background:var(--ink);position:absolute}
+.line{position:absolute;height:1px;background:var(--ink);transform-origin:left;opacity:.4}
+
+/* === MINDSET TABS + ILLUSTRATION === */
+.tabs-row{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;flex-shrink:0}
+.tab{padding:12px 20px;background:transparent;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);position:relative;transition:color .3s;display:flex;align-items:center;gap:8px}
+.tab.active{color:var(--ink)}
+.tab.active::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent)}
+.tab .badge{font-size:10px;color:var(--muted-2);font-weight:400}.tab.active .badge{color:var(--accent)}
+.tab-panels{position:relative;flex:1;min-height:0}
+.tab-panel{position:absolute;inset:0;opacity:0;transform:translateY(16px);transition:opacity .4s,transform .4s;pointer-events:none;display:grid;grid-template-columns:1.05fr 1fr;gap:18px}
+.tab-panel.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.mindset-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column}
+.mindset-card h3{font-family:'Space Grotesk';font-size:22px;font-weight:600;margin-bottom:4px}
+.mindset-card .label{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.mindset-card.bad h3{color:var(--red)}.mindset-card.good h3{color:var(--green)}
+.quote-box{background:var(--surface-2);border-left:2px solid var(--ink);padding:12px 16px;border-radius:0 8px 8px 0;margin:0 0 14px;font-size:14px;line-height:1.5;font-style:italic;color:var(--ink-2)}
+.mindset-card.bad .quote-box{border-left-color:var(--red);background:#fee2e2}
+.mindset-card.good .quote-box{border-left-color:var(--green);background:var(--green-soft)}
+.mindset-card ul{list-style:none;font-size:13px;line-height:1.85;color:var(--ink-2)}
+.mindset-card ul li{display:flex;align-items:flex-start;gap:11px;padding:2px 0}
+.mindset-card ul li i{margin-top:6px;font-size:6px}
+.mindset-card.bad ul li i{color:var(--red)}
+.mindset-card.good ul li i{color:var(--green)}
+
+/* Mindset illustration — NEW */
+.mindset-illustration{display:flex;flex-direction:column;justify-content:center;gap:14px;padding:0 4px;min-width:0}
+.illus-icon-wrap{display:flex;justify-content:center;align-items:center;height:64px;position:relative}
+.illus-icon-wrap::before{content:'';position:absolute;width:90px;height:90px;border-radius:50%;filter:blur(22px);opacity:.28}
+.illus-icon-wrap.bad::before{background:var(--red)}
+.illus-icon-wrap.good::before{background:var(--green)}
+.illus-icon{font-size:46px;z-index:2;position:relative}
+.illus-icon-wrap.bad .illus-icon{color:var(--red)}
+.illus-icon-wrap.good .illus-icon{color:var(--green)}
+
+.illus-mock{background:#0d1117;border-radius:9px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:11px;box-shadow:0 8px 24px rgba(12,30,62,.18);border:1px solid rgba(255,255,255,.08)}
+.mock-bar{background:rgba(255,255,255,.04);padding:7px 12px;display:flex;align-items:center;gap:5px;border-bottom:1px solid rgba(255,255,255,.08)}
+.mdot{width:9px;height:9px;border-radius:50%}
+.mdot.r{background:#ff5f57}.mdot.y{background:#febc2e}.mdot.g{background:#28c840}
+.mock-title{margin-left:6px;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.05em}
+.mock-content{padding:12px 14px;line-height:1.9;color:rgba(255,255,255,.85)}
+.ml{display:flex;gap:10px;align-items:baseline}
+.mtag{flex-shrink:0;font-weight:700;min-width:46px;display:inline-block}
+.mtag.err{color:#ff5f57}
+.mtag.ok{color:#28c840}
+.mtag.warn{color:#febc2e}
+.mtag.dollar{color:#5dd6ff}
+.mtag.arrow{color:rgba(255,255,255,.5)}
+
+.illus-desc{font-size:12px;line-height:1.55;color:var(--muted);text-align:center;margin:0}
+
+.ota-stage{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.ota-device{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ota-circle{width:180px;height:180px;border-radius:50%;border:1px solid var(--border);position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.ota-circle svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ota-circle .ring-bg{fill:none;stroke:var(--border);stroke-width:2}
+.ota-circle .ring-fg{fill:none;stroke:var(--accent);stroke-width:2;stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset .3s}
+.ota-circle .pct{font-family:'Space Grotesk';font-size:46px;font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.ota-circle .pct small{font-size:18px;color:var(--muted);font-weight:400}
+.ota-device .label{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.ota-device .ver{font-size:13px;color:var(--ink);margin-top:4px;font-weight:500}
+.ota-logs{width:100%;max-width:320px;margin-top:14px;background:var(--surface-2);border-radius:8px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.8;height:110px;overflow:hidden}
+.ota-logs .line{color:var(--muted)}
+.ota-logs .line .ok{color:var(--green)}.ota-logs .line .warn{color:var(--amber)}
+.ota-right h2{font-family:'Space Grotesk';font-size:clamp(30px,3.2vw,42px);font-weight:600;margin-bottom:10px;line-height:1.1;letter-spacing:-.02em}
+.ota-right h2 .accent{color:var(--accent)}
+.ota-right p{font-size:14px;line-height:1.6;color:var(--ink-2);margin-bottom:16px;max-width:500px}
+.yet-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;position:relative}
+.yet-box::before{content:'THE POWER OF YET';position:absolute;top:-9px;left:16px;background:var(--bg);padding:0 8px;font-family:'JetBrains Mono';font-size:9px;letter-spacing:.2em;color:var(--accent)}
+.yet-box .row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.yet-box .row:last-of-type{margin-bottom:0}
+.yet-box .arrow{color:var(--ink);font-size:12px}
+.yet-box .bad-text{text-decoration:line-through;color:var(--muted);font-size:14px}
+.yet-box .good-text{color:var(--ink);font-size:15px;font-weight:500}
+.yet-box .good-text b{color:var(--accent);font-weight:700}
+.yet-box .note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.55;padding-top:12px;border-top:1px dashed var(--border)}
+
+.ram-stage{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.ram-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column}
+.ram-panel h3{font-family:'Space Grotesk';font-size:20px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
+.ram-panel .meta{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;margin-bottom:16px}
+.gauge{margin-bottom:12px}
+.gauge .top{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;color:var(--muted);font-family:'JetBrains Mono'}
+.gauge .top .v{color:var(--ink);font-weight:600}
+.gauge .bar{height:5px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.gauge .fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.22,.9,.3,1)}
+.gauge.cpu .fill{background:var(--ink)}.gauge.ram .fill{background:var(--accent)}.gauge.bat .fill{background:var(--green)}
+.apps-list{margin-top:auto;padding-top:12px;border-top:1px solid var(--border)}
+.apps-list .list-label{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.app-row{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-radius:6px;font-size:12px;background:var(--surface-2);margin-bottom:5px;cursor:pointer;border:1px solid transparent;transition:all .25s}
+.app-row:hover{background:#e6ecf5;border-color:var(--border)}
+.app-row .name{display:flex;align-items:center;gap:9px;color:var(--ink-2)}
+.app-row .name i{color:var(--muted);width:13px}
+.app-row .pct{font-size:10px;color:var(--muted);font-family:'JetBrains Mono'}
+.app-row.kill .pct::after{content:' ✕';color:var(--accent);font-weight:700}
+.app-row.killed{opacity:.4}.app-row.killed .name{text-decoration:line-through}
+.app-row.killed .pct{color:var(--green)}.app-row.killed .pct::after{content:' ✓';color:var(--green)}
+.tip{margin-top:12px;font-size:11px;color:var(--ink-2);line-height:1.5;padding:10px 12px;background:var(--accent-soft);border-left:2px solid var(--accent);border-radius:0 6px 6px 0}
+.tip b{color:var(--accent)}
+
+.matrix-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%}
+.matrix-stage{display:grid;grid-template-columns:1fr 1fr;gap:0;width:min(100%,840px);border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface)}
+.quad{padding:20px;cursor:pointer;transition:all .3s;position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:150px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.quad:nth-child(2n){border-right:none}
+.quad:nth-child(n+3){border-bottom:none}
+.quad:hover{background:var(--surface-2)}
+.quad .num{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);letter-spacing:.2em}
+.quad .qtitle{font-family:'Space Grotesk';font-size:20px;font-weight:600;margin:6px 0 10px;color:var(--ink)}
+.quad .cmd{font-family:'JetBrains Mono';font-size:11px;letter-spacing:.1em;padding:4px 9px;border-radius:4px;display:inline-block;align-self:flex-start;background:var(--surface-2);color:var(--ink)}
+.quad .example{font-size:12px;color:var(--ink-2);margin-top:8px;max-height:0;overflow:hidden;transition:all .4s;line-height:1.45}
+.quad.expanded .example{max-height:90px;margin-top:8px}
+.quad.q1 .cmd{background:#fee2e2;color:var(--red)}
+.quad.q2 .cmd{background:var(--green-soft);color:var(--green)}
+.quad.q3 .cmd{background:var(--amber-soft);color:var(--amber)}
+.quad.q4 .cmd{background:var(--surface-2);color:var(--muted)}
+.matrix-hint{font-size:11px;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:.1em}
+
+.pomo-stage{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.pomo-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:22px;aspect-ratio:1;max-width:300px;width:100%;margin:0 auto;padding:26px}
+.pomo-time{font-family:'Space Grotesk';font-size:80px;font-weight:600;line-height:1;color:var(--ink);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.pomo-label{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.25em;color:var(--muted);margin-top:12px;text-transform:uppercase}
+.pomo-state{font-size:14px;color:var(--ink);margin-top:5px;font-weight:500}
+.pomo-controls{display:flex;gap:10px;margin-top:20px}
+.pomo-btn{padding:11px 22px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--ink);font-family:'JetBrains Mono';font-size:11px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px;font-weight:500}
+.pomo-btn:hover{border-color:var(--ink);background:var(--ink);color:#fff}
+.pomo-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pomo-btn.primary:hover{background:var(--ink);border-color:var(--ink)}
+.pomo-info h2{font-family:'Space Grotesk';font-size:clamp(32px,3.4vw,44px);font-weight:600;margin-bottom:10px;line-height:1.05;letter-spacing:-.02em}
+.pomo-info h2 .accent{color:var(--accent)}
+.pomo-info p{font-size:14px;line-height:1.6;color:var(--ink-2);margin-bottom:16px;max-width:470px}
+.pomo-stats{display:flex;gap:10px;margin-bottom:16px}
+.pomo-stat{flex:1;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:9px}
+.pomo-stat .v{font-family:'Space Grotesk';font-size:24px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+.pomo-stat .l{font-family:'JetBrains Mono';font-size:9px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.pomo-warn{font-size:12px;color:var(--amber);padding:11px 14px;background:var(--amber-soft);border-left:2px solid var(--amber);border-radius:0 6px 6px 0;line-height:1.55}
+.pomo-warn b{color:var(--ink)}
+
+.debug-stage{display:flex;flex-direction:column;gap:16px;max-height:100%;min-height:0}
+.debug-header{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-shrink:0}
+.debug-progress{display:flex;gap:6px;margin-top:6px}
+.debug-pip{width:36px;height:3px;background:var(--border);border-radius:2px;transition:background .3s}
+.debug-pip.done{background:var(--ink)}.debug-pip.active{background:var(--accent)}
+.debug-track{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;min-height:0}
+.debug-step{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:18px;display:flex;flex-direction:column;cursor:pointer;transition:all .3s;position:relative}
+.debug-step:hover{border-color:var(--accent)}
+.debug-step.active{border-color:var(--accent);background:#f8fbff}
+.debug-step .step-n{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);letter-spacing:.2em}
+.debug-step .step-icon{font-size:22px;margin:12px 0 10px;color:var(--muted)}
+.debug-step.active .step-icon{color:var(--accent)}
+.debug-step .step-title{font-family:'Space Grotesk';font-size:18px;font-weight:600;margin-bottom:4px;color:var(--ink)}
+.debug-step .step-sub{font-family:'JetBrains Mono';font-size:9px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
+.debug-step .step-desc{font-size:11px;color:var(--muted);line-height:1.5;flex:1}
+.debug-step .step-code{margin-top:8px;font-size:10px;color:var(--ink);background:var(--surface-2);padding:7px 9px;border-radius:5px;font-family:'JetBrains Mono';border:1px solid var(--border)}
+.debug-detail{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:14px 18px;font-size:13px;line-height:1.6;color:var(--ink-2);display:flex;align-items:flex-start;gap:12px;flex-shrink:0}
+.debug-detail .arrow{color:var(--accent);font-size:13px;margin-top:2px}
+.debug-detail b{color:var(--ink);font-weight:600}
+
+.summary-stage{display:grid;grid-template-rows:1fr auto;gap:18px;max-height:100%;min-height:0}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;min-height:0}
+.sum-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:18px;transition:all .3s;display:flex;flex-direction:column}
+.sum-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 18px rgba(29,78,216,.06)}
+.sum-card .ic{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent);font-size:15px;margin-bottom:12px}
+.sum-card h4{font-family:'Space Grotesk';font-size:17px;font-weight:600;margin-bottom:5px;color:var(--ink)}
+.sum-card p{font-size:12px;color:var(--muted);line-height:1.5;flex:1}
+.sum-card .key{font-family:'JetBrains Mono';font-size:9px;color:var(--accent);letter-spacing:.18em;margin-top:10px;text-transform:uppercase}
+.shutdown-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;background:var(--ink);border-radius:11px;color:#fff;flex-shrink:0}
+.shutdown-bar .msg{font-size:13px;display:flex;align-items:center;gap:10px;font-weight:500}
+.shutdown-bar .msg i{animation:spin 2s linear infinite;color:var(--accent-2)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.shutdown-bar .meta{font-family:'JetBrains Mono';font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.2em;text-transform:uppercase}
+
+.nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:32px;padding:7px 11px;box-shadow:0 4px 24px rgba(12,30,62,.06)}
+.nav button{width:32px;height:32px;border-radius:50%;background:transparent;border:1px solid var(--border);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s}
+.nav button:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+.nav button:disabled{opacity:.3;cursor:not-allowed}
+.nav-dots{display:flex;gap:6px}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--border-2);cursor:pointer;transition:all .25s}
+.nav-dot.active{background:var(--accent);transform:scale(1.3)}
+.nav-counter{font-family:'JetBrains Mono';font-size:11px;color:var(--muted);padding:0 6px;letter-spacing:.1em}
+.nav-counter b{color:var(--ink);font-weight:600}
+.khint{position:fixed;bottom:20px;right:24px;z-index:10;font-size:10px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;font-family:'JetBrains Mono'}
+.khint kbd{display:inline-block;padding:3px 7px;background:var(--surface);border:1px solid var(--border);border-radius:4px;font-family:'JetBrains Mono';color:var(--ink);font-size:10px;margin:0 2px}
+
+.boot{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;justify-content:center;align-items:center;transition:opacity .6s ease}
+.boot.done{opacity:0;pointer-events:none}
+.boot-logo-wrap{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.boot-logo-wrap img{width:40px;height:40px;object-fit:contain}
+.boot-logo{font-family:'Space Grotesk';font-size:32px;font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.boot-sub{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);letter-spacing:.3em;text-transform:uppercase;margin-bottom:36px}
+.boot-bar{width:260px;height:2px;background:var(--border);border-radius:1px;overflow:hidden;position:relative}
+.boot-bar::after{content:'';position:absolute;left:0;top:0;height:100%;background:var(--accent);width:0%;animation:bootload 2s ease forwards}
+@keyframes bootload{0%{width:0%}100%{width:100%}}
+.boot-text{margin-top:18px;font-family:'JetBrains Mono';font-size:11px;color:var(--muted);letter-spacing:.15em;min-height:14px}
+.boot-text::after{content:'_';animation:blink 1s infinite;color:var(--accent)}
+@keyframes blink{50%{opacity:0}}
+
+@media (max-width:1100px){
+  .slide{padding:26px 36px 70px}
+  h1.title{font-size:clamp(30px,4.6vw,52px)}
+  .intro-grid{grid-template-columns:1fr;gap:20px}
+  .intro-side{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:16px}
+  .tab-panel{grid-template-columns:1fr;gap:14px}
+  .mindset-illustration{padding:0}
+}
+@media (max-width:880px){
+  .slide{padding:22px 22px 70px;gap:10px}
+  .topbar{padding:10px 18px;font-size:10px}
+  .topbar .right span:not(.live *){display:none}
+  h1.title{font-size:clamp(26px,5vw,38px)}
+  .subtitle{font-size:13px}
+  .slide-meta{font-size:10px;margin-bottom:6px}
+  .intro-grid,.compare-grid,.ota-stage,.ram-stage,.pomo-stage,.about-grid,.video-hero{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .matrix-stage{grid-template-columns:1fr 1fr}
+  .debug-track{grid-template-columns:1fr 1fr}
+  .summary-grid{grid-template-columns:1fr 1fr}
+  .roles-list,.analogy-grid{grid-template-columns:1fr 1fr}
+  .pomo-time{font-size:56px}
+  .pomo-clock{max-width:240px;padding:18px}
+  .khint{display:none}
+  .speaker-frame{aspect-ratio:4/3}
+  .video-frame,.video-meta-bar{max-width:100%}
+  .nav{padding:6px 10px;gap:10px}
+  .nav button{width:30px;height:30px}
+  .shutdown-bar{flex-direction:column;gap:6px;align-items:flex-start;padding:12px 16px}
+  .tab{padding:9px 12px;font-size:11px}
+  .tab .badge{display:none}
+  .big-heading{font-size:24px}
+  .ota-circle{width:150px;height:150px}
+  .ota-circle .pct{font-size:38px}
+}
+@media (max-width:520px){
+  .slide{padding:16px 16px 60px}
+  h1.title{font-size:24px}
+  .matrix-stage,.debug-track,.summary-grid,.roles-list,.analogy-grid{grid-template-columns:1fr}
+  .stats-row{gap:5px}
+  .stat-card .v{font-size:16px}
+  .role-item,.analogy-card,.compare-card,.mindset-card,.ram-panel,.debug-step,.sum-card{padding:12px}
+  .pomo-time{font-size:44px}
+  .topbar .right{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-noise"></div>
+
+<div class="boot" id="boot">
+  <div class="boot-logo-wrap">
+    <img src="https://media.licdn.com/dms/image/v2/C4E0BAQFgAPH1otET7A/company-logo_200_200/company-logo_200_200/0/1639145700846/oxigen_stt_bandung_logo?e=1793232000&v=beta&t=P8_BJyrwyjdSwtGMW5v69dkZzmcxpRxG9xYms3y5jnk" alt="OXIGEN Logo">
+    <div class="boot-logo">OXIGEN OS</div>
+  </div>
+  <div class="boot-sub">Sistem Operasi Diri · v1.0</div>
+  <div class="boot-bar"></div>
+  <div class="boot-text" id="bootText">Initializing kernel</div>
+</div>
+
+<div class="app">
+  <div class="topbar">
+    <div class="left">
+      <div class="logo-mark"><img src="https://media.licdn.com/dms/image/v2/C4E0BAQFgAPH1otET7A/company-logo_200_200/company-logo_200_200/0/1639145700846/oxigen_stt_bandung_logo?e=1793232000&v=beta&t=P8_BJyrwyjdSwtGMW5v69dkZzmcxpRxG9xYms3y5jnk" alt="OXIGEN Logo"></div>
+      <span class="crumb">modul / <b>sistem_operasi_diri</b> / presentasi</span>
+    </div>
+    <div class="right">
+      <span>pemateri: M.I. Fathulloh, S.Kom.</span>
+      <div class="live"><span class="pip"></span>Session Active</div>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <!-- SLIDE 1: Title -->
+    <section class="slide active" data-slide="0">
+      <div class="slide-meta"><span class="num">00</span> / Install</div>
+      <div class="intro-grid">
+        <div>
+          <h1 class="title">Install ulang<br><span class="light">OS</span> <span class="accent em">pikiran</span><br>kamu.</h1>
+          <p class="subtitle">Modul <b>Sistem Operasi Diri</b> — perpaduan <b>psikologi produktivitas</b> dan analogi <b>ilmu komputer</b>. Dirancang untuk mahasiswa & komunitas IT agar mampu mengelola diri sendiri layaknya sistem operasi yang terus melakukan <code>OTA update</code> sepanjang hidup.</p>
+        </div>
+        <div class="intro-side">
+          <div class="label">// Glosarium IT Terapan</div>
+          <div class="glossary">
+            <div class="gloss-item"><div class="ic"><i class="fa-solid fa-brain"></i></div><div><div class="t">Neuroplastisitas</div><div class="d">Otak menebalkan jaringan saraf ketika terus dilatih.</div></div></div>
+            <div class="gloss-item"><div class="ic"><i class="fa-solid fa-cloud-arrow-down"></i></div><div><div class="t">OTA Updates</div><div class="d">Pembaruan otomatis. Analogi kemauan belajar tanpa disuruh.</div></div></div>
+            <div class="gloss-item"><div class="ic"><i class="fa-solid fa-battery-empty"></i></div><div><div class="t">Decision Fatigue</div><div class="d">Keletihan mental saat CPU otak memproses terlalu banyak pilihan kecil.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: About Pemateri -->
+    <section class="slide" data-slide="1">
+      <div class="slide-meta"><span class="num">01</span> / About Pemateri</div>
+      <div class="about-grid">
+        <div class="about-left">
+          <div class="speaker-frame">
+            <div class="speaker-photo-wrap">
+              <div class="speaker-overlay-badge"><img src="https://media.licdn.com/dms/image/v2/C4E0BAQFgAPH1otET7A/company-logo_200_200/company-logo_200_200/0/1639145700846/oxigen_stt_bandung_logo?e=1793232000&v=beta&t=P8_BJyrwyjdSwtGMW5v69dkZzmcxpRxG9xYms3y5jnk" alt="OXIGEN">Ketua UKM 2021/2022</div>
+              <img src="https://ikhwanfathulloh.netlify.app/gallery/4.png" alt="Muhammad Ikhwan Fathulloh saat menjabat sebagai Ketua UKM OXIGEN 2021-2022">
+            </div>
+            <div class="speaker-info-card">
+              <img src="https://media.licdn.com/dms/image/v2/C4E0BAQFgAPH1otET7A/company-logo_200_200/company-logo_200_200/0/1639145700846/oxigen_stt_bandung_logo?e=1793232000&v=beta&t=P8_BJyrwyjdSwtGMW5v69dkZzmcxpRxG9xYms3y5jnk" alt="OXIGEN Logo" class="oxi-logo">
+              <div><div class="name">Muhammad Ikhwan Fathulloh</div><div class="role">S.Kom. · Pembina OXIGEN</div></div>
+            </div>
+          </div>
+          <a href="https://one.nocturnailed.com/" target="_blank" rel="noopener" class="portfolio-btn">
+            <div class="label"><span class="l">// Portofolio</span><span class="v">one.nocturnailed.com</span></div>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+        <div class="about-right">
+          <h1 class="title">Saya juga<br><span class="light">pernah di</span><br><span class="accent">posisi kalian.</span></h1>
+          <p class="subtitle">Bukan datang dari langit. Sebelum jadi <b>Pembina OXIGEN</b> yang berbagi modul ini, saya juga seorang <b>mahasiswa biasa</b> yang harus install ulang OS pikirannya sendiri — sampai akhirnya dipercaya <b>memimpin komunitas</b> dan kini berkarir di dunia IT.</p>
+          <div class="roles-section">
+            <div class="section-head"><span class="h">// Current Roles & Affiliations</span><span class="c">06</span></div>
+            <div class="roles-list">
+              <div class="role-item"><div class="ic"><i class="fa-solid fa-server"></i></div><div><div class="rt">Software & Hardware Architect (Director)</div><div class="ro">Data & Information Directorate · <b>Universitas Teknologi Bandung</b></div></div></div>
+              <div class="role-item"><div class="ic"><i class="fa-solid fa-robot"></i></div><div><div class="rt">AI Mentor</div><div class="ro">Ruby Thalib <b>AI & Data Consultant</b></div></div></div>
+              <div class="role-item"><div class="ic"><i class="fa-solid fa-chalkboard-user"></i></div><div><div class="rt">IT Instructor</div><div class="ro"><b>Binus Center</b> Bandung</div></div></div>
+              <div class="role-item"><div class="ic"><i class="fa-solid fa-microchip"></i></div><div><div class="rt">IoT & Generative AI Trainer</div><div class="ro"><b>Sanbercode</b></div></div></div>
+              <div class="role-item"><div class="ic"><i class="fa-solid fa-globe"></i></div><div><div class="rt">Builder · Nocturnailed</div><div class="ro">www.<b>nocturnailed.com</b></div></div></div>
+              <div class="role-item"><div class="ic"><i class="fa-solid fa-laptop-code"></i></div><div><div class="rt">Freelance Programmer & Mentor</div><div class="ro">Independent · <b>Open for collab</b></div></div></div>
+            </div>
+            <div class="journey-note"><i class="fa-solid fa-circle-info"></i><div>Periode <b>2021 — 2022</b>: dipercaya sebagai <b>Ketua UKM OXIGEN</b> STT Bandung. Titik balik dari mahasiswa biasa → leader.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Video -->
+    <section class="slide" data-slide="2">
+      <div class="slide-meta"><span class="num">02</span> / Tim OXIGEN · Promosi Angkatan 2022/2023</div>
+      <div class="video-hero">
+        <div class="video-main">
+          <div class="video-frame">
+            <div class="video-thumb" id="videoThumb">
+              <img src="https://img.youtube.com/vi/KP_0V_E-ukg/hqdefault.jpg" alt="Preview Tim OXIGEN Promosi 2022-2023">
+              <div class="play-overlay"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div class="play-text">Klik untuk play</div></div>
+            </div>
+            <div class="vtag vtag--live"><span class="live-dot"></span> ON AIR</div>
+            <div class="vtag vtag--signal"><i class="fa-solid fa-signal"></i><span>signal:</span><span class="bars"><span></span><span></span><span></span></span><span>strong</span></div>
+            <iframe data-src="https://www.youtube.com/embed/KP_0V_E-ukg?autoplay=1&rel=0&modestbranding=1&si=6iq9qxbQOt7f0vWS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <div class="bcast-deco"><div class="bcast-wave"></div><div class="bcast-wave"></div><div class="bcast-wave"></div><div class="bcast-tower"><i class="fa-solid fa-tower-broadcast"></i></div></div>
+          </div>
+          <div class="video-meta-bar">
+            <div class="left"><img src="https://media.licdn.com/dms/image/v2/C4E0BAQFgAPH1otET7A/company-logo_200_200/company-logo_200_200/0/1639145700846/oxigen_stt_bandung_logo?e=1793232000&v=beta&t=P8_BJyrwyjdSwtGMW5v69dkZzmcxpRxG9xYms3y5jnk" alt="OXIGEN"><span>OXIGEN · STT Bandung</span></div>
+            <div class="play-tag"><i class="fa-solid fa-play"></i> Press play to watch</div>
+            <div class="right">youtu.be/KP_0V_E-ukg</div>
+          </div>
+        </div>
+        <div class="video-side">
+          <div class="label"><span class="tag">SIGNAL</span> // open-source transmission</div>
+          <h2 class="big-heading">Saat <span class="accent">sinyal OXIGEN</span><br>di-<span class="em">broadcast</span> ke<br>angkatan <span class="accent">2022 — 2023</span>.</h2>
+          <p class="desc">Bukan sekadar promosi. Ini adalah proses <b>transmisi budaya</b> — mindset, knowledge, dan semangat open-source di-<b>fork</b> dari tim lama ke angkatan baru, lalu di-<b>replicate</b> dengan versi mereka sendiri. Tiap angkatan = cabang repo yang tetap terhubung <b>upstream</b>.</p>
+          <div class="analogy-grid">
+            <div class="analogy-card"><div class="ic"><i class="fa-solid fa-code-fork"></i></div><div><div class="t">Fork Repository</div><div class="d">Angkatan baru <b>fork</b> repo tim lama. Versi sendiri, masih terhubung upstream.</div></div></div>
+            <div class="analogy-card"><div class="ic"><i class="fa-solid fa-tower-broadcast"></i></div><div><div class="t">OTA Broadcast</div><div class="d">Budaya & ilmu <b>di-update otomatis</b> ke angkatan baru. Tanpa disuruh.</div></div></div>
+            <div class="analogy-card"><div class="ic"><i class="fa-solid fa-clone"></i></div><div><div class="t">Replicate + Mutate</div><div class="d">Tiap angkatan <b>replicate</b> nilai, lalu mutasi dengan signature versinya.</div></div></div>
+            <div class="analogy-card"><div class="ic"><i class="fa-solid fa-lock-open"></i></div><div><div class="t">Open-Source Knowledge</div><div class="d">Knowledge di-<b>share</b> ke publik. Bukan di-hide di kepala satu orang.</div></div></div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-card"><div class="v">2021-22</div><div class="l">Periode Ketua</div></div>
+            <div class="stat-card"><div class="v">22/23</div><div class="l">Angkatan Baru</div></div>
+            <div class="stat-card"><div class="v">∞</div><div class="l">Iterasi Budaya</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="marquee">
+        <div class="marquee-track">
+          <span><i class="fa-solid fa-tower-broadcast"></i> Broadcasting Mindset</span><span class="dot">●</span>
+          <span>Open-Source Knowledge</span><span class="dot">●</span>
+          <span><i class="fa-solid fa-code-fork"></i> Fork Repository</span><span class="dot">●</span>
+          <span>OTA Update</span><span class="dot">●</span>
+          <span><i class="fa-solid fa-clone"></i> Replicate & Mutate</span><span class="dot">●</span>
+          <span>Growth Mindset Transmission</span><span class="dot">●</span>
+          <span><i class="fa-solid fa-tower-broadcast"></i> Tim OXIGEN 2022 — 2023</span><span class="dot">●</span>
+          <span><i class="fa-solid fa-tower-broadcast"></i> Broadcasting Mindset</span><span class="dot">●</span>
+          <span>Open-Source Knowledge</span><span class="dot">●</span>
+          <span><i class="fa-solid fa-code-fork"></i> Fork Repository</span><span class="dot">●</span>
+          <span>OTA Update</span><span class="dot">●</span>
+          <span><i class="fa-solid fa-clone"></i> Replicate & Mutate</span><span class="dot">●</span>
+          <span>Growth Mindset Transmission</span><span class="dot">●</span>
+          <span><i class="fa-solid fa-tower-broadcast"></i> Tim OXIGEN 2022 — 2023</span><span class="dot">●</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Neuroplastisitas -->
+    <section class="slide" data-slide="3">
+      <div class="slide-meta"><span class="num">03</span> / Kernel</div>
+      <h1 class="title">Hardware bagus,<br>tapi <span class="accent">OS usang</span>.</h1>
+      <p class="subtitle">"Pernahkah kalian melihat komputer lemot? Hardware-nya bagus, tapi OS-nya usang. Begitu juga manusia. Hari ini kita akan <b>meng-install ulang OS pikiran</b> kita." Banyak yang mengira otak berhenti berkembang setelah dewasa. Faktanya, otak sangat <b>plastis</b>.</p>
+      <div class="body compare-grid">
+        <div class="compare-card bad">
+          <div class="tag"><i class="fa-solid fa-circle" style="font-size:6px"></i> Mitos</div>
+          <h3>Otak Statis</h3>
+          <p class="lede">"Saya memang bodoh dari lahir." Anggapan ini menyamakan otak dengan ROM read-only.</p>
+          <div class="highlight">Otak tidak <b>readonly</b> — anggapan "bodoh dari lahir" adalah mitos yang telah dibantahkan sains.</div>
+          <div class="neuro-viz" id="neuroBad">
+            <div class="node" style="left:10%;top:30%"></div><div class="node" style="left:30%;top:60%"></div><div class="node" style="left:50%;top:25%"></div><div class="node" style="left:70%;top:55%"></div><div class="node" style="left:90%;top:35%"></div>
+          </div>
+        </div>
+        <div class="compare-card good">
+          <div class="tag"><i class="fa-solid fa-circle" style="font-size:6px"></i> Fakta Sains</div>
+          <h3>Neuroplastisitas</h3>
+          <p class="lede">Saat belajar hal baru, otak membangun <b>sinapsis</b> baru. Jika dilatih, sambungan menebal.</p>
+          <div class="highlight">Informasi berjalan lebih cepat — seperti <b>jaring fiber optik</b> yang terus ditambahkan bandwidth-nya seumur hidup.</div>
+          <div class="neuro-viz" id="neuroGood">
+            <div class="node" style="left:10%;top:30%"></div><div class="node" style="left:30%;top:60%"></div><div class="node" style="left:50%;top:25%"></div><div class="node" style="left:70%;top:55%"></div><div class="node" style="left:90%;top:35%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Mindset — dengan ilustrasi -->
+    <section class="slide" data-slide="4">
+      <div class="slide-meta"><span class="num">04</span> / Mindset</div>
+      <h1 class="title">OS <span class="light">Jadul</span> vs OS <span class="accent">Modern</span></h1>
+      <p class="subtitle">Konsep dipopulerkan oleh psikolog Stanford, <b>Carol Dweck</b>. Pilih mana: Windows 98 yang langsung <code>blue screen</code> saat error, atau OS modern yang menerima <code>patch</code> perbaikan?</p>
+      <div class="body">
+        <div class="tabs-row">
+          <button class="tab active" data-tab="fixed">Fixed Mindset<span class="badge">OS Jadul</span></button>
+          <button class="tab" data-tab="growth">Growth Mindset<span class="badge">OS Modern</span></button>
+        </div>
+        <div class="tab-panels" style="flex:1">
+          <!-- FIXED MINDSET -->
+          <div class="tab-panel active" data-panel="fixed">
+            <div class="mindset-card bad">
+              <div class="label">ROM Statis · Read-Only</div>
+              <h3>Pola Pikir Tetap</h3>
+              <div class="quote-box">"Wah, gue emang gak bakat di IT."</div>
+              <ul>
+                <li><i class="fa-solid fa-circle"></i> Bakat & kecerdasan dianggap harga mati.</li>
+                <li><i class="fa-solid fa-circle"></i> Membenci tantangan & menghindari risiko.</li>
+                <li><i class="fa-solid fa-circle"></i> Error = kegagalan identitas (blue screen).</li>
+                <li><i class="fa-solid fa-circle"></i> Defensive — closed source terhadap masukan.</li>
+              </ul>
+            </div>
+            <div class="mindset-illustration">
+              <div class="illus-icon-wrap bad">
+                <div class="illus-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              </div>
+              <div class="illus-mock">
+                <div class="mock-bar">
+                  <span class="mdot r"></span><span class="mdot y"></span><span class="mdot g"></span>
+                  <span class="mock-title">error.log — fixed_mindset</span>
+                </div>
+                <div class="mock-content">
+                  <div class="ml"><span class="mtag err">ERR</span> talent.dll not found</div>
+                  <div class="ml"><span class="mtag err">FATAL</span> mindset = readonly</div>
+                  <div class="ml"><span class="mtag arrow">›</span> "gue emang gak bakat"</div>
+                  <div class="ml"><span class="mtag err">HALT</span> system halted — give up</div>
+                </div>
+              </div>
+              <p class="illus-desc">Saat kodenya <b style="color:var(--red)">error</b>, mereka menyerah dan menyalahkan "hardware" (bakat). Tidak sadar yang rusak adalah <b style="color:var(--ink)">OS-nya</b>, bukan mesinnya.</p>
+            </div>
+          </div>
+          <!-- GROWTH MINDSET -->
+          <div class="tab-panel" data-panel="growth">
+            <div class="mindset-card good">
+              <div class="label">Open-Source · Patchable</div>
+              <h3>Pola Pikir Berkembang</h3>
+              <div class="quote-box">"Menarik, mari kita baca log-nya di StackOverflow."</div>
+              <ul>
+                <li><i class="fa-solid fa-circle"></i> Bakat hanya titik awal, bukan harga mati.</li>
+                <li><i class="fa-solid fa-circle"></i> Open-source terhadap masukan & kritik.</li>
+                <li><i class="fa-solid fa-circle"></i> Error = log data untuk patch berikutnya.</li>
+                <li><i class="fa-solid fa-circle"></i> Tidak takut terlihat bodoh — sedang install.</li>
+              </ul>
+            </div>
+            <div class="mindset-illustration">
+              <div class="illus-icon-wrap good">
+                <div class="illus-icon"><i class="fa-solid fa-circle-check"></i></div>
+              </div>
+              <div class="illus-mock">
+                <div class="mock-bar">
+                  <span class="mdot r"></span><span class="mdot y"></span><span class="mdot g"></span>
+                  <span class="mock-title">growth_mindset.sh — running</span>
+                </div>
+                <div class="mock-content">
+                  <div class="ml"><span class="mtag dollar">$</span> applying patch...</div>
+                  <div class="ml"><span class="mtag ok">OK</span> synapse_link established</div>
+                  <div class="ml"><span class="mtag ok">OK</span> error → saved as log</div>
+                  <div class="ml"><span class="mtag arrow">›</span> "baca log-nya di SO"</div>
+                </div>
+              </div>
+              <p class="illus-desc">Orang ber-OS modern tahu mereka sedang dalam <b style="color:var(--ink)">proses instalasi</b>. Setiap error hanyalah <b style="color:var(--green)">commit baru</b> dalam repositori hidup.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: OTA -->
+    <section class="slide" data-slide="5">
+      <div class="slide-meta"><span class="num">05</span> / Update</div>
+      <h1 class="title">OTA <span class="accent">Update</span> &<br>Power of <span class="accent em">Yet</span></h1>
+      <div class="body ota-stage">
+        <div class="ota-device">
+          <div class="label">System Update</div>
+          <div class="ota-circle">
+            <svg viewBox="0 0 200 200"><circle class="ring-bg" cx="100" cy="100" r="90"/><circle class="ring-fg" id="otaRing" cx="100" cy="100" r="90"/></svg>
+            <div class="pct"><span id="otaPct">0</span><small>%</small></div>
+          </div>
+          <div class="ver">OXIGEN OS v1.0.2025 — stable</div>
+          <div class="ota-logs" id="otaLogs">
+            <div class="line"><span class="ok">[OK]</span> Fetching growth-mindset.pkg</div>
+            <div class="line"><span class="ok">[OK]</span> Resolving neuroplasticity deps</div>
+            <div class="line"><span class="warn">[..]</span> Downloading OTA patch</div>
+          </div>
+        </div>
+        <div class="ota-right">
+          <h2>Jangan install <span class="accent">manual</span>.<br>Update otomatis.</h2>
+          <p>Mahasiswa jangan hanya mengandalkan dosen — itu ibarat install manual pakai flashdisk. Jadilah seperti <b>sistem OTA</b>: ambil ilmu dari dokumentasi resmi, GitHub, dan forum tiap hari tanpa disuruh.</p>
+          <div class="yet-box">
+            <div class="row">
+              <span class="bad-text">"Saya tidak bisa ngoding."</span>
+              <i class="fa-solid fa-arrow-right arrow"></i>
+              <span class="good-text">"Saya <b>BELUM</b> bisa ngoding."</span>
+            </div>
+            <div class="note">Tanpa "belum", otak melakukan <b style="color:var(--red)">terminate process</b>. Dengan "belum", otak menerima proses masih <b>loading di background</b> — dopamin tetap terjaga.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: RAM/CPU -->
+    <section class="slide" data-slide="6">
+      <div class="slide-meta"><span class="num">06</span> / Resources</div>
+      <h1 class="title">Kelola <span class="accent">RAM</span> &<br>CPU otakmu.</h1>
+      <p class="subtitle">Otak mengonsumsi <b>glukosa</b> tiap mengambil keputusan (<i>Ego Depletion / Decision Fatigue</i>). Saat RAM habis di hal sepele, CPU tidak siap untuk tugas besar. Itulah sebabnya Zuckerberg memakai baju sama tiap hari.</p>
+      <div class="body ram-stage">
+        <div class="ram-panel">
+          <h3>Resource Monitor</h3>
+          <div class="meta">// brain_process --status</div>
+          <div class="gauge cpu"><div class="top"><span>CPU · FOCUS</span><span class="v" id="cpuVal">38%</span></div><div class="bar"><div class="fill" id="cpuFill" style="width:38%"></div></div></div>
+          <div class="gauge ram"><div class="top"><span>RAM · DECISIONS</span><span class="v" id="ramVal">76%</span></div><div class="bar"><div class="fill" id="ramFill" style="width:76%"></div></div></div>
+          <div class="gauge bat"><div class="top"><span>BATTERY · GLUCOSE</span><span class="v" id="batVal">52%</span></div><div class="bar"><div class="fill" id="batFill" style="width:52%"></div></div></div>
+          <div class="tip"><b>TIP:</b> Klik aplikasi pengganggu di kanan → <b>Force Close</b>. Lihat sisa RAM naik.</div>
+        </div>
+        <div class="ram-panel">
+          <h3>Background Apps</h3>
+          <div class="meta">// ps aux | grep distraction</div>
+          <div class="apps-list">
+            <div class="list-label">Running · klik to kill</div>
+            <div class="app-row kill" data-cost="14"><span class="name"><i class="fa-brands fa-instagram"></i> Instagram Feed</span><span class="pct">14% RAM</span></div>
+            <div class="app-row kill" data-cost="22"><span class="name"><i class="fa-brands fa-tiktok"></i> TikTok Infinite Scroll</span><span class="pct">22% RAM</span></div>
+            <div class="app-row kill" data-cost="9"><span class="name"><i class="fa-solid fa-shirt"></i> "Baju apa hari ini?"</span><span class="pct">9% RAM</span></div>
+            <div class="app-row kill" data-cost="11"><span class="name"><i class="fa-solid fa-phone"></i> Debat di Medsos</span><span class="pct">11% RAM</span></div>
+            <div class="app-row kill" data-cost="8"><span class="name"><i class="fa-solid fa-cloud-rain"></i> Overthinking</span><span class="pct">8% RAM</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Matrix -->
+    <section class="slide" data-slide="7">
+      <div class="slide-meta"><span class="num">07</span> / Task Manager</div>
+      <h1 class="title">Buka <span class="accent">Task Manager</span><br>di otakmu.</h1>
+      <p class="subtitle">Metode <b>Dwight D. Eisenhower</b> — Presiden AS ke-34. Bedakan masalah berdasarkan <b>Urgent</b> (mendesak, terkait waktu) & <b>Important</b> (penting, terkait tujuan). <b>Klik tiap kuadran</b> untuk expand.</p>
+      <div class="body matrix-wrap">
+        <div class="matrix-stage">
+          <div class="quad q1" data-q="1"><div><div class="num">QUADRANT 01</div><div class="qtitle">Penting & Mendesak</div><span class="cmd">$ run --immediately</span></div><div class="example">Bug server jebol · Deadline tugas malam ini · CRISIS</div></div>
+          <div class="quad q2" data-q="2"><div><div class="num">QUADRANT 02</div><div class="qtitle">Penting & Tidak Mendesak</div><span class="cmd">$ schedule --longterm</span></div><div class="example">Belajar framework baru · Olahraga · Membaca · <b style="color:var(--green)">Di sinilah letak kesuksesan jangka panjang!</b></div></div>
+          <div class="quad q3" data-q="3"><div><div class="num">QUADRANT 03</div><div class="qtitle">Tidak Penting & Mendesak</div><span class="cmd">$ delegate --to-friend</span></div><div class="example">Telepon kurir paket · Permintaan teman sepihak · INTERRUPT</div></div>
+          <div class="quad q4" data-q="4"><div><div class="num">QUADRANT 04</div><div class="qtitle">Tidak Penting & Tidak Mendesak</div><span class="cmd">$ kill -9 PID</span></div><div class="example">Scroll TikTok 3 jam · Stalking mantan · <b style="color:var(--red)">BUANG JAUH-JAUH!</b></div></div>
+        </div>
+        <div class="matrix-hint">↑ klik kuadran untuk expand ↓</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: Pomodoro -->
+    <section class="slide" data-slide="8">
+      <div class="slide-meta"><span class="num">08</span> / Thermal</div>
+      <h1 class="title">Manajemen <span class="accent">Termal</span><br>anti-burnout.</h1>
+      <div class="body pomo-stage">
+        <div class="pomo-clock">
+          <div class="pomo-time"><span id="pomoMin">25</span>:<span id="pomoSec">00</span></div>
+          <div class="pomo-label">// CPU TEMP CONTROL</div>
+          <div class="pomo-state" id="pomoState">Ready · Deep Work Mode</div>
+          <div class="pomo-controls">
+            <button class="pomo-btn primary" id="pomoStart"><i class="fa-solid fa-play"></i> Start</button>
+            <button class="pomo-btn" id="pomoReset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+          </div>
+        </div>
+        <div class="pomo-info">
+          <h2>25 menit <span class="accent">fokus</span>,<br>5 menit dingin.</h2>
+          <p>Diciptakan <b>Francesco Cirillo</b> dengan timer berbentuk tomat. Fokus manusia punya batas ±90 menit. Memecah jadi <b>25 menit Deep Work</b> + <b>5 menit Diffuse Mode</b> membantu otak mendinginkan CPU-nya dan merangkai informasi di alam bawah sadar.</p>
+          <div class="pomo-stats">
+            <div class="pomo-stat"><div class="v" id="pomoCount">0</div><div class="l">Pomodoro Done</div></div>
+            <div class="pomo-stat"><div class="v">25:00</div><div class="l">Deep Work</div></div>
+            <div class="pomo-stat"><div class="v">5:00</div><div class="l">Cool Down</div></div>
+          </div>
+          <div class="pomo-warn"><i class="fa-solid fa-triangle-exclamation"></i> Jangan gunakan 5 menit istirahat untuk scroll IG — itu menambah panas CPU. Gunakan untuk <b>minum, regangkan badan, atau tutup mata</b>.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Debug -->
+    <section class="slide" data-slide="9">
+      <div class="slide-meta"><span class="num">09</span> / Debug</div>
+      <div class="debug-header">
+        <div>
+          <h1 class="title">Kalau hidup <span class="accent">error</span>,<br>debug dirimu.</h1>
+          <p class="subtitle" style="margin-bottom:0">Adaptasi <b>Cognitive Behavioral Therapy (CBT)</b> & prinsip <b>Problem Solving</b> — 5 tahap. Klik tiap kartu untuk lihat detail.</p>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'JetBrains Mono';font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Pipeline</div>
+          <div class="debug-progress" id="debugProgress"><div class="debug-pip active"></div><div class="debug-pip"></div><div class="debug-pip"></div><div class="debug-pip"></div><div class="debug-pip"></div></div>
+        </div>
+      </div>
+      <div class="body debug-stage">
+        <div class="debug-track">
+          <div class="debug-step active" data-step="1"><div class="step-n">STEP 01</div><div class="step-icon"><i class="fa-solid fa-puzzle-piece"></i></div><div class="step-title">Urai</div><div class="step-sub">// Breakdown</div><div class="step-desc">Pecah masalah kompleks jadi function lebih kecil yang bisa di-solve satu per satu.</div><div class="step-code">IPK_turun → [belajar, game, tidur]</div></div>
+          <div class="debug-step" data-step="2"><div class="step-n">STEP 02</div><div class="step-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><div class="step-title">Kenali</div><div class="step-sub">// Pattern Recognition</div><div class="step-desc">Observasi kapan error muncul. Cari pola — bukan kebetulan.</div><div class="step-code">if (ngopi_malam) → telat_pagi</div></div>
+          <div class="debug-step" data-step="3"><div class="step-n">STEP 03</div><div class="step-icon"><i class="fa-solid fa-filter"></i></div><div class="step-title">Fokus</div><div class="step-sub">// Filter Noise</div><div class="step-desc">Ubah hal yang bisa dikontrol. Abaikan yang tidak bisa dikontrol.</div><div class="step-code">control = {tidur}</div></div>
+          <div class="debug-step" data-step="4"><div class="step-n">STEP 04</div><div class="step-icon"><i class="fa-solid fa-code"></i></div><div class="step-title">Rencana</div><div class="step-sub">// Algorithm</div><div class="step-desc">Tulis baris kode untuk kebiasaan baru. If-Then yang konkret.</div><div class="step-code">if (22:00) → laptop.close()</div></div>
+          <div class="debug-step" data-step="5"><div class="step-n">STEP 05</div><div class="step-icon"><i class="fa-solid fa-vial-circle-check"></i></div><div class="step-title">Cek Ulang</div><div class="step-sub">// Testing / QA</div><div class="step-desc">Eksekusi & Run. Jika gagal, cari bug. Terus berulang (iterasi).</div><div class="step-code">while (!success) { retry(); }</div></div>
+        </div>
+        <div class="debug-detail" id="debugDetail"><i class="fa-solid fa-arrow-right arrow"></i><div><b>Step 01 — Urai (Breakdown):</b> Pecah masalah kompleks jadi function lebih kecil. Misalnya IPK turun → diurai jadi: kurang belajar, terlalu sering main game, jam tidur berantakan. Tiap sub-masalah jadi <b>ticket tersendiri</b> yang bisa di-solve satu per satu.</div></div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: Summary -->
+    <section class="slide" data-slide="10">
+      <div class="slide-meta"><span class="num">10</span> / Shutdown</div>
+      <h1 class="title">Sistem <span class="accent">ter-install</span>.<br>Saatnya <span class="em">run</span>.</h1>
+      <p class="subtitle">Ringkasan modul — <b>7 prinsip OS Diri</b> yang siap kamu jalankan hari ini. Hidup adalah repositori yang terus <b>commit</b>. Pastikan tiap commit lebih baik dari sebelumnya.</p>
+      <div class="body summary-stage">
+        <div class="summary-grid">
+          <div class="sum-card"><div class="ic"><i class="fa-solid fa-brain"></i></div><h4>Neuroplastisitas</h4><p>Otak bisa di-upgrade seumur hidup. Sinapsis menebal saat dilatih.</p><div class="key">// HARDWARE UPGRADEABLE</div></div>
+          <div class="sum-card"><div class="ic"><i class="fa-solid fa-arrows-rotate"></i></div><h4>Growth Mindset</h4><p>Error = log data. Bukan kegagalan, tapi patch untuk versi berikutnya.</p><div class="key">// OS MODERN</div></div>
+          <div class="sum-card"><div class="ic"><i class="fa-solid fa-cloud-arrow-down"></i></div><h4>OTA Update</h4><p>Belajar proaktif tiap hari. Jangan tunggu dosen install manual.</p><div class="key">// AUTO UPDATE</div></div>
+          <div class="sum-card"><div class="ic"><i class="fa-solid fa-battery-three-quarters"></i></div><h4>Kelola RAM</h4><p>Otomatisasi hal sepele. Force close aplikasi pengganggu fokus.</p><div class="key">// DECISION FATIGUE</div></div>
+          <div class="sum-card"><div class="ic"><i class="fa-solid fa-table-cells-large"></i></div><h4>Task Manager</h4><p>Matriks Eisenhower: Run, Schedule, Delegate, atau Kill Process.</p><div class="key">// PRIORITAS</div></div>
+          <div class="sum-card"><div class="ic"><i class="fa-solid fa-temperature-low"></i></div><h4>Manajemen Termal</h4><p>Pomodoro 25/5. Cegah overheating & thermal throttling otak.</p><div class="key">// ANTI BURNOUT</div></div>
+        </div>
+        <div class="shutdown-bar">
+          <div class="msg"><i class="fa-solid fa-circle-notch"></i> Sistem Operasi Diri v1.0 berhasil di-install. Selamat menjalankan.</div>
+          <div class="meta">OXIGEN · 2025</div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="nav">
+    <button id="prevBtn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="nav-dots" id="navDots"></div>
+    <span class="nav-counter"><b id="curN">01</b> / <span id="totN">11</span></span>
+    <button id="nextBtn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+  </div>
+  <div class="khint">Gunakan <kbd>←</kbd> <kbd>→</kbd> untuk navigasi</div>
+
+</div>
+
+<script>
+const bootMessages=["Initializing kernel","Mounting /brain/neuroplasticity","Loading growth-mindset modules","Checking OTA repository","Calibrating task manager","Starting OXIGEN OS v1.0"];
+let bootIdx=0;const bootText=document.getElementById('bootText');
+const bootInt=setInterval(()=>{bootIdx++;if(bootIdx<bootMessages.length)bootText.textContent=bootMessages[bootIdx];else clearInterval(bootInt);},360);
+setTimeout(()=>{document.getElementById('boot').classList.add('done');},2400);
+
+const slides=document.querySelectorAll('.slide');
+const navDots=document.getElementById('navDots');
+const curN=document.getElementById('curN');
+const totN=document.getElementById('totN');
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+let current=0;totN.textContent=String(slides.length).padStart(2,'0');
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='nav-dot'+(i===0?' active':'');d.addEventListener('click',()=>goTo(i));navDots.appendChild(d);});
+function goTo(i){
+  if(i<0||i>=slides.length)return;
+  slides.forEach((s,idx)=>{s.classList.toggle('active',idx===i);});
+  document.querySelectorAll('.nav-dot').forEach((d,idx)=>d.classList.toggle('active',idx===i));
+  curN.textContent=String(i+1).padStart(2,'0');
+  current=i;prevBtn.disabled=i===0;nextBtn.disabled=i===slides.length-1;
+  onSlideEnter(i);
+}
+prevBtn.addEventListener('click',()=>goTo(current-1));
+nextBtn.addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1);});
+
+function onSlideEnter(i){
+  if(i===3)animateNeuro();
+  if(i===5)startOTA();
+}
+
+const videoThumb=document.getElementById('videoThumb');
+if(videoThumb){
+  const iframe=videoThumb.parentElement.querySelector('iframe');
+  videoThumb.addEventListener('click',()=>{
+    if(iframe&&iframe.dataset.src){
+      iframe.src=iframe.dataset.src;
+      videoThumb.style.display='none';
+    }
+  });
+}
+
+function animateNeuro(){
+  ['neuroBad','neuroGood'].forEach((id,idx)=>{
+    const c=document.getElementById(id);if(!c||c.dataset.init)return;c.dataset.init='1';
+    const nodes=c.querySelectorAll('.node');c.querySelectorAll('.line').forEach(l=>l.remove());
+    const pairs=idx===0?[[0,1],[1,2]]:[[0,1],[1,2],[2,3],[3,4],[0,2],[1,3],[2,4]];
+    pairs.forEach(([a,b])=>{
+      const na=nodes[a].offsetLeft+5,nb=nodes[b].offsetLeft+5;
+      const ya=nodes[a].offsetTop+5,yb=nodes[b].offsetTop+5;
+      const dx=nb-na,dy=yb-ya;const len=Math.sqrt(dx*dx+dy*dy);
+      const angle=Math.atan2(dy,dx)*180/Math.PI;
+      const line=document.createElement('div');line.className='line';
+      line.style.cssText=`left:${na}px;top:${ya}px;width:${len}px;transform:rotate(${angle}deg);transform-origin:left center;`;
+      c.appendChild(line);
+    });
+    nodes.forEach((n,k)=>{
+      n.style.animation=`pulse 2s ${k*0.3}s infinite`;
+      if(idx===1)n.style.background='var(--green)';
+      else n.style.background='var(--red)';
+    });
+  });
+}
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+let otaStarted=false;
+function startOTA(){
+  if(otaStarted)return;otaStarted=true;
+  const ring=document.getElementById('otaRing');
+  const pct=document.getElementById('otaPct');
+  const logs=document.getElementById('otaLogs');
+  const logLines=[
+    '<div class="line"><span class="ok">[OK]</span> Applying growth-mindset patch</div>',
+    '<div class="line"><span class="ok">[OK]</span> Linking new synapses</div>',
+    '<div class="line"><span class="warn">[..]</span> Optimizing dopamine receptors</div>',
+    '<div class="line"><span class="ok">[OK]</span> Patch applied successfully</div>',
+    '<div class="line"><span class="ok">[OK]</span> Rebooting mindset</div>'
+  ];
+  let progress=0,logIdx=0;const total=565;
+  const interval=setInterval(()=>{
+    progress+=2;if(progress>100)progress=100;
+    ring.style.strokeDashoffset=total-(total*progress/100);
+    pct.textContent=progress;
+    if(progress%20===0&&logIdx<logLines.length){logs.innerHTML+=logLines[logIdx];logIdx++;logs.scrollTop=logs.scrollHeight;}
+    if(progress>=100)clearInterval(interval);
+  },50);
+}
+
+let ramVal=76,cpuVal=38,batVal=52;
+function updateGauges(){
+  document.getElementById('ramVal').textContent=ramVal+'%';
+  document.getElementById('cpuVal').textContent=cpuVal+'%';
+  document.getElementById('batVal').textContent=batVal+'%';
+  document.getElementById('ramFill').style.width=ramVal+'%';
+  document.getElementById('cpuFill').style.width=cpuVal+'%';
+  document.getElementById('batFill').style.width=batVal+'%';
+}
+document.querySelectorAll('.app-row.kill').forEach(row=>{
+  row.addEventListener('click',()=>{
+    if(row.classList.contains('killed'))return;
+    row.classList.add('killed');
+    const cost=parseInt(row.dataset.cost);
+    ramVal=Math.max(0,ramVal-cost);
+    cpuVal=Math.min(100,cpuVal+Math.floor(cost/2));
+    batVal=Math.min(100,batVal+Math.floor(cost/3));
+    updateGauges();
+  });
+});
+
+document.querySelectorAll('.quad').forEach(q=>{
+  q.addEventListener('click',()=>{
+    document.querySelectorAll('.quad').forEach(x=>x.classList.remove('expanded'));
+    q.classList.add('expanded');
+  });
+});
+
+let pomoSeconds=25*60,pomoRunning=false,pomoInterval=null,pomoDone=0;
+const pomoMin=document.getElementById('pomoMin');
+const pomoSec=document.getElementById('pomoSec');
+const pomoState=document.getElementById('pomoState');
+const pomoStart=document.getElementById('pomoStart');
+const pomoReset=document.getElementById('pomoReset');
+const pomoCount=document.getElementById('pomoCount');
+function renderPomo(){const m=Math.floor(pomoSeconds/60);const s=pomoSeconds%60;pomoMin.textContent=String(m).padStart(2,'0');pomoSec.textContent=String(s).padStart(2,'0');}
+renderPomo();
+pomoStart.addEventListener('click',()=>{
+  if(pomoRunning){
+    clearInterval(pomoInterval);pomoRunning=false;
+    pomoStart.innerHTML='<i class="fa-solid fa-play"></i> Resume';
+    pomoState.textContent='Paused · Press resume';
+  }else{
+    pomoRunning=true;
+    pomoStart.innerHTML='<i class="fa-solid fa-pause"></i> Pause';
+    pomoState.textContent='Deep Work Mode · FOCUS';
+    pomoInterval=setInterval(()=>{
+      pomoSeconds--;
+      if(pomoSeconds<=0){
+        clearInterval(pomoInterval);pomoRunning=false;
+        pomoDone++;pomoCount.textContent=pomoDone;
+        pomoState.textContent='Break time! Cool down CPU';
+        pomoSeconds=5*60;
+        pomoStart.innerHTML='<i class="fa-solid fa-mug-hot"></i> Start Break';
+      }
+      renderPomo();
+    },1000);
+  }
+});
+pomoReset.addEventListener('click',()=>{
+  clearInterval(pomoInterval);pomoRunning=false;
+  pomoSeconds=25*60;
+  pomoState.textContent='Ready · Deep Work Mode';
+  pomoStart.innerHTML='<i class="fa-solid fa-play"></i> Start';
+  renderPomo();
+});
+
+const debugDetails={
+  1:'<b>Step 01 — Urai (Breakdown):</b> Pecah masalah kompleks jadi function lebih kecil. Misalnya IPK turun → diurai jadi: kurang belajar, terlalu sering main game, jam tidur berantakan. Tiap sub-masalah jadi <b>ticket tersendiri</b> yang bisa di-solve satu per satu.',
+  2:'<b>Step 02 — Kenali (Pattern Recognition):</b> Observasi kapan error sering muncul. Contoh: "Oh, saya telat masuk kelas pagi <b>selalu</b> kalau malamnya ngopi." Pola = root cause yang terselubung.',
+  3:'<b>Step 03 — Fokus (Filter Noise):</b> Ubah hal yang <b>bisa</b> dikontrol (tidur lebih cepat, kurangi game). Abaikan yang <b>tidak bisa</b> dikontrol (jadwal dosen, cuaca). Jangan buang energi ke variabel const.',
+  4:'<b>Step 04 — Rencana (Algorithm):</b> Buat baris kode untuk kebiasaan baru. If-Then yang konkret: <b>If jam 22:00, Then tutup laptop.</b> Tidak ada "nanti" atau "kalau ingat" — itu pseudocode yang ambigu.',
+  5:'<b>Step 05 — Cek Ulang (Testing/QA):</b> Eksekusi kebiasaan baru dan <b>Run</b>. Jika gagal, cari bug-nya lagi. Terus berulang (<b>iterasi</b>) — tidak ada versi 1.0 yang sempurna di compile pertama.'
+};
+document.querySelectorAll('.debug-step').forEach(step=>{
+  step.addEventListener('click',()=>{
+    document.querySelectorAll('.debug-step').forEach(s=>s.classList.remove('active'));
+    step.classList.add('active');
+    const n=step.dataset.step;
+    document.querySelectorAll('.debug-pip').forEach((p,i)=>{
+      p.classList.remove('active','done');
+      if(i<n-1)p.classList.add('done');
+      else if(i==n-1)p.classList.add('active');
+    });
+    document.getElementById('debugDetail').innerHTML='<i class="fa-solid fa-arrow-right arrow"></i><div>'+debugDetails[n]+'</div>';
+  });
+});
+</script>
+</body>
+</html>
