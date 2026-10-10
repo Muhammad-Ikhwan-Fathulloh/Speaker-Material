@@ -93,18 +93,9 @@ h1.title .light{font-weight:300;color:var(--muted)}
 
 .video-hero{display:grid;grid-template-columns:1.3fr 1fr;gap:30px;align-items:center;max-height:100%;min-height:0}
 .video-main{display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0;position:relative}
-.video-frame{position:relative;width:100%;height:0;padding-bottom:56.25%;max-width:calc((100vh - 240px) * 16 / 9);margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#000;box-shadow:0 16px 48px rgba(12,30,62,.2),0 4px 12px rgba(12,30,62,.08)}
-.video-thumb{position:absolute;inset:0;z-index:4;cursor:pointer;overflow:hidden}
-.video-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.55));transition:background .3s}
-.video-thumb:hover .play-overlay{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.45))}
-.play-btn{position:relative;width:74px;height:74px;border-radius:50%;background:#ff0033;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;padding-left:6px;box-shadow:0 8px 32px rgba(255,0,51,.5);transition:transform .3s}
-.video-thumb:hover .play-btn{transform:scale(1.1)}
-.play-btn::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid #ff0033;opacity:0;animation:playPulse 2.5s infinite}
-@keyframes playPulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.6);opacity:0}}
-.play-text{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:#fff;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-.video-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;z-index:3}
-.vtag{position:absolute;z-index:6;display:flex;align-items:center;gap:7px;padding:6px 10px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:6px;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.15em;color:#fff;text-transform:uppercase}
+.video-frame{position:relative;width:100%;height:0;padding-bottom:56.25%;max-width:calc((100vh - 240px) * 16 / 9);margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#000 url('https://img.youtube.com/vi/KP_0V_E-ukg/hqdefault.jpg') center/cover;box-shadow:0 16px 48px rgba(12,30,62,.2),0 4px 12px rgba(12,30,62,.08)}
+.video-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;z-index:2}
+.vtag{position:absolute;z-index:5;display:flex;align-items:center;gap:7px;padding:6px 10px;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:6px;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.15em;color:#fff;text-transform:uppercase;pointer-events:none}
 .vtag--live{top:12px;left:12px}
 .vtag--signal{top:12px;right:12px;color:#5dd6ff}
 .vtag--signal i{font-size:11px}
@@ -116,7 +107,7 @@ h1.title .light{font-weight:300;color:var(--muted)}
 @keyframes sigbar{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--live);animation:livepulse 1.5s infinite;box-shadow:0 0 8px var(--live)}
 @keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.bcast-deco{position:absolute;top:-10px;right:-10px;width:72px;height:72px;pointer-events:none;z-index:6}
+.bcast-deco{position:absolute;top:-10px;right:-10px;width:72px;height:72px;pointer-events:none;z-index:5}
 .bcast-tower{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 4px 12px rgba(29,78,216,.4);z-index:2}
 .bcast-wave{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);opacity:0;animation:bcast 2.4s linear infinite}
 .bcast-wave:nth-child(2){animation-delay:.8s}
@@ -170,16 +161,20 @@ h1.title .light{font-weight:300;color:var(--muted)}
 .node{width:10px;height:10px;border-radius:50%;background:var(--ink);position:absolute}
 .line{position:absolute;height:1px;background:var(--ink);transform-origin:left;opacity:.4}
 
-/* === MINDSET TABS + ILLUSTRATION === */
-.tabs-row{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;flex-shrink:0}
+/* === MINDSET SLIDE — RESTRUCTURED: text LEFT, illustration RIGHT === */
+.mindset-body{display:flex !important;flex-direction:column !important;gap:14px !important;min-height:0 !important;max-height:100% !important;overflow:hidden !important}
+.tabs-row{display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0}
 .tab{padding:12px 20px;background:transparent;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);position:relative;transition:color .3s;display:flex;align-items:center;gap:8px}
 .tab.active{color:var(--ink)}
 .tab.active::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent)}
 .tab .badge{font-size:10px;color:var(--muted-2);font-weight:400}.tab.active .badge{color:var(--accent)}
-.tab-panels{position:relative;flex:1;min-height:0}
-.tab-panel{position:absolute;inset:0;opacity:0;transform:translateY(16px);transition:opacity .4s,transform .4s;pointer-events:none;display:grid;grid-template-columns:1.05fr 1fr;gap:18px}
-.tab-panel.active{opacity:1;transform:translateY(0);pointer-events:auto}
-.mindset-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column}
+
+/* FIX: tab-panels jadi flex column, tab-panel pakai display:none/grid (bukan absolute) */
+.tab-panels{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.tab-panel{display:none;flex:1;min-height:0;grid-template-columns:1.05fr 1fr;gap:18px;overflow:hidden;align-items:stretch}
+.tab-panel.active{display:grid}
+
+.mindset-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;overflow:hidden;min-height:0}
 .mindset-card h3{font-family:'Space Grotesk';font-size:22px;font-weight:600;margin-bottom:4px}
 .mindset-card .label{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
 .mindset-card.bad h3{color:var(--red)}.mindset-card.good h3{color:var(--green)}
@@ -192,17 +187,16 @@ h1.title .light{font-weight:300;color:var(--muted)}
 .mindset-card.bad ul li i{color:var(--red)}
 .mindset-card.good ul li i{color:var(--green)}
 
-/* Mindset illustration — NEW */
-.mindset-illustration{display:flex;flex-direction:column;justify-content:center;gap:14px;padding:0 4px;min-width:0}
-.illus-icon-wrap{display:flex;justify-content:center;align-items:center;height:64px;position:relative}
-.illus-icon-wrap::before{content:'';position:absolute;width:90px;height:90px;border-radius:50%;filter:blur(22px);opacity:.28}
+/* Mindset illustration — RIGHT column */
+.mindset-illustration{display:flex;flex-direction:column;justify-content:center;gap:14px;padding:0 4px;min-width:0;min-height:0;overflow:visible}
+.illus-icon-wrap{display:flex;justify-content:center;align-items:center;height:64px;position:relative;flex-shrink:0}
+.illus-icon-wrap::before{content:'';position:absolute;width:90px;height:90px;border-radius:50%;filter:blur(22px);opacity:.3}
 .illus-icon-wrap.bad::before{background:var(--red)}
 .illus-icon-wrap.good::before{background:var(--green)}
 .illus-icon{font-size:46px;z-index:2;position:relative}
 .illus-icon-wrap.bad .illus-icon{color:var(--red)}
 .illus-icon-wrap.good .illus-icon{color:var(--green)}
-
-.illus-mock{background:#0d1117;border-radius:9px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:11px;box-shadow:0 8px 24px rgba(12,30,62,.18);border:1px solid rgba(255,255,255,.08)}
+.illus-mock{background:#0d1117;border-radius:9px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:11px;box-shadow:0 8px 24px rgba(12,30,62,.18);border:1px solid rgba(255,255,255,.08);flex-shrink:0}
 .mock-bar{background:rgba(255,255,255,.04);padding:7px 12px;display:flex;align-items:center;gap:5px;border-bottom:1px solid rgba(255,255,255,.08)}
 .mdot{width:9px;height:9px;border-radius:50%}
 .mdot.r{background:#ff5f57}.mdot.y{background:#febc2e}.mdot.g{background:#28c840}
@@ -210,13 +204,8 @@ h1.title .light{font-weight:300;color:var(--muted)}
 .mock-content{padding:12px 14px;line-height:1.9;color:rgba(255,255,255,.85)}
 .ml{display:flex;gap:10px;align-items:baseline}
 .mtag{flex-shrink:0;font-weight:700;min-width:46px;display:inline-block}
-.mtag.err{color:#ff5f57}
-.mtag.ok{color:#28c840}
-.mtag.warn{color:#febc2e}
-.mtag.dollar{color:#5dd6ff}
-.mtag.arrow{color:rgba(255,255,255,.5)}
-
-.illus-desc{font-size:12px;line-height:1.55;color:var(--muted);text-align:center;margin:0}
+.mtag.err{color:#ff5f57}.mtag.ok{color:#28c840}.mtag.warn{color:#febc2e}.mtag.dollar{color:#5dd6ff}.mtag.arrow{color:rgba(255,255,255,.5)}
+.illus-desc{font-size:12px;line-height:1.55;color:var(--muted);text-align:center;margin:0;flex-shrink:0}
 
 .ota-stage{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
 .ota-device{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -368,8 +357,7 @@ h1.title .light{font-weight:300;color:var(--muted)}
   h1.title{font-size:clamp(30px,4.6vw,52px)}
   .intro-grid{grid-template-columns:1fr;gap:20px}
   .intro-side{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:16px}
-  .tab-panel{grid-template-columns:1fr;gap:14px}
-  .mindset-illustration{padding:0}
+  .tab-panel{grid-template-columns:1fr !important;gap:14px !important}
 }
 @media (max-width:880px){
   .slide{padding:22px 22px 70px;gap:10px}
@@ -502,13 +490,9 @@ h1.title .light{font-weight:300;color:var(--muted)}
       <div class="video-hero">
         <div class="video-main">
           <div class="video-frame">
-            <div class="video-thumb" id="videoThumb">
-              <img src="https://img.youtube.com/vi/KP_0V_E-ukg/hqdefault.jpg" alt="Preview Tim OXIGEN Promosi 2022-2023">
-              <div class="play-overlay"><div class="play-btn"><i class="fa-solid fa-play"></i></div><div class="play-text">Klik untuk play</div></div>
-            </div>
+            <iframe src="https://www.youtube.com/embed/KP_0V_E-ukg?si=6iq9qxbQOt7f0vWS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <div class="vtag vtag--live"><span class="live-dot"></span> ON AIR</div>
             <div class="vtag vtag--signal"><i class="fa-solid fa-signal"></i><span>signal:</span><span class="bars"><span></span><span></span><span></span></span><span>strong</span></div>
-            <iframe data-src="https://www.youtube.com/embed/KP_0V_E-ukg?autoplay=1&rel=0&modestbranding=1&si=6iq9qxbQOt7f0vWS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <div class="bcast-deco"><div class="bcast-wave"></div><div class="bcast-wave"></div><div class="bcast-wave"></div><div class="bcast-tower"><i class="fa-solid fa-tower-broadcast"></i></div></div>
           </div>
           <div class="video-meta-bar">
@@ -581,18 +565,18 @@ h1.title .light{font-weight:300;color:var(--muted)}
       </div>
     </section>
 
-    <!-- SLIDE 5: Mindset — dengan ilustrasi -->
+    <!-- SLIDE 5: Mindset — FIX: text KIRI, ilustrasi KANAN -->
     <section class="slide" data-slide="4">
       <div class="slide-meta"><span class="num">04</span> / Mindset</div>
       <h1 class="title">OS <span class="light">Jadul</span> vs OS <span class="accent">Modern</span></h1>
       <p class="subtitle">Konsep dipopulerkan oleh psikolog Stanford, <b>Carol Dweck</b>. Pilih mana: Windows 98 yang langsung <code>blue screen</code> saat error, atau OS modern yang menerima <code>patch</code> perbaikan?</p>
-      <div class="body">
+      <div class="body mindset-body">
         <div class="tabs-row">
           <button class="tab active" data-tab="fixed">Fixed Mindset<span class="badge">OS Jadul</span></button>
           <button class="tab" data-tab="growth">Growth Mindset<span class="badge">OS Modern</span></button>
         </div>
-        <div class="tab-panels" style="flex:1">
-          <!-- FIXED MINDSET -->
+        <div class="tab-panels">
+          <!-- FIXED MINDSET: text KIRI, ilustrasi KANAN -->
           <div class="tab-panel active" data-panel="fixed">
             <div class="mindset-card bad">
               <div class="label">ROM Statis · Read-Only</div>
@@ -612,19 +596,19 @@ h1.title .light{font-weight:300;color:var(--muted)}
               <div class="illus-mock">
                 <div class="mock-bar">
                   <span class="mdot r"></span><span class="mdot y"></span><span class="mdot g"></span>
-                  <span class="mock-title">error.log — fixed_mindset</span>
+                  <span class="mock-title">error.log</span>
                 </div>
                 <div class="mock-content">
                   <div class="ml"><span class="mtag err">ERR</span> talent.dll not found</div>
                   <div class="ml"><span class="mtag err">FATAL</span> mindset = readonly</div>
                   <div class="ml"><span class="mtag arrow">›</span> "gue emang gak bakat"</div>
-                  <div class="ml"><span class="mtag err">HALT</span> system halted — give up</div>
+                  <div class="ml"><span class="mtag err">HALT</span> system halted</div>
                 </div>
               </div>
               <p class="illus-desc">Saat kodenya <b style="color:var(--red)">error</b>, mereka menyerah dan menyalahkan "hardware" (bakat). Tidak sadar yang rusak adalah <b style="color:var(--ink)">OS-nya</b>, bukan mesinnya.</p>
             </div>
           </div>
-          <!-- GROWTH MINDSET -->
+          <!-- GROWTH MINDSET: text KIRI, ilustrasi KANAN -->
           <div class="tab-panel" data-panel="growth">
             <div class="mindset-card good">
               <div class="label">Open-Source · Patchable</div>
@@ -644,7 +628,7 @@ h1.title .light{font-weight:300;color:var(--muted)}
               <div class="illus-mock">
                 <div class="mock-bar">
                   <span class="mdot r"></span><span class="mdot y"></span><span class="mdot g"></span>
-                  <span class="mock-title">growth_mindset.sh — running</span>
+                  <span class="mock-title">growth_mindset.sh</span>
                 </div>
                 <div class="mock-content">
                   <div class="ml"><span class="mtag dollar">$</span> applying patch...</div>
@@ -854,17 +838,6 @@ function onSlideEnter(i){
   if(i===5)startOTA();
 }
 
-const videoThumb=document.getElementById('videoThumb');
-if(videoThumb){
-  const iframe=videoThumb.parentElement.querySelector('iframe');
-  videoThumb.addEventListener('click',()=>{
-    if(iframe&&iframe.dataset.src){
-      iframe.src=iframe.dataset.src;
-      videoThumb.style.display='none';
-    }
-  });
-}
-
 function animateNeuro(){
   ['neuroBad','neuroGood'].forEach((id,idx)=>{
     const c=document.getElementById(id);if(!c||c.dataset.init)return;c.dataset.init='1';
@@ -887,6 +860,7 @@ function animateNeuro(){
   });
 }
 
+// FIX: Tab toggle pakai display:none/grid (bukan absolute positioning)
 document.querySelectorAll('.tab').forEach(tab=>{
   tab.addEventListener('click',()=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
